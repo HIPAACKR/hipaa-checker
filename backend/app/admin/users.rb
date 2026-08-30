@@ -18,9 +18,6 @@ ActiveAdmin.register User do
     column "Is Locked" do |user|
       user.locked_at.present?
     end
-    column "Is Confirmed" do |user|
-      user.confirmed?
-    end
     actions
   end
 
@@ -74,13 +71,6 @@ ActiveAdmin.register User do
       user.unlock_access!
     end
     redirect_to collection_path, alert: "The selected users have been unlocked!."
-  end
-
-  batch_action :confirm do |ids|
-    batch_action_collection.find(ids).each do |user|
-      user.confirm
-    end
-    redirect_to collection_path, alert: "The selected users have been confirmed!."
   end
 
   controller do

@@ -128,9 +128,6 @@ GEM
       devise (~> 4.0)
       railties (< 6.2)
       rotp (~> 6.0)
-    devise_invitable (2.0.9)
-      actionmailer (>= 5.0)
-      devise (>= 4.6)
     diff-lcs (1.5.0)
     digest (3.1.0)
     dotenv (2.7.6)
@@ -220,10 +217,6 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    launchy (2.5.0)
-      addressable (~> 2.7)
-    letter_opener (1.7.0)
-      launchy (~> 2.2)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -435,7 +428,6 @@ DEPENDENCIES
   capistrano3-puma (= 4.0.0)
   devise
   devise-two-factor
-  devise_invitable (~> 2.0.0)
   dotenv-rails
   factory_bot_rails
   faker
@@ -443,7 +435,6 @@ DEPENDENCIES
   google-auth-library-ruby
   jbuilder (~> 2.7)
   jwt
-  letter_opener
   listen (~> 3.3)
   net-imap
   net-pop

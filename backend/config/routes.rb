@@ -12,7 +12,6 @@ Rails.application.routes.draw do
   post '/check_vulnerabilities', to: 'home#check_vulnerabilities', as: :check_vulnerabilities
   post '/admins/ckeditor_uploads', to: 'ckeditor_uploads#create'
   devise_for :users, controllers: {
-    passwords: 'passwords',
     sessions: 'sessions',
     registrations: 'registrations'
   }
@@ -87,11 +86,10 @@ Rails.application.routes.draw do
           put :make_default
         end
       end
-      resources :passwords, only: [:create, :update] do
+      resources :passwords, only: [] do
         patch :update_password, on: :collection
       end
       resources :registrations
-      resources :confirmations
       resources :organizations, only: [:index, :show]
       resources :subscriptions do
         collection do
@@ -109,14 +107,7 @@ Rails.application.routes.draw do
           post :validate_license_key_from_lib
         end
       end
-      resources :members do
-        member do
-          post :resend_invitation
-        end
-        collection do
-          post :invite
-        end
-      end
+      resources :members
     end
   end
 

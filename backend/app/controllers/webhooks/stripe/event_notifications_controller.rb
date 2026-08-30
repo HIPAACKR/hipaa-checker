@@ -22,7 +22,6 @@ class Webhooks::Stripe::EventNotificationsController < ApplicationController
       plan = organization&.plan
       if plan.present? && organization.present?
         organization.users.update_all(locked_at: Time.now)
-        OrganizationMailer.payment_failed_notification(organization).deliver_later
       end
     when 'invoice.payment_succeeded'
       object = event.data.object

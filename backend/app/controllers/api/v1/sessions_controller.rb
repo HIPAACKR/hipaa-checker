@@ -12,9 +12,6 @@ class Api::V1::SessionsController < ActionController::Base
       unless user.approved?
         render json: {errors: ["You are not approved yet!"]}, status: :unauthorized and return
       end
-      unless user.confirmed?
-        render json: {errors: ["Check your email for the confirmation link. If it's not in your inbox, check your spam folder."]}, status: :unauthorized and return
-        end
       if user.access_locked?
         render json: {errors: ["Your account is locked!"]}, status: :unauthorized and return
       end

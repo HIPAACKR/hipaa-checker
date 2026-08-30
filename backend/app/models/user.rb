@@ -1,18 +1,12 @@
 class User < ApplicationRecord
   rolify
-  devise :invitable, :two_factor_authenticatable, :two_factor_backupable,
+  devise :two_factor_authenticatable, :two_factor_backupable,
          otp_backup_code_length: 10, otp_number_of_backup_codes: 10,
          :otp_secret_encryption_key => ENV['OTP_SECRET_KEY']
 
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :invitable, :registerable, :confirmable, :lockable,
-         :recoverable, :rememberable, :validatable,
-         :trackable
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :invitable, :registerable, :confirmable, :lockable,
-         :recoverable, :rememberable, :validatable,
+  # :confirmable, :recoverable, :invitable, :timeoutable, :omniauthable
+  devise :registerable, :lockable, :rememberable, :validatable,
          :trackable
   DEFAULT_APP_CHECKING_COUNT = 2
   JWT_TOKEN_VALID_HOURS = 4.hours
@@ -58,7 +52,7 @@ class User < ApplicationRecord
 
 
 
-  after_create :send_sign_up_notification, :add_default_role
+  after_create :add_default_role
   before_create do
     self.app_checking_count = self.organization&.plan&.max_upload_quota.to_i
     self.jwt_token = self.generate_jwt_token if self.jwt_token.blank?
@@ -66,29 +60,12 @@ class User < ApplicationRecord
 
   after_commit :assign_organization, on: :update
 
-  after_update :send_user_approval_notification# , if: :approved_changed?
-
   def initialize(params={})
     super(params)
   end
 
   def add_default_role
     self.add_role :client
-  end
-
-  #TODO: No need to send approval email to client managers now.
-  def send_sign_up_notification
-    return
-    client_managers = User.with_role(:client_manager)
-    if client_managers.exists?
-      UserMailer.send_user_signed_up_notification(client_managers,self).deliver_now
-    end
-  end
-
-  def send_user_approval_notification
-    if self.saved_change_to_approved? && self.approved?
-      UserMailer.send_user_approval_notification(self).deliver_now
-    end
   end
 
   # Generate an OTP secret it it does not already exist
@@ -175,12 +152,6 @@ class User < ApplicationRecord
   def is_allowed_to_approve?
     return true if self.organization.individual?
     return self.organization.plan.user_count >= self.organization.users.approved.count
-  end
-
-  def is_allowed_to_invite?
-    return false if self.organization.individual?
-    return false if self.organization.plan.blank?
-    return self.organization.plan.user_count >= self.organization.users.count
   end
 
   #TODO: remove this method if you want manual approval system back!
