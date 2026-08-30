@@ -1,0 +1,198 @@
+@use '@/design/styles/' as *;
+
+.home {
+  &__heroSection {
+    width: 100%;
+    background-image: url('/images/common/hero-bg.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    @include device(sp) {
+      height: unset;
+      background-position: left;
+    }
+    &__container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    &__content {
+      
+      .home__heroSection__title {
+        color: $white;
+        text-align: left;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+
+        span {
+          display: inline-block;
+          font-size: 66px;
+        }
+
+        .highlight {
+          color: #0092E3;
+          font-weight: 900;
+          margin-left: 10px;
+          font-size: 84px;
+
+        }
+
+        @include device(sp) {
+          span {
+            font-size: 38px;
+            line-height: 1.3;
+          }
+
+          .highlight {
+            font-size: 42px;
+            font-weight: 900;
+
+          }
+
+          text-align: left;
+          // margin-bottom: 2px;
+          margin-top:-50px;
+        }
+      }
+
+
+      @include align(column, flex-start, flex-start, 0, 24px);
+        max-width: 708px;
+        padding-top: 120px;
+        padding-bottom: 150px;
+
+        @include device(sp) {
+          padding: 80px 20px 30px 20px;
+        }
+        .flex {
+          flex-wrap: wrap; 
+          gap: 16px;
+        }
+
+      .text[data-size='fs-20'] {
+        line-height: 30px;
+        @include device(sp) {
+          line-height: 28px;
+        }
+      }
+    }
+  }
+  &__safeguardsSection {
+    .text {
+      &[data-size='fs-24'] {
+        margin-top: 10px;
+        margin-bottom: 4px;
+        line-height: 32px;
+        @include device(sp) {
+          margin-top: 32px;
+          line-height: 28px;
+        }
+      }
+      &[data-size='fs-38'] {
+        margin-bottom: 78px;
+        font-style: italic;
+        letter-spacing: -1.35px;
+        @include device(sp) {
+          font-size: 24px;
+          line-height: 36px;
+        }
+      }
+    }
+  }
+  &__EnterpriseSection {
+    background: linear-gradient(to bottom right, #0f172a, #1e3a8a, #1e293b);
+    
+    // .text {
+    //   &[data-size='fs-24'] {
+    //     margin-top: 10px;
+    //     margin-bottom: 4px;
+    //     line-height: 32px;
+    //     @include device(sp) {
+    //       margin-top: 32px;
+    //       line-height: 28px;
+    //     }
+    //   }
+    //   &[data-size='fs-34'] {
+    //     margin-bottom: 78px;
+    //     font-style: italic;
+    //     letter-spacing: -1.35px;
+    //     @include device(sp) {
+    //       font-size: 24px;
+    //       line-height: 36px;
+    //     }
+    //   }
+    // }
+  }
+  &__solutionsSection {
+    background-color: $primary-25;
+    @include device(sp) {
+      .section__container {
+        padding: 96px 20px;
+      }
+    }
+  }
+
+  &__facilitiesSection {
+    background-color: $white;
+    .heading {
+      max-width: 792px;
+      margin: auto;
+    }
+    @include device(sp) {
+      .section__container {
+        padding: 96px 20px;
+      }
+    }
+  }
+
+  &__productSection {
+    position: relative;
+    overflow: hidden;
+    background-color: #E9F1FB99;
+    //background-image: url('/images/common/product-bg-pc.png');
+    @include device(sp) {
+      //background-image: url('/images/common/product-bg-sp.png');
+      background-position: center;
+      background-size: cover;
+    }
+
+    .text[data-size='fs-24'] {
+      margin-bottom: 30px;
+      line-height: 32px;
+      @include device(sp) {
+        margin-bottom: 20px;
+        font-size: 18px;
+        line-height: 28px;
+      }
+    }
+  }
+  &__clientsSection {
+    .text[data-size='fs-24'] {
+      margin-top: 12px;
+      margin-bottom: 64px;
+      font-size: $font-size-tiny;
+      line-height: 30px;
+
+      @include device(sp) {
+        margin-bottom: 32px;
+      }
+    }
+  }
+  &__testimonialSection {
+    overflow: hidden;
+    background-color: $neutral-50;
+    .section__container {
+      padding: 5px 5px;
+    }
+  }
+.home__EnterpriseSection {
+  p {
+    font-size: 18px;
+    font-weight: 200; 
+    color: white;
+    text-align: center;
+    margin-top: 20px; 
+    margin-bottom: 30px;
+  }
+}
+}

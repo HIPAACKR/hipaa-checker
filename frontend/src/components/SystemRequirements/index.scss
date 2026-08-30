@@ -1,0 +1,136 @@
+@use '@/design/styles/' as *;
+
+.requirementsSection {
+  background-color: #fff;
+  padding: 80px;
+
+  @include device(sp) {
+    padding: 30px 20px;
+  }
+
+  &__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  &__title {
+    font-size: 48px;
+    font-weight: 400;
+    margin-bottom: 40px;
+    color: #1D2939;
+
+    span {
+      color: #1D2939;
+      font-weight: 700;
+    }
+
+    @include device(sp) {
+      font-size: 30px;
+      margin-bottom: 30px;
+    }
+  }
+}
+.requirementsTable {
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  &__header,
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    padding: 16px 24px;
+    text-align: left;
+  }
+
+  &__header {
+    background-color: #F9FAFB;
+    font-weight: 500;
+    color: #101828;
+    border-bottom: 1px solid #E4E7EC;
+  }
+
+  &__row {
+    border-bottom: 1px solid #E4E7EC;
+    font-size: 16px;
+    color: #374151;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-start;
+    font-weight: 400;
+    color: #475467;
+  }
+
+  &__mobile {
+    display: none;
+  }
+  @include device(sp) {
+    border: 0px solid #ece4e5;
+    border-radius: 0px;
+    // box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+
+    &__header {
+      display: none;
+    }
+
+    &__row {
+      display: none;
+    }
+
+    &__mobile {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      background-color: #ffffff;
+      border-collapse: collapse;
+    }
+
+    &__column {
+      border-bottom: 1px solid #E4E7EC;
+      padding: 0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      h4 {
+        background-color: #F9FAFB; 
+        color: #101828;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 12px 16px;
+        border-bottom: 1px solid #E4E7EC;
+      }
+
+      p {
+        font-size: 14px;
+        color: #475467;
+        line-height: 1.6;
+        padding: 10px 16px;
+        border-bottom: 1px solid #E4E7EC; 
+        margin: 0;
+
+        &:last-child {
+          border-bottom: none; 
+        }
+      }
+    }
+  }
+}
+
+.rightSignIcon {
+  display: inline-block;
+}

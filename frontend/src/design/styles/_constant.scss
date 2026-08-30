@@ -1,0 +1,127 @@
+// Color Variables
+$white: #ffffff;
+$dark: #212429;
+$color-transparent: transparent;
+
+$primary-970: #001047;
+$primary-950: #000926;
+$primary-900: #142957;
+$primary-870: #142957;
+$primary-850: #162d5f;
+$primary-800: #184190;
+$primary-700: #164ab7;
+$primary-600: #135be2;
+$primary-500: #0092E3;
+$primary-400: #3192ff;
+$primary-300: #58b3ff;
+$primary-200: #bce1ff;
+$primary-100: #d9edff;
+$primary-50: #eef7ff;
+$primary-25: #f5faff;
+
+$neutral-200: #E4E7EC;
+$neutral-950: #0a0f1a;
+$neutral-900: #101828;
+$neutral-800: #1d2939;
+$neutral-700: #344054;
+$neutral-600: #475467;
+$neutral-500: #667085;
+$neutral-400: #98a2b3;
+$neutral-300: #d0d5dd;
+$neutral-200: #eaecf0;
+$neutral-100: #f2f4f7;
+$neutral-50: #f9fafb;
+$neutral-25: #fcfcfd;
+$neutral-gray: #9795b5;
+
+$radical-red: #f2415a;
+$pinkish-red: #feecee;
+$milk-white: #fafcff;
+$partial-red: #ffeff3;
+$partial-orange: #fff8ef;
+$color-orange: #ff9900;
+$iris-blue: #effeff;
+$color-iris: #02bfc2;
+$partial-green: #e6faee;
+$color-green: #27be69;
+$wisp-pink: #fef5f6;
+$deep-carmine-pink: #f03546;
+$chrome-yellow: #f90;
+$greenish-teal: #33c37f;
+$yellow-ochre: #d69d00;
+$green-cyan: #17723f;
+$quill-grey: #d9d9d9;
+$cornell-red: #ac0c22;
+$pale-pink: #fcd9de;
+$pastel-pink: #fbd0d4;
+$yellowish-orange: #f29100;
+$champagne: #ffebcc;
+$deep-aqua: #008486;
+$water-leaf: #a1e9ea;
+$mint-tulip: #d0f5e1;
+$paris-green: #45d985;
+$paris-light-green: #99f1f3;
+$radical-light-red: #ffbbc4;
+$radical-light-yellow: #ffd9ac;
+$iris-light-blue: #a1f6c7;
+$electric-blue: #0092E3;
+// Enterprise Solution Page Colors
+$enterprise-primary: #001679;
+$enterprise-primary-dark: #00155f;
+$enterprise-button-text: #00105a;
+
+$enterprise-blue: #0052ff;
+$enterprise-blue-hover: #003ee0;
+
+$enterprise-light-blue: #eef4ff;
+$enterprise-section-bg: #f4f9ff;
+$enterprise-card-border: #eef4ff;
+$enterprise-image-bg: #f8fbff;
+$enterprise-icon-bg: #eef5ff;
+$enterprise-icon-border: #bdd2ff;
+$enterprise-button-hover-bg: #edf4ff;
+
+$enterprise-text-muted: #40536d;
+$enterprise-border-light: #e8eef8;
+
+$enterprise-hero-gradient-title: linear-gradient(90deg, #0048ff 0%, #2c77ff 48%, #98d6ff 100%);
+$enterprise-hero-overlay: linear-gradient(
+  180deg,
+  rgba(0, 6, 31, 0.72) 0%,
+  rgba(0, 18, 88, 0.62) 55%,
+  rgba(0, 55, 190, 0.48) 100%
+);
+$form-box-shadow: 0px 4px 250px 0px rgba(40, 47, 58, 0.15);
+$card-box-shadow-8: 0px 30px 153.2px -12px rgba(50, 50, 93, 0.08);
+$card-box-shadow-11: 0px 30px 153.2px -12px rgba(50, 50, 93, 0.11);
+$card-contact-form-shadow: 0px 4px 250px 0px rgba(19, 91, 226, 0.03);
+$footer-pc-gradient: linear-gradient(209deg, #0c3d9e 11.15%, #062260 36.41%, #000926 82.06%);
+$footer-sp-gradient: linear-gradient(180deg, #0c3d9e 0%, #000926 100%);
+
+// font-family variables
+$fontset-en: AlbertSans, sans-serif;
+
+// Font Size
+$font-size-nano: 10px;
+$font-size-micro: 12px;
+$font-size-semi-tiny: 14px;
+$font-size-tiny: 16px;
+$font-size-semi-small: 18px;
+$font-size-small: 20px;
+$font-size-semi-medium: 24px;
+$font-size-medium: 30px;
+$font-size-large: 38px;
+$font-size-xl: 48px;
+$font-size-xxl: 60px;
+$font-size-xxxl: 66px;
+
+// Font weight
+$font-weight-thin: 100;
+$font-weight-extra-light: 200;
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semi-bold: 600;
+$font-weight-bold: 700;
+
+$width-main-container: 1280px;

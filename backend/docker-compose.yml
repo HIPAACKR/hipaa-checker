@@ -1,0 +1,61 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: myapp_development
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+      args:
+        RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+        SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+        RAILS_ENV: production
+    image: hipaachecker_backend:latest
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec puma -C config/puma.rb"
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    env_file: .env
+
+  sidekiq_1:
+    image: hipaachecker_backend:latest
+    command: bundle exec sidekiq -C config/extraction_sidekiq.yml
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    env_file: .env
+
+  sidekiq_2:
+    image: hipaachecker_backend:latest
+    command: bundle exec sidekiq -C config/report_generation_sidekiq.yml
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    env_file: .env
+  redis:
+    image: redis:7
+
+  sidekiq_3:
+    image: hipaachecker_backend:latest
+    command: bundle exec sidekiq -C config/general_sidekiq.yml
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    env_file: .env
+
+volumes:
+  pgdata:

@@ -1,0 +1,19 @@
+- id: unique_id
+  description: >-
+    Creating a unique primary key in the database for storing PHI
+  pattern:
+    - models\.AutoField\(
+    - primary_key
+    - models\.\w+\(.+\s*,\s*unique\s*=\s*True\s*\)
+    - models\.ForeignKey\(.+\s*,\s*on_delete\s*=\s*models\.\w+\)
+    - models\.\w+\(.+\s*,\s*primary_key\s*=\s*True\s*\)
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "strong"
+      relative_impacts: []
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts: []
+
+
+  severity: warning

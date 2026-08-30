@@ -1,0 +1,63 @@
+@use '@/design/styles/' as *;
+
+.custom_container {
+  position: relative;
+  display: flex;
+  width: 100%;
+  &__sidebar {
+    z-index: 50;
+    width: 256px;
+    transition: width 0.5s ease;
+    @include device(sp) {
+      position: fixed;
+      top: 0;
+      left: 0;
+      &--overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(24, 34, 59, 0.78);
+      }
+    }
+  }
+  &__sidebarClose {
+    width: 0px;
+    .container__sidebar--overlay {
+      display: none;
+    }
+    .sidebar {
+      transform: translateX(-256px);
+      &__companayWrapper {
+        width: 0px;
+      }
+    }
+  }
+}
+.main {
+  width: 100%;
+  // transition: width 0.5s ease;
+  @include device(pc) {
+    &--sidebarOpen {
+      width: calc(100% - 256px);
+    }
+  }
+}
+.content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: $neutral-100;
+
+  &--padding-height {
+    min-height: calc(100vh + 72px);
+    padding: 24px 32px;
+    @include device(sp) {
+      padding: 16px;
+    }
+  }
+}

@@ -1,0 +1,33 @@
+@use 'sass:map';
+@use 'sass:string';
+
+// Media queries variables
+$width-max-sp: 1365px;
+$width-min-pc: $width-max-sp + 1px;
+
+// Media queries
+@mixin device($devices...) {
+  @each $device in $devices {
+    @if $device == sp {
+      @media screen and (max-width: $width-max-sp) {
+        @content;
+      }
+    } @else if $device == pc {
+      @media screen and (min-width: $width-min-pc) {
+        @content;
+      }
+    } @else {
+      @error "device() mixin only supports sp, tablet, pc. But you provided #{$device}.";
+    }
+  }
+}
+
+// center alignment
+@mixin align($direction: row, $position: center, $start: center, $colGap: 0px, $rowGap: 0px) {
+  display: flex;
+  flex-direction: $direction;
+  row-gap: $rowGap;
+  column-gap: $colGap;
+  align-items: $start;
+  justify-content: $position;
+}

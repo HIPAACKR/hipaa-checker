@@ -1,0 +1,136 @@
+<div class="d-flex justify-content-around align-items-center min-vh-80">
+  <div>
+    <h1 style="text-align: center;margin-bottom: 50px">Welcome to HipaaChecker</h1>
+    <% unless user_signed_in? %>
+      <div class="d-flex justify-content-center" >
+      <div class="row justify-content-between">
+        <div class="col-md-3 hipaa-box hipaa-box-1">
+          <div class="box-title">
+            <h4 class="hipaa-title">Android Applications(APK)</h4>
+          </div>
+          <div class="box-content">
+            <span style="color: ghostwhite"> Check android apk via uploading into the web portal. </span> <br/>
+            <a class="btn btn-primary btn-lg btn-block hipaa-btn" href="/users/sign_up">Sign Up</a>
+          </div>
+        </div>
+        <div class="col-md-3 hipaa-box hipaa-box-2">
+          <div class="box-title">
+            <h4 class="hipaa-title">Android Studio Plugin</h4>
+          </div>
+          <div class="box-content">
+            <span style="color: ghostwhite"> An Android studio plugin to check your app while in development </span> <br/>
+            <a class="btn btn-primary btn-lg btn-block hipaa-btn" href="/download_android_studio_plugin">Download The Plugin</a>
+          </div>
+        </div>
+        <div class="col-md-3 hipaa-box hipaa-box-3">
+          <div class="box-title">
+            <h4 class="hipaa-title">Mobile Application</h4>
+          </div>
+          <div class="box-content">
+            <span style="color: ghostwhite"> A mobile application to check the installed applications of your android mobile</span> <br/>
+            <a class="btn btn-primary btn-lg btn-block hipaa-btn" disabled>Coming Soon</a>
+          </div>
+        </div>
+        <div class="col-md-3 hipaa-box hipaa-box-3">
+          <div class="box-title">
+            <h4 class="hipaa-title">iOS Applications</h4>
+          </div>
+          <div class="box-content">
+            <span style="color: ghostwhite"> Check iOS apps while development.</span> <br/>
+            <a class="btn btn-primary btn-lg btn-block hipaa-btn" disabled>Coming Soon</a>
+          </div>
+        </div>
+        <div class="col-md-3 hipaa-box hipaa-box-3">
+          <div class="box-title">
+            <h4 class="hipaa-title">Web Application(Laravel)</h4>
+          </div>
+          <div class="box-content">
+            <span style="color: ghostwhite"> Check web application developed in Laravel</span> <br/>
+            <a class="btn btn-primary btn-lg btn-block hipaa-btn" href="/users/sign_up">Sign Up</a>
+          </div>
+        </div>
+        <div class="col-md-3 hipaa-box hipaa-box-3">
+          <div class="box-title">
+            <h4 class="hipaa-title">Web Application(Django)</h4>
+          </div>
+          <div class="box-content">
+            <span style="color: ghostwhite"> Check web application developed in Django</span> <br/>
+            <a class="btn btn-primary btn-lg btn-block hipaa-btn" href="/users/sign_up">Sign Up</a>
+          </div>
+        </div>
+
+        <div class="col-md-3 hipaa-box hipaa-box-3">
+          <div class="box-title">
+            <h4 class="hipaa-title">Web Application(Ruby On Rails)</h4>
+          </div>
+          <div class="box-content">
+            <span style="color: ghostwhite"> Check web application developed in Rails</span> <br/>
+            <a class="btn btn-primary btn-lg btn-block hipaa-btn" href="/users/sign_up">Sign Up</a>
+          </div>
+        </div>
+
+        <div class="col-md-3 hipaa-box hipaa-box-3">
+          <div class="box-title">
+            <h4 class="hipaa-title">Web Application(Express)</h4>
+          </div>
+          <div class="box-content">
+            <span style="color: ghostwhite"> Check web application developed in Express JS</span> <br/>
+            <a class="btn btn-primary btn-lg btn-block hipaa-btn" disabled>Coming Soon</a>
+          </div>
+        </div>
+        <div class="col-md-3 hipaa-box hipaa-box-3" style="opacity: 0">
+          <div class="box-title">
+            <h4 class="hipaa-title">Web Application(Express)</h4>
+          </div>
+          <div class="box-content">
+            <span style="color: ghostwhite"> Check web application developed in Express JS</span> <br/>
+            <a class="btn btn-primary btn-lg btn-block hipaa-btn" disabled>Coming Soon</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
+
+
+<style>
+
+  .hipaa-box {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    padding: 50px 20px;
+    text-align: center;
+    min-width: 260px;
+    margin: 20px;
+    height: 280px;
+    background-color: lightslategrey;
+  }
+
+  .hipaa-title {
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .hipaa-btn {
+    background-color: darkblue;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  .box-title {
+    margin-top: 40px;
+    margin-bottom: auto;
+  }
+
+  .box-content {
+    margin-top: auto;
+    margin-bottom: 40px;
+  }
+
+</style>

@@ -1,0 +1,74 @@
+@use '@/design/styles/' as *;
+
+.cardTop {
+  $root: &;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px;
+  background: $white;
+  border-radius: 8px;
+  @include device(sp) {
+    padding: 8px 12px;
+  }
+
+  @include device(sp) {
+    &:last-child {
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+  }
+
+  &__detail {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__imageContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: red;
+    border-radius: 70px;
+    @include device(sp) {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  &__title {
+    font-size: $font-size-semi-tiny;
+    line-height: 20px;
+    color: $neutral-500;
+  }
+
+  &__value {
+    font-size: $font-size-small;
+    font-weight: $font-weight-semi-bold;
+    line-height: 28px;
+    color: $neutral-900;
+  }
+
+  @mixin card-icon-color($name, $color, $icon-color) {
+    &--#{$name} {
+      background-color: $color;
+
+      #{$root}__icon {
+        .icon {
+          color: $icon-color;
+        }
+      }
+    }
+  }
+
+  @include card-icon-color('red', $partial-red, $radical-red);
+  @include card-icon-color('orange', $partial-orange, $color-orange);
+  @include card-icon-color('blue', $primary-50, $primary-500);
+  @include card-icon-color('green', $partial-green, $color-green);
+  @include card-icon-color('iris-blue', $iris-blue, $color-iris);
+  @include card-icon-color('deep-carmine-pink', #ffdada, $cornell-red);
+}

@@ -1,0 +1,4 @@
+<%= form_with(url: check_vulnerabilities_path, method: :post) do %>
+    <%= hidden_field_tag 'user_upload_id', user_upload.id %>
+    <%= submit_tag 'Check Vulnerabilities', class: 'btn btn-sm btn-success check-vulnerabilities', onclick: "$(this).val('Checking Vulnerabilities ...')" %>
+<% end %>

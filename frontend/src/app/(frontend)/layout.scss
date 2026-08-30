@@ -1,0 +1,17 @@
+@use '@/design/styles/' as *;
+.frontendLayout {
+  width: 100%;
+  &__header-section {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+  }
+
+  &__main {
+    margin-top: 80px;
+    @include device(sp) {
+      margin-top: 68px;
+    }
+  }
+}

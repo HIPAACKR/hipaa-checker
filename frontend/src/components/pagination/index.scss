@@ -1,0 +1,76 @@
+@use '@/design/styles/' as *;
+
+.pagination {
+  $root: &;
+
+  @include align(row, space-between, flex-start, 20px, 16px);
+  flex-wrap: wrap;
+  width: 100%;
+  @include device(sp) {
+    .text {
+      margin: 0 auto;
+    }
+  }
+  &__buttons {
+    @include align(row, flex-start, flex-start, 8px);
+    @include device(sp) {
+      margin: 0 auto;
+    }
+    button {
+      cursor: pointer;
+    }
+  }
+  &__button {
+    width: 36px;
+    height: 36px;
+    font-size: $font-size-semi-tiny;
+    font-weight: $font-weight-medium;
+    line-height: 20px;
+    color: $neutral-700;
+    background-color: transparent;
+    border-radius: 8px;
+    @include align();
+    &--active {
+      background-color: $primary-100;
+    }
+  }
+  &__previous-button {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    background-color: $neutral-50;
+    border-radius: 8px;
+    &:hover {
+      opacity: 0.75;
+    }
+    &::after {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      width: 8px;
+      height: 13px;
+      content: '';
+      background-image: url('/images/icons/arrowLeft2.svg');
+    }
+  }
+  &__next-button {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    background-color: $neutral-50;
+    border-radius: 8px;
+    &:hover {
+      opacity: 0.75;
+    }
+    &::after {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      width: 8px;
+      height: 13px;
+      content: '';
+      background-image: url('/images/icons/arrowLeft2.svg');
+      transform: rotate(180deg);
+    }
+  }
+}

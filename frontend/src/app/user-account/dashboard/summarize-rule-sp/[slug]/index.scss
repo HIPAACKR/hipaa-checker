@@ -1,0 +1,153 @@
+@use '@/design/styles/' as *;
+
+.summarizeRuleForSp {
+  $root: &;
+  .breadcrumb {
+    width: calc(100% + 64px);
+    padding: 12px 0;
+    margin-top: -32px;
+    margin-left: -32px;
+    background-color: $white;
+    @include device(sp) {
+      width: calc(100% + 32px);
+      margin-top: -16px;
+      margin-left: -16px;
+    }
+    &__header {
+      padding-left: 16px;
+    }
+    &__wrapper {
+      display: none;
+    }
+  }
+  .subtitle {
+    margin: 24px 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    color: $neutral-800;
+    text-align: center;
+  }
+  &__audit-record-container {
+    width: 100%;
+    padding: 16px;
+    background-color: $neutral-50;
+    border-radius: 8px;
+
+    .e-loader-container {
+      margin-top: 60px;
+    }
+  }
+
+  &__container {
+    width: 100%;
+    background-color: $neutral-50;
+    border-radius: 8px;
+    @include align($colGap: 24px, $start: flex-start, $position: space-between);
+    @include device(sp) {
+      @include align($direction: column, $rowGap: 20px, $start: flex-start);
+    }
+
+    &__audit-record-container {
+      width: 100%;
+      border-radius: 8px;
+
+      &__heading {
+        padding: 16px;
+        background-color: $white;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        @include align(
+          $direction: column,
+          $rowGap: 10px,
+          $position: flex-start,
+          $start: flex-start
+        );
+      }
+
+      &__heading-rule {
+        width: 100%;
+        @include align($colGap: 10px, $position: flex-start, $start: center);
+        .skeleton-row {
+          max-width: 500px;
+        }
+      }
+      &__heading-subrule {
+        @include align($colGap: 10px, $position: flex-start, $start: flex-start);
+        .text[data-size='fs-18'] {
+          @include device(sp) {
+            font-size: $font-size-tiny;
+            line-height: 26px;
+            letter-spacing: -0.2px;
+          }
+        }
+        .skeleton-row {
+          width: 200px;
+        }
+      }
+      &__heading-footer {
+        width: 100%;
+        padding-left: 36px;
+        @include align($colGap: 10px, $position: space-between);
+        &__tag {
+          padding: 2px 10px;
+          font-size: $font-size-micro;
+          font-weight: $font-weight-medium;
+          line-height: 16px;
+          color: $neutral-800;
+          border-radius: 4px;
+        }
+      }
+      &__json-format {
+        width: 100%;
+        padding: 16px;
+        background-color: $neutral-200;
+        border-bottom-right-radius: 8px;
+        border-bottom-left-radius: 8px;
+        .text[data-size='fs-14'] {
+          line-height: 20px;
+        }
+        &__items {
+          overflow-y: auto;
+          border-radius: 8px;
+        }
+        &__item {
+          padding: 10px 20px 10px 20px;
+          font-size: $font-size-semi-tiny;
+          font-weight: $font-weight-medium;
+          line-height: 20px;
+          color: $neutral-900;
+          word-break: break-all;
+          white-space: pre-wrap;
+          background-color: $white;
+          border-bottom: 1px solid $neutral-200;
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+  }
+
+  @mixin item-color($name, $color) {
+    &__container__subrule__found__riskItem--#{$name}:before {
+      background-color: $color;
+    }
+  }
+
+  @include item-color('red', $radical-red);
+  @include item-color('orange', $color-orange);
+  @include item-color('green', $paris-green);
+  @include item-color('iris-blue', $color-iris);
+
+  @mixin tag-color($name, $color) {
+    &__container__audit-record-container__heading-footer__tag--#{$name} {
+      background-color: $color;
+    }
+  }
+
+  @include tag-color('red', $radical-light-red);
+  @include tag-color('orange', $radical-light-yellow);
+  @include tag-color('green', $paris-light-green);
+  @include tag-color('iris-blue', $iris-light-blue);
+}

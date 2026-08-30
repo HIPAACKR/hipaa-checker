@@ -1,0 +1,30 @@
+# Node modules - should be reinstalled inside container
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Next.js build output
+.next
+out
+
+# Local environment and config
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# OS/system files
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Editor/IDE files
+.vscode
+.idea
+
+# Logs
+*.log

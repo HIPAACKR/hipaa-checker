@@ -1,0 +1,76 @@
+- id: audit_log
+  description: >-
+    This app monitors insights into how app and its dependencies access private data from users by performing data access auditing.
+  type: RegexAnd
+  pattern:
+    - \.middleware\.AuditlogMiddleware
+    - DataAccessAudit\.objects\.
+    - TimeStampedModel
+    - AuditlogEntry\.objects\.
+    - auditlog\.register\(
+    - admin\.site\.register\s*\(\s*LogEntry\s*\)
+    - auditlog\.register\s*\(\s*\w+\s*,\s*\)
+    - log_entries\.filter\s*\(\s*action\s*=\s*LogEntry\.Action\.UPDATE\s*\)
+    - LogEntry\.objects\.filter\s*\(\s*content_type\s*=\s*\w+\s*\)
+    - ContentType\.objects\.get_for_model\s*\(\s*\w+\s*\)
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: alerting_notification
+          factor: "negligible"
+        - subrule_id: log_integrity_tamper_protection
+          factor: "minor"
+  severity: warning
+
+- id: track_via_django_simple_history
+  description: >-
+    Track changes for the historical records via django-simple-history library testing.
+  type: RegexAnd
+  pattern:
+    - HistoricalRecords\(
+    - \.middleware\.HistoryRequestMiddleware
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "moderate"
+      relative_impacts:
+        - subrule_id: audit_log
+          factor: "strong"
+  severity: warning
+
+
+
+
+
+- id: log_integrity_tamper_protection
+  description: >-
+    This application integrates tamper protection and logging.
+  type: RegexAnd
+  pattern:
+    - \loggers"\s*:\s*\{\s*"django"\s*:\s*\{
+    - \loggers'\s*:\s*\{\s*'django\.request'\s*
+    - \Easyaudit
+    - \logging\.getLogger
+    - \@receiver\(
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: audit_log
+          factor: "moderate"
+  severity: warning
+
+
+- id: alerting_notification
+  description: >-
+    This application has email and other notification mechanisms.
+  type: RegexAnd
+  pattern:
+    - send_mail\s*\(\s*['"][\w\s]+['"],\s*['"][\w\s]+['"],\s*\['"][\w@.]+['"]
+    - signals\.post_save\.connect\s*\(
+    - signals\.pre_save\.connect\s*\(
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "minor"
+      relative_impacts: []
+  severity: warning

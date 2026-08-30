@@ -1,0 +1,8 @@
+@use '@/design/styles/' as *;
+
+.vertical_divider {
+  border-left: 2px solid $neutral-200;
+  align-self: stretch;
+  margin: 0 15px;
+  display: inline-block;
+}

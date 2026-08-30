@@ -1,0 +1,41 @@
+@font-face {
+  font-family: AlbertSans;
+  font-weight: 700;
+  src:
+    local('AlbertSans_Bold'),
+    url('../font/AlbertSans_Bold.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: AlbertSans;
+  font-weight: 600;
+  src:
+    local('AlbertSans_SemiBold'),
+    url('../font/AlbertSans_SemiBold.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: AlbertSans;
+  font-weight: 500;
+  src:
+    local('AlbertSans_Medium'),
+    url('../font/AlbertSans_Medium.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: AlbertSans;
+  font-weight: 400;
+  src:
+    local('AlbertSans_Regular'),
+    url('../font/AlbertSans_Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: IBM Plex Mono;
+  font-weight: 400;
+  src:
+    local('IBMPlexMono-Regular'),
+    url('../font/IBMPlexMono-Regular.ttf') format('truetype');
+  font-display: swap;
+}

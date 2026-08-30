@@ -1,0 +1,44 @@
+@use '@/design/styles/' as *;
+
+.halfDoughnut {
+  position: relative;
+  @include device(sp) {
+    width: 250px;
+  }
+  .skeleton-row {
+    width: 128px;
+    height: 128px;
+    margin: 0 auto;
+    border-radius: 50%;
+  }
+  &__comment {
+    position: absolute;
+    bottom: -45%;
+    left: 50%;
+    font-size: $font-size-semi-small;
+    font-weight: $font-weight-semi-bold;
+    line-height: 28px;
+    text-align: center;
+    transform: translate(-50%, -50%);
+  }
+  &__minScrore {
+    position: absolute;
+    bottom: -40%;
+    left: 18%;
+    font-size: $font-size-tiny;
+    line-height: 26px;
+    color: $neutral-500;
+    text-align: left;
+    transform: translate(-50%, -50%);
+  }
+  &__maxScrore {
+    position: absolute;
+    right: 10%;
+    bottom: -40%;
+    font-size: $font-size-tiny;
+    line-height: 26px;
+    color: $neutral-500;
+    text-align: left;
+    transform: translate(-50%, -50%);
+  }
+}

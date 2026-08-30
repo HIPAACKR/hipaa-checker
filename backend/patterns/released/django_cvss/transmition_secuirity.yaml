@@ -1,0 +1,17 @@
+  - id: transmition_secuirity
+    description: >-
+      This Application uses secure connection to transmit data.
+    type: RegexAnd
+    pattern:
+      - ^\s*SECURE_SSL_REDIRECT\s*=\s*True\s*$
+      - ^\s*SESSION_COOKIE_SECURE\s*=\s*True\s*$
+      - ^\s*CSRF_COOKIE_SECURE\s*=\s*True\s*$
+      - ^\s*SECURE_HSTS_INCLUDE_SUBDOMAINS\s*=\s*True\s*$
+      - ^\s*SECURE_HSTS_SECONDS\s*=\s*\d+\s*$
+      - ^\s*SECURE_HSTS_SECONDS\s*=\s*.*?\s*$
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts: []
+
+    manual_check: false

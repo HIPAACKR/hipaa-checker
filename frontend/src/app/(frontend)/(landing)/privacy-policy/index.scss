@@ -1,0 +1,25 @@
+@use '@/design/styles/' as *;
+
+.privacyPolicy {
+  &__body {
+    @include align(column, center, center, 0, 48px);
+    max-width: 800px;
+    padding: 96px 0;
+    margin: 0 auto;
+    white-space: pre-line;
+    @include device(sp) {
+      padding: 64px 20px;
+    }
+  }
+
+  &__sectionWrapper {
+    @include align(column, center, flex-start, 0, 24px);
+  }
+  .heading[data-type='h5'] {
+    margin-bottom: 16px;
+  }
+  .text[data-size='fs-16'] {
+    font-size: $font-size-tiny;
+    line-height: 26px;
+  }
+}

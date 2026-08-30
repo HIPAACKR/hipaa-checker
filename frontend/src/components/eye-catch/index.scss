@@ -1,0 +1,312 @@
+@use '@/design/styles/' as *;
+
+.eyeCatch {
+  $root: &;
+
+  width: 100%;
+  overflow: hidden;
+
+  &__developer-guideline {
+    width: 100%;
+    min-height: 426px;
+    padding-top: 80px;
+    background-image: url('/images/common/developer-guideline-eyecatch.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    @include device(sp) {
+      min-height: 300px;
+      padding-top: 60px;
+    }
+  }
+  &__user-guideline {
+    width: 100%;
+    min-height: 426px;
+    background-image: url('/images/common/user-guideline-eyecatch.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    @include device(sp) {
+      min-height: 300px;
+      padding-top: 60px;
+    }
+  }
+  &__hero-section {
+    width: 100%;
+    // min-height: 350px;
+    min-height: 330px;
+    background-image: url('/images/common/herosection-image.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    @include device(sp) {
+      min-height: 300px;
+      padding-top: 60px;
+      padding-bottom: 60px;
+    }
+    &__content {
+      @include align($direction: column, $rowGap: 24px);
+      // padding: 20px 20px;
+      @include device(sp) {
+        row-gap: 20px;
+        // padding: 40px 0;
+      }
+    }
+    &__textWrapper {
+      @include align($direction: column, $rowGap: 10px);
+      max-width: 598px;
+      line-height: 48px;
+      @include device(sp) {
+        row-gap: 0px;
+        padding: 0 20px;
+        .heading[data-type='h2'] {
+          font-size: $font-size-semi-medium;
+          line-height: 32px;
+        }
+      }
+    }
+    &__description {
+      font-size: $font-size-tiny;
+      line-height: 28px;
+      color: $neutral-100;
+      text-align: center;
+      white-space: pre-line;
+      @include device(sp) {
+        font-size: $font-size-semi-tiny;
+        line-height: 28px;
+        white-space: unset;
+      }
+    }
+    &__old-breadcrumb {
+      margin-right: 8px;
+      font-size: $font-size-semi-tiny;
+      font-weight: $font-weight-medium;
+      line-height: 28px;
+      color: $neutral-400;
+      cursor: pointer;
+      @include device(sp) {
+        font-size: $font-size-semi-tiny;
+        font-weight: $font-weight-regular;
+        font-weight: $font-weight-semi-bold;
+      }
+    }
+    .text {
+      display: inline;
+      &:last-child {
+        margin-left: 8px;
+        font-weight: $font-weight-semi-bold;
+      }
+    }
+   .eyeCatch__hero-section {
+  &__product-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+    gap: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 0 80px;
+
+    @include device(sp) {
+      grid-template-columns: 1fr;
+      text-align: center;
+      padding: 0;
+    }
+  }
+
+  &__product-image-container {
+    display: flex;
+    border-radius: 12px;
+    padding: 0;
+
+    @include device(sp) {
+      display: none !important;
+    }
+
+    img {
+      border-radius: 10px;
+      object-fit: contain;
+      margin-top: 0;
+      height: 370px;
+      width: 650px;
+      margin-top:-22px;
+    }
+  }
+
+    }
+    &__product {
+      
+      &__android {
+        @include align($colGap: 8px);
+      }
+      &__details {
+        @include align($direction: column, $start: flex-start, $rowGap: 20px);
+        .heading[data-type='h1'] {
+          line-height: 70px;
+          @include device(sp) {
+            line-height: 44px;
+            margin-bottom: 0px;
+          }
+        }
+        @include device(sp) {
+          padding: 0px 20px;
+          @include align($direction: column, $start: flex-start, $rowGap: 0px);
+        }
+      }
+      &__content {
+        margin-top: 46px;
+        @include align($direction: row, $start: flex-start, $position: flex-start, $colGap: 32px);
+        @include device(sp) {
+          padding: 0px 20px;
+          margin-top: 30px;
+          margin-bottom: 0px;
+          width: 100%;
+          justify-content: space-between;
+        }
+      }
+      &__description {
+        font-size: $font-size-semi-small;
+        font-weight: 400;
+        line-height: 28px;
+        color: $neutral-100;
+        text-align: left;
+        white-space: pre-line;
+        @include device(sp) {
+          font-size: $font-size-tiny;
+          line-height: 28px;
+          white-space: unset;
+          &--mb {
+            margin-bottom: 0px;
+            margin-top: 0px;
+            padding: 20px 0px;
+          }
+        }
+      }
+
+      &__title {
+        margin-bottom: 6px;
+        font-size: $font-size-semi-small;
+        font-weight: 400;
+        line-height: 28px;
+        color: $primary-400;
+        text-align: left;
+        white-space: pre-line;
+        margin-top: -40px;
+        @include device(sp) {
+          font-size: $font-size-tiny;
+          line-height: 28px;
+          margin-bottom: 4px;
+          white-space: unset;
+          margin-top: 0px;
+
+        }
+      }
+      &__platform {
+        @include align($colGap: 8px);
+      }
+      &__platform-image {
+        width: auto;
+        height: 17px;
+      }
+      &__button-wrapper {
+        @include device(sp) {
+          width: 100%;
+          .button {
+            width: 100%;
+            background-color: #0092E3 !important;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+
+            .button__content {
+              color: white !important;
+              transition: color 0.3s ease;
+            }
+
+            .button--icon-color {
+              background-color: white !important;
+              transition: background-color 0.3s ease;
+            }
+
+            &:hover {
+              background-color: #fff !important;
+              border: 1px solid #0092E3 !important;
+
+              .button__content {
+                color: #0092E3 !important;
+              }
+
+              .button--icon-color {
+                background-color: #0092E3 !important;
+              }
+            }
+          }
+
+        }
+      }
+    }
+  }
+  &--contact-us {
+    #{$root}__hero-section {
+      min-height: 536px;
+      padding-top: 64px;
+      @include device(sp) {
+        min-height: 300px;
+        padding-top: 94px;
+      }
+    
+  }
+  &--downloads {
+    #{$root}__hero-section__textWrapper {
+      max-width: unset;
+    }
+  }
+  &--droidPortal-mPlugin,
+  &--hipaachecker-for-express-js,
+  &--hipaachecker-for-python-django,
+  &--hipaachecker-for-ruby-on-rails,
+  &--hipaachecker-for-php-laravel,
+  &--hipaachecker-for-dot-net,
+  &--hipaachecker-for-spring-boot,
+
+  &--x-plugin {
+    #{$root}__hero-section {
+      // height: 802px;
+      padding: 0px;
+      background-image: url('/images/common/heroSection-products.png');
+      @include device(sp) {
+        height: 560px;
+        // padding: unset;
+        @include align();
+      }
+    }
+  }
+  &--droidPortal-mPlugin {
+    #{$root}__hero-section {
+      padding: 0px;
+      @include device(sp) {
+        // padding: unset;
+      }
+    }
+  }
+  &--x-plugin {
+    #{$root}__hero-section {
+      padding: 0px;
+      @include device(sp) {
+        // padding: unset;
+      }
+    }
+  }
+  &--hipaachecker-for-express-js {
+    #{$root}__hero-section__product__platform-image {
+      height: 12px;
+    }
+  }
+  &--features {
+    #{$root}__hero-section {
+      @include device(sp) {
+        padding-top: 66px;
+      }
+    }
+  }
+}
+}

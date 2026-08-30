@@ -1,0 +1,70 @@
+<div class="row developers_guide" style="padding: 15px">
+  <h4>How to install plugin On Android Studio</h4>
+  <a target="_blank" href="https://youtu.be/nfrFJEOHrk8">Watch Video on Youtube</a>
+  <ul style="padding-left: 30px">
+    <li>Download <%= link_to "the latest hipaachecker plugin", download_android_studio_plugin_url %> (<strong>build version 1.0.8</strong>) as zip file</li>
+    <li>
+      Create a hidden file named <code>.hipaa_jwt</code> into your Android project's root directory.
+    </li>
+    <li>Get and copy your API credentials from <%= link_to "API Credentials", api_credentials_path %></li>
+    <li>
+      Put the copied API KEY(jwt token) into this hidden file and save it. Sample of API Key inside .hipaa_jwt file as below:
+      <%= image_tag "developers_guid/android/hipaa-jwt-api-key-sample.png", style: "width: 100%" %>
+    </li>
+    <li>
+      Install the plugin using <code>Install Plugin from Disk...</code> option from your Android Studio settings. <strong> File -> Settings -> Plugins </strong>
+      <%= image_tag "developers_guid/android/install-from-disk.png" %>
+    </li>
+    <li>
+      If the plugin is installed successfully, it will look like this as below: <br />
+      <%= image_tag "developers_guid/android/hipaachecker-plugin-after-installation.png" %>
+    </li>
+    <li>
+      After the plugin gets installed, there will be a menu named <code>Check HIPAA Compliances</code> into the main menu on right most place in Mac and in Linux(Ubuntu), there will be <code>Check HIPAA</code> in the main menu and then <code>Check HIPAA Compliances</code> will be as sub menu.
+      <%= image_tag "developers_guid/android/check-hipaa-menu.png", style: "width: 100%" %>
+    </li>
+
+    <li>Upon clicking on the menu, there will be a few sequential dialogues and you will get the HIPAA report link in your email Inbox after a while.</li>
+    <li>
+      It is pretty easy to uninstall or disable the plugin from the options on gear icon of the plugin as below:
+      <%= image_tag "developers_guid/android/how-to-uninstall-plugin.png" %>
+    </li>
+  </ul>
+</div>
+
+<div style="padding-left: 30px">
+  <p>The plugin is tested and all the screenshots are taken in the IDE of Android Studio Dolphin. More environment specification is given below:</p>
+  <code>
+    <h4>Android Studio Dolphin | 2021.3.1 Patch 1</h4>
+  Build #AI-213.7172.25.2113.9123335, built on September 30, 2022 <br/>
+  Runtime version: 11.0.13+0-b1751.21-8125866 amd64 <br/>
+  VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.<br/>
+  Linux 5.4.0-135-generic(Ubuntu 18.04.2 LTS)<br/>
+  GC: G1 Young Generation, G1 Old Generation<br/>
+  Memory: 1280M<br/>
+  Cores: 8<br/>
+  Registry:<br/>
+  external.system.auto.import.disabled=true<br/>
+  ide.text.editor.with.preview.show.floating.toolbar=false<br/>
+    <br/>
+  Current Desktop: GNOME-Flashback:GNOME
+  </code>
+</div>
+
+
+<style>
+  .developers_guide code{
+    color: crimson;
+    background-color: #f1f1f1;
+    padding: 2px;
+    font-size: 105%;
+  }
+  .developers_guide ul{
+    padding-left: 30px;
+  }
+  .developers_guide ul li{
+    font-size: 18px;
+    padding: 0 0;
+    margin-top: 20px;
+  }
+</style>

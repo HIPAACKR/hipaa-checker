@@ -1,0 +1,68 @@
+<div class="content">
+  <div class="container">
+    <div class="mt-5">
+      <div class="mt-5">
+        <% if @analyzed_results.blank? %>
+          <h2 text-center mb-5> No match found </h2>
+        <% else %>
+          <h2 class="text-center mb-5"><i>Analysis for:</i>
+            <b><%= @user_upload.file.filename.to_s.gsub('.apk', '').humanize %></b></h2>
+          <%= will_paginate @analyzed_results, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+
+          <div class="table-responsive" class="col-100">
+            <%= link_to "Back", report_user_upload_path(@user_upload), class: "float-end btn btn-danger", style: "margin-bottom: 5px;" %>
+            <table class="table table-bordered table-striped">
+              <thead class="table-dark text-center">
+              <tr>
+                <th>Feedback</th>
+                <th style="display: none">Searched Pattern</th>
+                <th style="width: 50%">Match Data</th>
+                <th>File Name</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @analyzed_results.each do |analyzed_result| %>
+                <tr>
+                  <td> <%= analyzed_result.description %></td>
+                  <td style="display: none">
+                    <ul class="list-group">
+                      <% analyzed_result.pattern.map do |item| %>
+                        <li class="list-group-item">
+                          <code><%= item %></code>
+                        </li>
+                      <% end %>
+                    </ul>
+                  </td>
+                  <td style="cursor: context-menu">
+                    <ul class="list-group">
+                      <% line_number = JSON.parse(analyzed_result.matched_data.reject(&:empty?).first.first)['lineNumber'] %>
+                      <% line_numbers = analyzed_result.matched_data.flatten.collect { |item| JSON.parse(item)['lineNumber'] } %>
+                      <% analyzed_result.matched_data.map do |data| %>
+                        <% data.map do |item| %>
+                          <li title="<%= JSON.pretty_generate(JSON.parse(item)) %>" class="list-group-item">
+                            <pre><%= JSON.pretty_generate(JSON.parse(item)).to_s[0..100] %></pre>
+                          </li>
+                        <% end %>
+                      <% end %>
+                    </ul>
+                  </td>
+                  <td>
+                    <div style="width: 350px; overflow: scroll">
+                      <% if analyzed_result.user_upload.ios? %>
+                        <%= analyzed_result.filepath %>/<%= analyzed_result.filename.to_s.gsub('.apk', '').humanize %>
+                      <% else %>
+                        <%= link_to analyzed_result.filename.to_s.gsub('.apk', '').humanize, file_preview_path(filepath: analyzed_result.filepath, line_number: line_number, line_numbers: line_numbers.join(",")), title: 'View File', target: '_blank' %>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,524 @@
+@use '@/design/styles/' as *;
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 100%;
+  background-color: $white;
+  border-radius: 0.375rem;
+  padding: 22px 20px;
+  border-bottom: 1px solid $neutral-200;
+}
+
+.profile-tabs {
+    display: flex;
+    border-bottom: 1px solid $neutral-200;
+
+    &__item {
+        padding: 10px 16px;
+        font-weight: 600;
+        color: $neutral-500;
+        cursor: pointer;
+    }
+
+    &--active {
+        color: $electric-blue;
+        border-bottom: 3px solid $electric-blue;
+    }
+}
+
+.profile-group {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+
+    .dropdown__placeHolder {
+      padding: 5px 10px;
+    }
+
+    &__content {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid $neutral-200;
+        margin-bottom: 20px;
+    }
+
+    &__title {
+        font-size: $font-size-semi-small;
+        font-weight: $font-weight-semi-bold;
+        color: #1C2939;
+        font-size: $font-size-semi-small;
+    }
+
+    &__description {
+        color: $neutral-600;
+        margin-bottom: 1.25rem;
+        font-size: $font-size-semi-tiny;
+    }
+}
+
+.input-wrapper {
+    &__row {
+        display: flex;
+        gap: 32px;
+        
+        &:not(:last-child) {
+            margin-bottom: 20px;
+        }
+    }
+
+    &__require{
+        color: $electric-blue;
+        // margin-left: 1px;
+    }
+
+    &__label {
+        width: 280px;
+        display: flex;
+        font-weight: $font-weight-semi-bold;
+        color: $neutral-700;
+        font-size: $font-size-semi-tiny;
+
+        &--secondary {
+            font-weight: $font-weight-regular;
+            color: $neutral-600;
+        }
+
+        img {
+            margin-left: 2px;
+        }
+    }
+
+    &__field-group {
+        flex: 1;
+        max-width: 512px;
+    
+        &--split {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+      
+            @media (min-width: 768px) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    }
+
+    // &__input {
+    //     width: 100%;
+    // }
+}
+
+.custom-input-field {
+    border: 1px solid #D0D5DD;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+    border-radius: 8px;
+}
+
+.boder-btn-now {
+    border: 1px solid #D0D5DD;
+    border-radius: 8px;
+    color: $neutral-700;
+    margin-right: 12px;
+
+    &:hover {
+        background-color: $electric-blue;
+        color: white;
+    }
+}
+
+.button {
+  .arrow-wrapper {
+    display: inline-flex;
+    margin-left: 8px;
+    transition: filter 0.3s ease;
+    
+    // makes the svg white
+    filter: brightness(0) invert(1);
+  }
+  
+  &:hover .arrow-wrapper {
+    // makes the svg #0092E3
+    filter: brightness(0) saturate(100%) invert(46%) sepia(99%) saturate(1965%) hue-rotate(178deg) brightness(98%) contrast(101%);
+  }
+}
+
+
+.subscription-card {
+  margin-top: 1.25rem;
+  width: fit-content;
+  background: $white;
+  border-radius: 0.75rem;
+  border: 1px solid $neutral-200;
+
+  &__header {
+    border-bottom: 1px solid #E4E7EC;
+    
+    &-content {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      padding-left: 1rem;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+  }
+
+  &__icon-wrapper {
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05), 
+                0px -2px 0px 0px rgba(16, 24, 40, 0.05) inset, 
+                0px 0px 0px 1px rgba(16, 24, 40, 0.18) inset;
+  }
+
+  &__title {
+    color: $neutral-700;
+    font-weight: $font-weight-semi-bold;
+  }
+
+  &__price {
+    display: flex;
+    padding: 1rem 1rem 0;
+    justify-content: space-between;
+    align-items: center;
+
+    &-text {
+      display: flex;
+      align-items: center;
+      color: $neutral-600;
+    }
+
+    &-amount {
+      font-weight: $font-weight-semi-bold;
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+      color: $electric-blue;
+    }
+  }
+
+  &__badge {
+    // background-color: #ECFDF3;
+    // color: #027A48;
+    // padding: 0.25rem 0.375rem;
+    font-weight: $font-weight-medium;
+    // border-radius: 0.375rem;
+    // <Badge className='bg-[#ECFDF3] text-[#027A48] py-1 px-1.5 font-medium'>Current Plan</Badge>
+  }
+
+  &__features {
+    display: flex;
+    border-bottom: 1px solid #E4E7EC;
+    padding: 1rem;
+    gap: 20px;
+    flex-wrap: wrap;
+
+    &-column {
+      display: flex;
+      flex-direction: column;
+    
+      &:not(:last-child) {
+        border-right: 1px solid #E4E7EC;
+        padding-right: 20px;
+      }
+    
+      // remove border when columns wrap (mobile)
+      @media (max-width: 768px) {
+        &:not(:last-child) {
+          border-right: none;
+          padding-right: 0;
+        }
+      }
+    }
+
+    &-item {
+      display: flex;
+      margin-bottom: 0.5rem;
+    }
+
+    &-icon {
+      flex-shrink: 0;
+    }
+
+    &-text {
+      margin-left: 0.625rem;
+      line-height: 1.25rem;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    padding: 1rem;
+    justify-content: space-between;
+  }
+
+  &__button {
+    &--secondary {
+      background-color: $white;
+      color: $electric-blue;
+      background-color: #F9F9F9;
+    }
+  }
+}
+
+
+
+
+
+
+/* hide the default radio button */
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 6px solid #2196F3; /* blue border */
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  background-color: white;
+}
+
+/* the white dot when checked */
+// input[type="radio"]:checked {
+//   background-color: white;
+//   border: 2px solid #2196F3;
+// }
+
+input[type="radio"]:checked::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: white;
+  // box-shadow: 0 0 0 2px #2196F3 inset; /* this creates the blue circle effect */
+}
+
+
+
+
+
+
+.billing-table {
+  width: 100%;
+  background: $white;
+  border: 1px solid #EAECF0;
+  border-radius: 12px;
+  overflow: hidden;
+
+  &__header {
+    display: grid;
+    grid-template-columns: 40px 2fr 1fr 1fr 1fr 40px;
+    gap: 12px;
+    padding: 12px 24px;
+    background: #F9FAFB;
+    border-bottom: 1px solid #EAECF0;
+    align-items: center;
+  }
+
+  &__header-cell {
+    color: #667085;
+    font-size: 12px;
+    font-weight: $font-weight-medium;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &--checkbox {
+      display: flex;
+      justify-content: center;
+    }
+
+    &--invoice {
+      cursor: pointer;
+      
+      svg {
+        color: #667085;
+      }
+    }
+
+    &--download {
+      // empty for alignment
+    }
+  }
+
+  &__body {
+    // rows container
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 40px 2fr 1fr 1fr 1fr 40px;
+    gap: 12px;
+    padding: 16px 24px;
+    border-bottom: 1px solid #EAECF0;
+    align-items: center;
+    transition: background-color 0.2s;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background: #F9FAFB;
+    }
+  }
+
+  &__cell {
+    color: #344054;
+    font-size: 14px;
+    font-weight: $font-weight-regular;
+
+    &--checkbox {
+      display: flex;
+      justify-content: center;
+    }
+
+    &--invoice {
+      font-weight: $font-weight-medium;
+    }
+
+    &--download {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: $font-weight-medium;
+    width: fit-content;
+
+    &-icon {
+      width: 12px;
+      height: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &--paid {
+      background: rgba($electric-blue, 0.04);
+      color: $electric-blue;
+      border: 1px solid $electric-blue;
+
+      .button--check {
+        // icon will inherit color from parent
+      }
+    }
+
+    &--pending {
+      background: #FFFAEB;
+      color: #B54708;
+      border: 1px solid #FEDF89;
+    }
+
+    &--failed {
+      background: #FEF3F2;
+      color: #B42318;
+      border: 1px solid #FECDCA;
+    }
+  }
+
+  &__download-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: #F2F4F7;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
+// checkbox styling
+// input[type="checkbox"] {
+//   width: 16px;
+//   height: 16px;
+//   border: 1px solid #D0D5DD;
+//   border-radius: 4px;
+//   cursor: pointer;
+//   appearance: none;
+//   -webkit-appearance: none;
+//   background: $white;
+//   position: relative;
+//   transition: all 0.2s;
+
+//   &:hover {
+//     border-color: #98A2B3;
+//   }
+
+//   &:checked {
+//     background: $electric-blue;
+//     border-color: $electric-blue;
+
+//     &::after {
+//       content: '';
+//       position: absolute;
+//       left: 4px;
+//       top: 1px;
+//       width: 4px;
+//       height: 8px;
+//       border: solid white;
+//       border-width: 0 2px 2px 0;
+//       transform: rotate(45deg);
+//     }
+//   }
+// }
+
+// responsive design
+@media (max-width: 768px) {
+  .billing-table {
+    &__header,
+    &__row {
+      grid-template-columns: 40px 1fr 80px 40px;
+      
+      // hide amount and date columns on mobile
+      .billing-table__header-cell:nth-child(3),
+      .billing-table__header-cell:nth-child(4),
+      .billing-table__cell:nth-child(3),
+      .billing-table__cell:nth-child(4) {
+        display: none;
+      }
+    }
+  }
+}
+
+.icon-gray {
+  filter: brightness(0) saturate(100%) invert(33%) sepia(9%) saturate(1316%) hue-rotate(179deg) brightness(95%) contrast(88%);
+}
+
+
+.timezone, .country {
+  .dropdown {
+    &__optionsWrapper {
+        left: 0;
+        top: -350px;
+        min-width: 200px;
+        max-height: 300px;
+        overflow: auto;
+      }
+    }
+}

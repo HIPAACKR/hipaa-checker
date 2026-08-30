@@ -1,0 +1,72 @@
+<div class="content">
+  <div class="container">
+    <div class="mt-5">
+      <h2 class="text-center">User Uploads</h2>
+      <div class="d-flex justify-content-end">
+        <%= link_to 'Github URL', new_github_upload_path, class: 'btn btn-dark' %>
+        <span style="margin: 5px 8px 0 8px;font-weight: bold">OR</span>
+        <%= link_to 'New Upload', new_user_upload_path, class: 'btn btn-dark' %>
+      </div>
+      <table class="table table-bordered border-secondary table-striped table-hover mt-3">
+        <thead class="table-dark text-center">
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Environment</th>
+          <th>Platform</th>
+          <th>HIPAA Score</th>
+          <th class="text-center">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @user_uploads.each do |item| %>
+          <tr>
+            <td>
+              <% if item.ios? %>
+                <%= item.try(:project_name).try(:titleize) %>
+              <% else %>
+                <%= link_to item.file.filename.to_s.gsub('.apk', '').gsub('.zip', '').humanize, rails_blob_path(item.file, disposition: 'preview'), title: 'Download', class: 'fs-5' rescue nil %>
+              <% end %>
+            </td>
+            <td>
+              <%= item.upload_type %>
+            </td>
+            <td>
+              <%= item.environment %>
+            </td>
+            <td>
+              <%= item.platform %>
+            </td>
+            <td><%= sprintf('%.2f', item.hipaa_score) %>% </td>
+            <td class="d-flex justify-content-start">
+              <%= link_to 'Delete', user_upload_path(item), method: :delete, data: { confirm: "Are you sure?" }, class: 'btn btn-sm btn-danger' %>
+              &nbsp;&nbsp;
+              <% if item.platform != 'ios' %>
+                <% if !item.is_extracted? %>
+                  <%= link_to 'Extract', extract_path(item), method: :post, class: 'btn btn-sm btn-warning', onclick: '$(".loading").show();' %>
+                <% else %>
+                  <%#= link_to 'Show Extracted Files', item.extracted_files_directory, target: '_blank', class: 'btn btn-sm btn-primary' %>
+                  <%= render 'user_uploads/rule_selector_modal', user_upload: item %>
+                <% end %>
+              <% end %>
+              &nbsp;&nbsp;
+              <% if item.analyzed_results.exists? %>
+                <%= link_to 'Report', report_user_upload_path(item), class: 'btn btn-sm btn-primary' %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    $(".check-vulnerabilities").click(function (e) {
+      $(".loading").show();
+    })
+  })
+
+</script>

@@ -1,0 +1,70 @@
+
+// === Trix Editor Styling Fix ===
+trix-editor {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 12px;
+  min-height: 200px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+}
+
+trix-toolbar {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  padding: 4px;
+}
+
+.trix-content pre {
+  background-color: #f4f4f4;
+  border-left: 4px solid #999;
+  padding: 6px 10px;
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+
+.trix-content a {
+  color: #0d6efd;
+  text-decoration: underline;
+}
+
+.trix-content blockquote {
+  border-left: 4px solid #ccc;
+  margin: 1em 0;
+  padding-left: 1em;
+  color: #666;
+}
+trix-editor ol,
+.trix-content ol {
+  list-style-type: decimal;
+  padding-left: 2em;
+}
+
+trix-editor ul,
+.trix-content ul {
+  list-style-type: disc;
+  padding-left: 2em;
+}
+/* container li you set via wrapper_html: { id: 'patterns' } */
+#patterns .pattern-group {
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: #fff;
+
+  display: grid;
+  grid-template-columns: 1fr; /* single column */
+  row-gap: 8px;
+}
+
+/* each checkbox+label row */
+#patterns .pattern-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;       /* keep items neatly aligned */
+}

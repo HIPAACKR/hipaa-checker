@@ -1,0 +1,41 @@
+@use '@/design/styles/' as *;
+
+.notFound {
+  @include align(column, flex-start, center, 0, 64px);
+  padding: 0 20px;
+  margin-top: 224px;
+  margin-bottom: 144px;
+  @include device(sp) {
+    margin-top: 174px;
+    margin-bottom: 104px;
+  }
+  &__image {
+    @include device(sp) {
+      width: 208px;
+      height: 72px;
+    }
+  }
+  .heading {
+    margin-bottom: 8px;
+    @include device(sp) {
+      font-size: $font-size-medium;
+      line-height: 48px;
+    }
+  }
+  .subtitle {
+    font-weight: $font-weight-regular;
+    color: $neutral-700;
+    text-align: center;
+  }
+  &__button {
+    margin-top: 48px;
+    @include align();
+    .button[data-size='large'] {
+      .button__content {
+        @include device(sp) {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}

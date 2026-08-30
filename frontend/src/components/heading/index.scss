@@ -1,0 +1,225 @@
+@use '@/design/styles/' as *;
+
+.heading {
+  $root: &;
+
+  &[data-newline='true'] {
+    white-space: pre-line;
+  }
+  //type
+  &[data-type='hero'] {
+    font-size: $font-size-xxxl;
+    font-weight: $font-weight-bold;
+    line-height: 84px;
+    text-transform: capitalize;
+    letter-spacing: -2px;
+    @include device(sp) {
+      font-size: $font-size-large;
+      line-height: 53.2px;
+    }
+  }
+  &[data-type='h1'] {
+    font-size: $font-size-xxl;
+    font-weight: $font-weight-bold;
+    line-height: 90px;
+    @include device(sp) {
+      font-size: $font-size-large;
+      line-height: 60px;
+    }
+  }
+  &[data-type='h2'] {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    line-height: 72px;
+    @include device(sp) {
+      font-size: $font-size-medium;
+      line-height: 48px;
+    }
+  }
+  &[data-type='h3'] {
+    font-size: $font-size-large;
+    font-weight: $font-weight-bold;
+    line-height: 60.8px;
+    @include device(sp) {
+      font-size: $font-size-medium;
+      line-height: 48px;
+    }
+  }
+  &[data-type='h4'] {
+    font-size: $font-size-medium;
+    font-weight: $font-weight-bold;
+    line-height: 48px;
+    @include device(sp) {
+      font-size: $font-size-semi-medium;
+      line-height: 32px;
+    }
+  }
+  &[data-type='h5'] {
+    font-size: $font-size-semi-medium;
+    font-weight: $font-weight-semi-bold;
+    line-height: 32px;
+  }
+  &[data-type='h6'] {
+    font-size: $font-size-small;
+    font-weight: $font-weight-semi-bold;
+    line-height: 28px;
+  }
+  &[data-type='h7'] {
+    font-size: $font-size-tiny;
+    font-weight: $font-weight-semi-bold;
+    line-height: 26px;
+  }
+
+  //align
+  &[data-align='left'] {
+    text-align: left;
+  }
+  &[data-align='center'] {
+    text-align: center;
+  }
+  &[data-align='right'] {
+    text-align: right;
+  }
+
+  //color
+  &[data-color='dark'] {
+    color: $dark;
+  }
+  &[data-color='white'] {
+    color: $white;
+  }
+  &[data-color='primary-950'] {
+    color: $primary-950;
+  }
+  &[data-color='primary-900'] {
+    color: $primary-900;
+  }
+  &[data-color='primary-870'] {
+    color: $primary-870;
+  }
+  &[data-color='primary-850'] {
+    color: $primary-850;
+  }
+  &[data-color='primary-800'] {
+    color: $primary-800;
+  }
+
+  &[data-color='primary-700'] {
+    color: $primary-700;
+  }
+
+  &[data-color='primary-600'] {
+    color: $primary-600;
+  }
+
+  &[data-color='primary-500'] {
+    color: $primary-500;
+  }
+
+  &[data-color='primary-400'] {
+    color: $primary-400;
+  }
+
+  &[data-color='primary-300'] {
+    color: $primary-300;
+  }
+
+  &[data-color='primary-200'] {
+    color: $primary-200;
+  }
+
+  &[data-color='primary-100'] {
+    color: $primary-100;
+  }
+
+  &[data-color='primary-50'] {
+    color: $primary-50;
+  }
+
+  &[data-color='primary-25'] {
+    color: $primary-25;
+  }
+
+  &[data-color='neutral-950'] {
+    color: $neutral-950;
+  }
+
+  &[data-color='neutral-900'] {
+    color: $neutral-900;
+  }
+
+  &[data-color='neutral-800'] {
+    color: $neutral-800;
+  }
+
+  &[data-color='neutral-700'] {
+    color: $neutral-700;
+  }
+
+  &[data-color='neutral-600'] {
+    color: $neutral-600;
+  }
+
+  &[data-color='neutral-500'] {
+    color: $neutral-500;
+  }
+
+  &[data-color='neutral-400'] {
+    color: $neutral-400;
+  }
+
+  &[data-color='neutral-300'] {
+    color: $neutral-300;
+  }
+
+  &[data-color='neutral-200'] {
+    color: $neutral-200;
+  }
+
+  &[data-color='neutral-100'] {
+    color: $neutral-100;
+  }
+
+  &[data-color='neutral-50'] {
+    color: $neutral-50;
+  }
+
+  &[data-color='neutral-25'] {
+    color: $neutral-25;
+  }
+
+  // weight modifiers
+  &[data-weight='thin'] {
+    font-weight: $font-weight-thin;
+  }
+  &[data-weight='extra-light'] {
+    font-weight: $font-weight-extra-light;
+  }
+  &[data-weight='light'] {
+    font-weight: $font-weight-light;
+  }
+  &[data-weight='regular'] {
+    font-weight: $font-weight-regular;
+  }
+  &[data-weight='medium'] {
+    font-weight: $font-weight-medium;
+  }
+  &[data-weight='semi-bold'] {
+    font-weight: $font-weight-semi-bold;
+  }
+  &[data-weight='bold'] {
+    font-weight: $font-weight-bold;
+  }
+
+  &__extra-light {
+    font-weight: $font-weight-extra-light;
+  }
+
+  &__light {
+    font-weight: $font-weight-light;
+  }
+
+  &__medium {
+    font-weight: $font-size-medium;
+  }
+}

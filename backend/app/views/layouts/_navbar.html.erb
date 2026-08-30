@@ -1,0 +1,73 @@
+<nav class="navbar navbar-expand-lg navbar-light sticky-top stroke" id="mainNav">
+  <div class="container">
+    <%= link_to 'HipaaChecker', root_path, class: 'navbar-brand fs-1' %>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse ms-5 " id="navbarSupportedContent">
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <li class="nav-item">
+          <%= link_to 'Home', root_path, class: 'fs-5 nav-link me-3' %>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'User Uploads', user_uploads_path, class: 'fs-5  nav-link' %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "User's Guide", user_guides_path, class: 'fs-5  nav-link' %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Developer's Guide", developers_guides_path, class: 'fs-5  nav-link' %>
+        </li>
+        <% if current_user&.has_admin_access? %>
+          <li class="nav-item">
+            <%= link_to 'Admin Panel', '/admin', class: 'fs-5  nav-link' %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <!--  right dropdown-->
+    <% if user_signed_in? %>
+      <div class="navbar-nav ms-auto">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto ">
+            <li class="me-0">
+              <%= image_tag('user-avatar.png', class: 'circular-image') %>
+            </li>
+            <li class="nav-item dropdown mx-0">
+              <span class="navbar-brand dropdown-toggle " id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              </span>
+              <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+                <%= image_tag('user-avatar.png', class: 'img-fluid') %>
+                <p class="fs-5 fst-italic fw-bold m-2"><%= current_user&.email %></p>
+                <div class="dropdown-divider"></div>
+                <div class="align-middle text-center">
+                  <%= link_to 'Edit profile', edit_user_registration_path, class: 'fw-bold w-75' %>
+                  <hr>
+                  <%= link_to 'API Credentials', api_credentials_path, class: 'fw-bold w-75' %>
+                  <% if current_user.is_admin? %>
+                    <hr>
+                    <%= link_to 'Current Plan', new_subscription_path, class: 'fw-bold w-75' %>
+                  <% end %>
+                  <hr>
+                  <%= link_to "Sign out", destroy_user_session_path, method: :delete, class: 'fw-bold w-75' %>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    <% else %>
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <li class="nav-item">
+          <%= link_to "Sign in", new_user_session_path, class: 'fs-4 fw-bolder' %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Sign up", new_user_registration_path, class: 'fs-4 fw-bolder' %>
+        </li>
+      </ul>
+    <% end %>
+  </div>
+</nav>

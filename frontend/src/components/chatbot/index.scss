@@ -1,0 +1,452 @@
+.hippa-chat {
+  // Base responsive width
+  width: 100%;
+  max-width: 400px;
+  min-width: 320px;
+  
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  overflow: hidden;
+  background: #fff;
+  font-family: Arial, sans-serif;
+  
+  // Smooth width transition
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  // Tablet
+  @media (min-width: 768px) {
+    width: 400px;
+    max-width: 450px;
+  }
+  
+  // Desktop
+  @media (min-width: 1024px) {
+    width: 450px;
+    max-width: 500px;
+  }
+  
+  // Large Desktop
+  @media (min-width: 1440px) {
+    width: 500px;
+    max-width: 550px;
+  }
+  
+  // EXPANDED MODE
+  &.expanded {
+    // Tablet - expanded
+    @media (min-width: 768px) {
+      width: 85vw;
+      max-width: 700px;
+    }
+    
+    // Desktop - expanded
+    @media (min-width: 1024px) {
+      width: 75vw;
+      max-width: 850px;
+    }
+    
+    // Large Desktop - expanded
+    @media (min-width: 1440px) {
+      width: 65vw;
+      max-width: 900px;
+    }
+    
+    // Ultra-wide - expanded (cap at 1000px)
+    @media (min-width: 1920px) {
+      width: 55vw;
+      max-width: 1000px;
+    }
+  }
+  
+  // Mobile - always full-screen
+  @media (max-width: 767px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw !important;
+    height: 100vh;
+    max-width: none !important;
+    border-radius: 0;
+    z-index: 9999;
+    
+    // Hide expand button on mobile
+    .hippa-chat__expand-btn {
+      display: none;
+    }
+  }
+
+  &__header {
+    background: linear-gradient(90deg,#136aff,#0F8CE4, #995AF5);
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    &-left {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    
+    // Actions container for expand and close buttons
+    &-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-left: 12px;
+      flex-shrink: 0;
+    }
+
+    .hippa-chat__title {
+      font-size: 30px;
+      font-weight: 700;
+    }
+    .hippa-chat__subtitle {
+      font-size: 13px;
+      opacity: 0.9;
+      font-weight: 400;
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+  }
+  
+  &__expand-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    
+    // Icon
+    .expand-icon {
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    
+    // Text label
+    .expand-text {
+      display: none; // Hidden on small chat widths
+      
+      @media (min-width: 1024px) {
+        display: inline; // Show on larger screens
+      }
+    }
+    
+    // Hover state
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+    
+    // Active state
+    &:active {
+      transform: translateY(0);
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    // Focus state (accessibility)
+    &:focus {
+      outline: 2px solid rgba(255, 255, 255, 0.5);
+      outline-offset: 2px;
+    }
+    
+    // Hide on mobile
+    @media (max-width: 767px) {
+      display: none;
+    }
+  }
+  
+  &__close-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    img {
+      width: 30px;
+      height: 30px;
+    }
+
+    &:hover {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+    
+    &:focus {
+      outline: 2px solid rgba(255, 255, 255, 0.5);
+      outline-offset: 2px;
+    }
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 70vh;
+  }
+
+  &__body {
+    padding: 20px;
+    max-height: 420px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    &::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; 
+  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+  
+
+  &__message {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+
+    &.assistant {
+      align-self: flex-start;
+      align-items: flex-start;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      .hippa-chat__message-content {
+        align-items: flex-start; 
+      }
+
+      .hippa-chat__bubble {
+        background: rgba(5, 144, 228, 0.04);
+        color: #0D082C;
+        margin-left: 22px;
+        border-radius: 10px;
+        padding: 10px 15px; 
+      }
+      .hippa-chat__time {
+      text-align: right;
+      align-self: flex-end;
+     
+    }
+    }
+    &.user {
+      align-self: flex-end;
+      align-items: flex-end;
+      .hippa-chat__message-content {
+        align-items: flex-end; 
+      }
+
+      .hippa-chat__bubble {
+        background: linear-gradient(90deg, #995AF5, #0F8CE4, #13C6FF);
+        border-top-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-top-right-radius: 0; 
+        padding: 10px 15px; 
+        color: #fff;
+      }
+      .hippa-chat__time {
+      text-align: left;
+      align-self: flex-start; 
+      margin-right: 4px;
+    }
+
+    }
+  }
+
+  &__bubble {
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    max-width: 100%;
+    width: fit-content;
+    word-wrap: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+    
+    // In expanded mode, allow wider content
+    .hippa-chat.expanded & {
+      max-width: 85%;
+      
+      @media (min-width: 1024px) {
+        max-width: 90%;
+      }
+    }
+    
+    // Optimize for code blocks and tables
+    pre, table {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    
+    // Better code wrapping in expanded mode
+    .hippa-chat.expanded & {
+      pre {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+    }
+  }
+
+  &__time {
+    font-size: 14px;
+    color: #999;
+    margin-top: 3px;
+    
+  }
+
+  &__input-area {
+    display: flex;
+    border-top: 1px solid #e5e7eb;
+    padding: 10px 20px;
+    position: sticky;
+    bottom: 0;
+    
+    
+
+    input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 6px 8px;
+      font-size: 13px;
+      min-width: 0;
+    }
+
+    button {
+    background: none;
+    border: none;   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+        
+    }
+
+
+}
+.hippa-chat__message-content {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.hippa-chat__sender-wrapper {
+ display: flex;
+ flex-direction: row;  
+ align-items: center; 
+ gap: 2px;
+ margin-bottom: 0px; 
+ }
+ .assistant-name {
+  font-size: 16px;
+  color: #0D082C;
+  font-weight: 600;
+  margin-left: 6px;
+}
+
+.send-button,
+.send-img-button {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 6px; 
+}
+
+.send-icon,
+.send-img-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+
+
+}
+.hippa-chat {
+  &__typing {
+    display: flex;
+    gap: 4px;
+    padding: 12px 16px;
+    
+    span {
+      width: 8px;
+      height: 8px;
+      background: #999;
+      border-radius: 50%;
+      animation: typing 1.4s infinite;
+      
+      &:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      
+      &:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+    }
+  }
+  
+  &__suggestions {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    flex-wrap: wrap;
+    border-top: 1px solid #eee;
+  }
+  
+  &__suggestion-btn {
+    padding: 8px 12px;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    
+    &:hover {
+      background: #e0e0e0;
+      border-color: #ccc;
+    }
+  }
+  
+  &__input-area {
+    input:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
+}
+

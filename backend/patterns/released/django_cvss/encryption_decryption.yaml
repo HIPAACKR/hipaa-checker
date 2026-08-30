@@ -1,0 +1,136 @@
+  - id: optimal_data_encryption
+    description: >-
+      Optimal data encryption using strong cryptographic methods.
+    pattern:
+      - AES\.new\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts:
+          - subrule_id: strong_data_encryption
+            factor: "negligible"
+          - subrule_id: moderate_cryptographic_security
+            factor: "negligible"
+    manual_check: false
+    severity: warning
+
+  - id: strong_data_encryption
+    description: >-
+      Strong encryption methods with some caveats regarding implementation.
+    pattern:
+      - Fernet\(
+      - AES\.MODE_CBC
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: optimal_data_encryption
+            factor: "minor"
+          - subrule_id: moderate_cryptographic_security
+            factor: "negligible"
+    manual_check: false
+    severity: warning
+
+  - id: moderate_data_encryption
+    description: >-
+      Moderate encryption methods that may lack authentication or proper key handling.
+    pattern:
+      - \.encrypt\(
+      - encrypt\(
+      - pad\(
+      - encode\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts:
+          - subrule_id: optimal_data_encryption
+            factor: "moderate"
+          - subrule_id: strong_data_encryption
+            factor: "minor"
+    manual_check: false
+    severity: warning
+
+
+
+  - id: data_dycription
+    description: >-
+      Data decryption is used properly using the Cryptography
+    pattern:
+      - \.decrypt\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "negligible"
+        relative_impacts: []
+    manual_check: false
+    severity: warning
+
+  - id: data_hashing
+    description: >-
+      Proper hashing algorithm is implemented.
+    pattern:
+      - Hashlib
+      - encode\(
+      - PASSWORD_HASHERS\s*=\s*\[\s*("django\.contrib\.auth\.hashers\.\w+Hasher"\s*,?\s*)+\]
+      - Salt
+      - PBKDF2WrappedMD5PasswordHasher(
+      - \b(argon2|bcrypt|scrypt)\b
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "minor"
+        relative_impacts: []
+    manual_check: false
+    severity: warning
+
+
+
+  - id: moderate_hashing_security
+    description: >-
+      While still secure, these algorithms like SHA-1 should be avoided due to vulnerabilities to collision attacks.
+    type: Regex
+    pattern:
+      - \b(pbkdf2_sha1)\b
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts:
+          - subrule_id: optimal_hashing_security
+            factor: "moderate"
+          - subrule_id: minor_hashing_security
+            factor: "negligible"
+
+
+    manual_check: false
+  - id: minor_hashing_security
+    description: These algorithms like MD5 are deprecated for general use and should not be used in new applications. If legacy support is necessary, mitigation techniques should be applied.
+    pattern:
+      - md5_hash
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "minor"
+        relative_impacts:
+          - subrule_id: optimal_hashing_security
+            factor: "strong"
+          - subrule_id: moderate_hashing_security
+            factor: "minor"
+
+
+    manual_check: true
+  - id: optimal_hashing_security
+    description: >-
+      These patterns should be prioritized in Django apps that need to protect sensitive data, such as user credentials or cryptographic keys. Algorithms like SHA-256 or SHA-512 are considered secure for modern applications.
+    pattern:
+      - \b(pbkdf2_sha256)\b
+      - \b(bcrypt_sha256)\b
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts:
+          - subrule_id: data_hashing
+            factor: "negligible"
+          - subrule_id: moderate_hashing_security
+            factor: "minor"
+          - subrule_id: minor_hashing_security
+            factor: "negligible"
+
+
+    manual_check: false

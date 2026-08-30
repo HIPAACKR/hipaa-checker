@@ -1,0 +1,43 @@
+<p class="summary">
+  <strong>Total Registered Users:</strong> <span><%= User.count %></span>,
+  <strong>Total Uploaded APK(s):</strong> <span><%= UserUpload.count %></span>,
+  <strong>Total Organizations:</strong> <span><%= Organization.count %></span>
+</p>
+
+<table class="index_table index">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Email</th>
+      <th>Registered at</th>
+      <th>Organization</th>
+      <th>Uploaded APK</th>
+      <th>Sign In Count</th>
+      <th>Last Sign In</th>
+      <th>Last Sign In IP</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.id %></td>
+      <td><%= link_to user.email, admin_user_path(user) %></td>
+      <td><%= user.created_at %></td>
+      <td><%= user.organization&.name %></td>
+      <td><%= user.user_uploads.count %></td>
+      <td><%= user.sign_in_count %></td>
+      <td><%= user.last_sign_in_at %></td>
+      <td><%= user.last_sign_in_ip %></td>
+    </tr>
+  <% end  %>
+  </tbody>
+</table>
+
+<style>
+  p.summary strong{
+    font-size: 18px;
+  }
+  p.summary span{
+    font-size: 20px;
+  }
+</style>

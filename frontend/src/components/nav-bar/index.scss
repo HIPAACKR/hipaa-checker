@@ -1,0 +1,109 @@
+@use '@/design/styles/' as *;
+
+.navBar {
+  $root: &;
+  position: relative;
+  height: 100%;
+  min-height: fit-content;
+  background-color: $neutral-900;
+  @include device(pc) {
+    display: none;
+  }
+  @include device(sp) {
+    &__menu-items {
+      position: relative;
+      z-index: 2;
+      padding: 28px 20px;
+      background-color: $neutral-900;
+      @include align($direction: column, $position: flex-start, $start: flex-start, $rowGap: 12px);
+      & > li {
+        width: 100%;
+        padding: 8px 0;
+      }
+    }
+  }
+
+  &__menu {
+    &__name {
+      user-select: none;
+      &:hover {
+        color: $primary-500;
+        @include device(sp) {
+          color: unset;
+        }
+      }
+      &--active {
+        color: $primary-500;
+      }
+    }
+
+    &__get-started-button {
+      position: absolute;
+      right: 20px;
+      bottom: 24px;
+      left: 20px;
+      display: none;
+      @include device(sp) {
+        display: block;
+      }
+    }
+    &__sub-item > ul {
+      width: 100%;
+      padding: 21px 24px 0px 24px;
+      font-size: $font-size-semi-tiny;
+      font-weight: $font-weight-semi-bold;
+      line-height: 20px;
+      color: $neutral-300;
+      text-transform: uppercase;
+      @include align($direction: column, $start: flex-start, $rowGap: 12px);
+      & > li {
+        width: 100%;
+        padding: 8px 0;
+        &:hover {
+          color: $primary-500;
+          @include device(sp) {
+            color: unset;
+          }
+        }
+        & > a {
+          display: block;
+        }
+      }
+      &--active {
+        color: $primary-500;
+      }
+    }
+    &__items {
+      @include align($colGap: 33px);
+    }
+    &__item {
+      font-weight: $font-weight-medium;
+      line-height: 16px;
+      color: $neutral-300;
+      text-transform: uppercase;
+    }
+
+    &__arrow {
+      @include align($colGap: 8px, $position: space-between);
+      cursor: pointer;
+    }
+    &__arrow-icon {
+      position: relative;
+      width: 16px;
+      height: 16px;
+    }
+
+    &__sub-item {
+      display: none;
+      @include device(sp) {
+        display: block;
+        height: 0;
+        overflow: hidden;
+        transition: height 0.3s ease-out;
+      }
+      #{$root}__menu__item--active {
+        color: $primary-500;
+      }
+    }
+  }
+}

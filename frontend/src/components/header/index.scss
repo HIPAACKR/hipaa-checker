@@ -1,0 +1,70 @@
+@use '@/design/styles/' as *;
+
+.header {
+  $root: &;
+
+  position: fixed;
+  z-index: 50;
+  width: 100%;
+  height: 70px;
+
+  &-active {
+    height: 100%;
+  }
+  &__wrapper {
+    background-color: $neutral-900;
+  }
+
+  &__container {
+    max-width: $width-main-container;
+    padding: 14px 0px;
+    margin: 0 auto;
+    @include align($position: space-between);
+
+    @include device(sp) {
+      padding: 11px 20px;
+      border-bottom: 1px solid $neutral-800;
+    }
+  }
+  &__logo {
+    position: relative;
+    width: 158px;
+    height: 28px;
+    cursor: pointer;
+    @include device(sp) {
+      width: 158px;
+      height: 28px;
+      margin-left: -11px;
+    }
+  }
+
+  &__menu {
+    display: none;
+    @include device(sp) {
+      display: block;
+      height: 0;
+      overflow: hidden;
+      transition: height 0.3s ease-out;
+    }
+  }
+
+  &__toggle-bar {
+    position: relative;
+    display: none;
+    width: 30px;
+    height: 19px;
+    margin: 14px 8px;
+    cursor: pointer;
+    @include device(sp) {
+      display: block;
+      margin: 14px 2px;
+    }
+  }
+
+  &__button-group {
+    display: block;
+    @include device(sp) {
+      display: none;
+    }
+  }
+}

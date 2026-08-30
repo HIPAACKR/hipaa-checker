@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Congratulations! You're Invited by <%= @resource.organization.name %></h1>
+<p>Hello <%= @resource.email %>,</p>
+<p>You have been invited to join <strong>HIPAA Checker</strong>! </p>
+<p>HIPAA Checker helps to ensure your applications are HIPAA-compliant by providing automated and reliable compliance checks</p>
+<p>Please click the link below to accept the invitation:</p>
+<p>
+  <a href="https://hipaachecker.health/sign-up?invitation_token=<%= @token %>&organization_name=<%= @resource&.organization&.name %>">
+    Accept Invitation
+  </a>
+</p>
+<p>If you did not expect this invitation, please ignore this email.</p>
+<p>Thank you,</p>
+<p>HIPAA Checker Team</p>
+</body>
+</html>

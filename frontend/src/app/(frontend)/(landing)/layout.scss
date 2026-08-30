@@ -1,0 +1,7 @@
+@use '@/design/styles/' as *;
+
+.downloadsLayout {
+  &-section {
+    background-color: $primary-970;
+  }
+}

@@ -1,0 +1,12 @@
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), method: :post) do |f| %>
+  <div class="container col-md-4">
+    <div class="field">
+      <b><%= f.label 'OTP' %></b>
+      <%= f.text_field :otp_attempt, autofocus: true, class: 'form-control' %>
+    </div>
+
+    <div class="actions" style="margin: 5px 0px">
+      <%= f.submit "Log in", class: 'btn btn-primary form-control' %>
+    </div>
+  </div>
+<% end %>

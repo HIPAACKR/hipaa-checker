@@ -1,0 +1,15 @@
+@use '@/design/styles/' as *;
+
+.productsCardWrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding-bottom: 80px;
+
+  @include device(sp){
+    grid-template-columns: 1fr;
+    padding-bottom: 30px;
+  }
+
+
+}

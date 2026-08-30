@@ -1,0 +1,45 @@
+<h2 style="width: 100%;text-align: center;margin: 25px;">Content For: <%= @filename %></h2>
+
+<textarea class="java_code" style="background: #DEDEDE;padding: 25px"><%= @content %></textarea>
+
+<script>
+  $(function () {
+
+      var editor = CodeMirror.fromTextArea($("textarea.java_code")[0], {
+        mode: "java",
+        styleActiveLine: true,
+        lineNumbers: true,
+        lineWrapping: true,
+        // readOnly: 'nocursor'
+      });
+
+    <% if params[:line_number].present? %>
+    setTimeout(function (){
+      var i = <%= params[:line_number].to_i || 0 %>
+      editor.setCursor(i);
+      editor.markText({line: i-1, ch: 0}, {line: i, ch: 0} ,{className: "styled-background"});
+      }, 500)
+    <% end %>
+
+    <% if params[:line_numbers].present? %>
+    setTimeout(function (){
+      var a = [<%= params[:line_numbers] %>]
+      for(i=0; i < a.length; i++) {
+        editor.markText({line: a[i]-1, ch: 0}, {line: a[i], ch: 0} ,{className: "styled-background"});
+      }
+    }, 500)
+    <% end %>
+
+  })
+</script>
+
+<style>
+  .CodeMirror {
+    border: 1px solid #eee;
+    margin: 20px;
+    height: auto;
+  }
+  .styled-background {
+    background-color: #FFFF00;
+  }
+</style>

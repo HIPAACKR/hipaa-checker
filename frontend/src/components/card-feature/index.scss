@@ -1,0 +1,82 @@
+@use '@/design/styles/' as *;
+
+.cardFeature {
+  $root: &;
+
+  @include align(column, flex-start, flex-start, 0, 24px);
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  background-color: $white;
+
+  &__image {
+    width: fit-content;
+    padding: 22px 20px;
+    background-color: $primary-25;
+    border-radius: 12px;
+  }
+  &__textWrapper {
+    @include align(column, flex-start, flex-start, 0, 8px);
+    .heading[data-type='h6'] {
+      font-weight: $font-weight-bold;
+    }
+    &__description {
+      font-size: $font-size-semi-small;
+      line-height: 28px;
+      color: $neutral-500;
+      @include device(sp) {
+        font-size: $font-size-semi-tiny;
+      }
+    }
+  }
+  &--landingPage {
+    max-width: 405px;
+    max-height: 374px;
+    padding: 40px 32px;
+    cursor: pointer;
+    background-color: $neutral-50;
+    border-radius: 12px;
+
+    @include device(sp) {
+      max-height: unset;
+      padding: 40px 24px;
+    }
+    .heading {
+      &[data-type='h5'] {
+        @include device(sp) {
+          font-size: $font-size-small;
+          font-weight: $font-weight-bold;
+          line-height: 30px;
+          letter-spacing: -1px;
+        }
+      }
+    }
+    #{$root} {
+      &__image {
+        background-color: $white;
+      }
+      &__textWrapper__description {
+        letter-spacing: -0.18px;
+        white-space: pre-line;
+        @include device(sp) {
+          letter-spacing: -0.2px;
+        }
+      }
+    }
+    &:hover {
+      background-color: $primary-600;
+      .heading[data-color='neutral-800'] {
+        color: $white;
+      }
+      #{$root} {
+        &__textWrapper__description {
+          color: $primary-100;
+        }
+      }
+    }
+  }
+
+  &__buttonWrapper {
+    margin-top: auto;
+  }
+}

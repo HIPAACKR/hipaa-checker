@@ -1,0 +1,160 @@
+@use '@/design/styles/' as *;
+
+.productDetails {
+  $root: &;
+  &__container-background {
+    padding-top: 80px;
+    // padding-bottom: 80px;
+    background-color: $neutral-25;
+    @include device(sp) {
+      padding-top: 40px;
+      padding-bottom: 11px;
+    }
+  }
+
+  &__heading {
+    @include device(sp) {
+      padding: 0px 19px;
+    }
+  }
+  &__content {
+    width: 100%;
+    @include align($colGap: 100px, $position: space-between);
+    @include device(sp) {
+      @include align(
+        $colGap: 100px,
+        $direction: column,
+        $start: flex-start,
+        $position: space-between
+      );
+      &--sp-reverse {
+        flex-flow: column-reverse;
+      }
+    }
+  }
+  &__container {
+    width: 996px;
+    margin: 30px auto;
+    @include device(sp) {
+      width: 100%;
+      padding: 0px 20px;
+      margin: 40px auto;
+      @include align($direction: column, $rowGap: 30px);
+      &__portal-image {
+        width: 297px;
+        height: 180px;
+        margin: 32px auto auto 12px;
+      }
+      &__plugin-image {
+        width: 295px;
+        height: 180px;
+        margin-top: 32px;
+      }
+      &__scan-image {
+        width: 403px;
+        height: 260px;
+        margin-top: 32px;
+        @include device(sp) {
+          width: 320px;
+          height: 206px;
+        }
+      }
+      &__certified-image {
+        width: 466px;
+        height: 265px;
+        margin: 32px auto auto -70px;
+        @include device(sp) {
+          width: 320px;
+          height: 188px;
+          margin-left: unset;
+        }
+      }
+
+      &__checker-image {
+        width: 240px;
+        height: 157px;
+        margin: 32px auto auto 0px;
+        margin-top: 32px;
+        @include device(sp) {
+          margin-left: 20px;
+        }
+      }
+    }
+    @include align($direction: column, $rowGap: 80px);
+    &__title {
+      margin-bottom: 16px;
+      font-size: $font-size-semi-medium;
+      font-weight: 700;
+      line-height: 32px;
+    }
+  }
+
+  &__check-feature {
+    background-color: $white;
+    .text[data-color='neutral-700'] {
+      white-space: pre-wrap;
+    }
+
+    &__heading {
+      margin-top: 72px;
+      @include device(sp) {
+        padding: 0px 16px;
+        margin-top: 40px;
+      }
+    }
+    &__container {
+      @include align($colGap: 32px);
+      width: 1233px;
+      margin: 30px auto;
+      @include device(sp) {
+        width: 100%;
+        padding: 0px 20px;
+        @include align(
+          $rowGap: 24px,
+          $direction: column,
+          $position: flex-start,
+          $start: flex-start
+        );
+      }
+    }
+    &__details {
+      @include align($rowGap: 24px, $direction: column, $position: flex-start, $start: flex-start);
+      &--mt {
+        margin-top: -26px;
+      }
+      @include device(sp) {
+        margin-top: 0px;
+      }
+    }
+  }
+  &__check-content {
+    @include align($colGap: 16px, $position: flex-start, $start: flex-start);
+  }
+
+  &__youtube {
+    &__heading {
+      margin-top: 72px;
+      margin-bottom: 64px;
+      @include device(sp) {
+        padding: 0px 16px;
+        margin-top: 40px;
+      }
+    }
+    &__player {
+      display: block;
+      margin: 0px auto;
+      margin-bottom: 72px;
+      @include device(sp) {
+        display: none;
+      }
+    }
+    &__player-sp {
+      display: none;
+      margin: 0px auto;
+      margin-bottom: 72px;
+      @include device(sp) {
+        display: block;
+      }
+    }
+  }
+}

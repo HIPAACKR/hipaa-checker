@@ -1,0 +1,16 @@
+@use '@/design/styles/' as *;
+
+.noData {
+  @include align($rowGap: 16px, $direction: column);
+  flex-grow: 1;
+  align-self: stretch;
+  padding: 24px 0px;
+  background: radial-gradient(50% 50% at 50% 50%, $white 1.1%, $primary-25 100%);
+  border-radius: 14px;
+  .text[data-size='fs-20'] {
+    line-height: 30px;
+  }
+  &__image {
+    margin-top: 16px;
+  }
+}

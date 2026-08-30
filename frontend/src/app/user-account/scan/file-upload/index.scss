@@ -1,0 +1,178 @@
+@use '@/design/styles/' as *;
+
+.file-upload {
+  &__dialog-content {
+    @include align(column, flex-start, flex-start, 0, 16px);
+    width: 100%;
+    padding: 16px 8px;
+
+    .progressBar {
+      width: 100%;
+    }
+  }
+  &__body {
+    padding: 24px;
+    margin-top: 16px;
+    background-color: $white;
+    border-radius: 8px;
+    @include device(sp) {
+      padding: 24px 16px 40px 16px;
+    }
+  }
+  &__header {
+    margin-bottom: 40px;
+    @include device(sp) {
+      margin-bottom: 32px;
+      .heading {
+        font-size: $font-size-semi-medium;
+        font-weight: $font-weight-bold;
+        line-height: 32px;
+        text-align: center;
+      }
+    }
+  }
+  &__content {
+    @include align(column, flex-start, flex-start, 0, 24px);
+  }
+  &__wrapper {
+    width: 620px;
+    @include align(row, flex-start, flex-start, 12px);
+    & > .text {
+      width: 120px;
+      min-width: 120px;
+    }
+    @include device(sp) {
+      width: 100%;
+      @include align(column, flex-start, flex-start, 0, 12px);
+    }
+  }
+  &__platformWrapper {
+    @include align(row, flex-start, flex-start, 16px, 12px);
+    flex-wrap: wrap;
+    @include device(sp) {
+      gap: 8px;
+    }
+  }
+  &__platform {
+    @include align(column, center, center, 0, 8px);
+    width: 110px;
+    padding: 16px 0;
+    cursor: pointer;
+    background-color: $white;
+    border: 1px solid $neutral-200;
+    border-radius: 12px;
+    &:hover {
+      background-color: $neutral-50;
+      border-color: $neutral-100;
+    }
+    @include device(sp) {
+      width: 147px;
+      height: 42px;
+      padding: 8px;
+      border-radius: 6px;
+      @include align(row, flex-start, center, 8px);
+    }
+    &__iconWrapper {
+      height: 32px;
+      @include device(sp) {
+        width: 39px;
+        height: unset;
+        @include align();
+      }
+    }
+    &__icon {
+      @include device(sp) {
+        width: auto;
+        height: 24px;
+        &-express {
+          width: 21px;
+          height: auto;
+        }
+        &-php,
+        &-rails {
+          width: 39px;
+          height: auto;
+        }
+      }
+    }
+    &-selected {
+      border-color: $primary-400;
+      &:hover {
+        background-color: $white;
+        border-color: $primary-400;
+      }
+    }
+  }
+  &__fileWrapper {
+    @include align(column, flex-start, flex-start, 0, 20px);
+    width: 620px;
+    @include device(sp) {
+      width: 100%;
+    }
+  }
+  &__uploadingWrapper {
+    @include align(column, flex-start, flex-start, 0, 10px);
+  }
+  &__selectedFileWrapper {
+    @include align(row, flex-start, flex-start, 16px);
+  }
+  &__selectedFile {
+    @include align(row, flex-start, center, 16px);
+    width: 436px;
+    padding: 10px;
+    word-break: break-all;
+    background-color: $neutral-25;
+    border: 1px solid $neutral-100;
+    border-radius: 9px;
+    @include device(sp) {
+      width: 251px;
+    }
+  }
+  &__delete-icon {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    cursor: pointer;
+    background-color: $wisp-pink;
+    border-radius: 7px;
+  }
+  &__progressWrapper {
+    @include align(row, center, center, 12px);
+  }
+  &__progress {
+    position: relative;
+    width: 396px;
+    height: 6px;
+    background-color: $neutral-100;
+    border-radius: 31px;
+    @include device(sp) {
+      width: 211px;
+    }
+    &-increment {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 6px;
+      background-color: $primary-500;
+      border-radius: 31px;
+    }
+  }
+  &__upload-progress {
+    width: 620px;
+    @include align(column, flex-start, flex-start, 0, 12px);
+    margin-top: 12px;
+    @include device(sp) {
+      width: 100%;
+    }
+  }
+
+  &__button {
+    width: 620px;
+    margin-top: 56px;
+    text-align: right;
+    @include device(sp) {
+      width: 100%;
+      margin-top: 32px;
+    }
+  }
+}

@@ -1,0 +1,539 @@
+@use '@/design/styles/' as *;
+
+:root {
+  --risk--red: #{$radical-red};
+  --risk--cornell-red: #{$cornell-red};
+  --risk--orange: #{$color-orange};
+  --risk--green: #{$color-green};
+  --risk--gray: #{$neutral-400};
+}
+
+.analysisReport {
+  $root: &;
+
+  @include device(sp) {
+    margin-bottom: 32px;
+  }
+  &__body-top {
+    padding: 24px;
+    margin-top: 16px;
+    background-color: $white;
+    border-radius: 8px;
+    @include device(sp) {
+      padding: 16px;
+    }
+  }
+  &__applicationWrapper {
+    @include align(row, space-between, flex-start, 16px);
+    padding: 8px 16px;
+    margin-bottom: 32px;
+    .button {
+      min-width: fit-content;
+    }
+    @include device(sp) {
+      @include align(column, flex-start, flex-start, 0, 16px);
+      padding: 8px 0;
+      .button {
+        align-self: flex-end;
+      }
+    }
+  }
+  &__application {
+    @include align($direction: column, $start: flex-start);
+    .skeleton-row {
+      width: 50px;
+    }
+    .text {
+      min-width: fit-content;
+    }
+  }
+  &__loader {
+    .e-loader-container {
+      margin: 50px 0px;
+    }
+  }
+  &__name {
+    display: -webkit-box;
+    width: 100%;
+    margin-bottom: 6px;
+    overflow: hidden;
+    font-feature-settings: 'palt';
+    font-kerning: auto;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    .skeleton-row {
+      width: 100%;
+    }
+    @include device(sp) {
+      display: block;
+      margin-bottom: 16px;
+      overflow: unset;
+      .text[data-size='fs-14'] {
+        line-height: 20px;
+      }
+    }
+  }
+  &__details {
+    @include align($colGap: 12px);
+    @include device(sp) {
+      column-gap: 8px;
+    }
+    &__data {
+      &:last-child {
+        .text:first-child::after {
+          content: ' of scan:';
+          @include device(sp) {
+            content: ':';
+          }
+        }
+      }
+      @include align($colGap: 4px);
+    }
+  }
+  &__cardWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    @include device(sp) {
+      grid-template-rows: auto;
+      grid-template-columns: 1fr;
+    }
+  }
+  &__card {
+    min-width: 300px;
+    background-color: $white;
+    border: 1px solid $neutral-200;
+    border-radius: 8px;
+  }
+
+  &__scoreHead {
+    @include align(row, flex-start, center, 16px);
+    width: 100%;
+    font-size: $font-size-small;
+    font-weight: $font-weight-semi-bold;
+
+    &--bg-gray {
+      background-color: #f2f4f7;
+      padding: 12px 20px;
+      border-radius: 8px 8px 0 0;
+    }
+
+    &--margin {
+      margin: 24px 24px 0 24px;
+    }
+
+    @include device(sp) {
+      .icon {
+        display: none;
+      }
+    }
+  }
+  &--pc-justify-center {
+    @include device(pc) {
+      justify-content: center;
+    }
+  }
+
+  &__title {
+    font-size: $font-size-semi-small;
+    font-weight: $font-weight-medium;
+    line-height: 28px;
+    color: $neutral-900;
+  }
+
+  &__scannedHead {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    @include device(sp) {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__scoreContent {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0 24px;
+    @include device(sp) {
+      gap: 0;
+    }
+  }
+
+  &__scoreItems {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-self: center;
+    justify-content: center;
+    @include device(sp) {
+      margin-left: -30px;
+    }
+  }
+
+  &__scoreItem {
+    position: relative;
+    display: flex;
+    font-size: $font-size-semi-tiny;
+    font-weight: $font-weight-medium;
+    line-height: 16px;
+    color: $neutral-500;
+  }
+
+  &__scoreItem:before {
+    position: absolute;
+    top: 50%;
+    left: -22px;
+    display: block;
+    width: 12px;
+    height: 12px;
+    content: '';
+    background-color: $neutral-400;
+    border-radius: 3px;
+    transform: translateY(-50%);
+  }
+  &__graph {
+    height: fit-content;
+    @include align();
+
+    &:first-child {
+      padding: 40px 0 60px 0;
+      @include device(sp) {
+        transform: translate(-15%);
+      }
+    }
+  }
+  &__tabWrapper {
+    @include align($direction: row, $colGap: 8px);
+    width: fit-content;
+    padding: 4px;
+    font-size: $font-size-semi-tiny;
+    font-weight: $font-weight-medium;
+    line-height: 20px;
+    color: $neutral-500;
+    letter-spacing: -0.2px;
+    cursor: pointer;
+    background-color: $neutral-100;
+    border: 1px solid $neutral-200;
+    border-radius: 8px;
+    &--defaultTab {
+      padding: 8px 12px;
+      text-align: center;
+      border-radius: 6px;
+      transition: all 0.5s ease;
+      @include device(sp) {
+        width: 147px;
+      }
+    }
+    &--active {
+      color: $neutral-800;
+      background-color: $white;
+    }
+  }
+  &__selectWrapper {
+    @include align(row, space-between, center, 12px);
+    margin: 24px 0;
+    @include device(sp) {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .dropdown {
+      justify-self: flex-end;
+      width: 168px;
+      background-color: $neutral-100;
+      border-radius: 8px;
+      &__placeHolder {
+        column-gap: 8px;
+        height: 34px;
+        padding: 7px 8px 7px 12px;
+        border: 1px solid transparent;
+        &--focus {
+          border: 1px solid $primary-500;
+        }
+        .text::before {
+          margin-right: 8px;
+          font-weight: $font-weight-semi-bold;
+          line-height: 20px;
+          content: 'Status:';
+        }
+        img {
+          width: 12px;
+          height: 5px;
+        }
+      }
+      &__optionsWrapper {
+        top: 30px;
+      }
+    }
+  }
+  &__body-bottom {
+    padding: 24px;
+    margin-top: 24px;
+    background-color: $white;
+    border-radius: 8px;
+    @include device(sp) {
+      padding: 16px 16px 24px 16px;
+    }
+
+    //Summarize Report
+    #{$root}__summarizedTableWrapper {
+      #{$root}__specificTable {
+        width: 100%;
+        margin-bottom: 24px;
+        overflow-x: auto;
+      }
+      width: 100%;
+      overflow-x: auto;
+      table {
+        width: 100%;
+        border: 1px solid $neutral-200;
+        border-radius: 8px;
+        @include device(sp) {
+          width: 100%;
+        }
+        .skeleton-row {
+          height: 20px;
+        }
+      }
+      //thead
+      thead tr {
+        font-size: $font-size-micro;
+        font-weight: $font-weight-semi-bold;
+        line-height: 20px;
+        color: $neutral-500;
+        text-transform: uppercase;
+        background-color: $neutral-50;
+
+        th {
+          padding: 13px 16px;
+          text-align: left;
+          border-radius: 8px 8px 0 0;
+          &:first-child {
+            min-width: 499px;
+            text-align: left;
+          }
+          &:nth-child(2) {
+            min-width: 258px;
+          }
+          &:nth-child(3) {
+            min-width: 180px;
+          }
+        }
+      }
+      //tbody
+      tbody tr {
+        td {
+          padding: 10px 16px;
+          border-top: 1px solid $neutral-200;
+          //Status
+          &:nth-child(2) {
+            padding: 16px;
+          }
+          //Report
+          &:nth-child(3) {
+            .text {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+    //Specific Report
+    #{$root}__specificTableWrapper {
+      #{$root}__specificTable {
+        width: 100%;
+        margin-bottom: 24px;
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border: 1px solid $neutral-200;
+        border-radius: 8px;
+        @include device(sp) {
+          width: 100%;
+        }
+      }
+      //thead
+      thead tr {
+        font-size: $font-size-micro;
+        font-weight: $font-weight-semi-bold;
+        line-height: 20px;
+        color: $neutral-500;
+        text-transform: uppercase;
+        background-color: $neutral-50;
+
+        th {
+          padding: 13px 16px;
+          text-align: left;
+          border-radius: 8px 8px 0 0;
+          &:first-child {
+            min-width: 403px;
+          }
+          &:nth-child(2) {
+            min-width: 200px;
+          }
+          &:nth-child(3) {
+            min-width: 258px;
+            text-align: center;
+          }
+          &:nth-child(4) {
+            min-width: 180px;
+            text-align: center;
+          }
+        }
+      }
+      //tbody
+      tbody tr {
+        td {
+          padding: 18px 16px;
+          border-top: 1px solid $neutral-200;
+          //Severity
+          &:nth-child(2) {
+            div {
+              @include align($position: flex-start, $start: center, $colGap: 8px);
+            }
+            padding: 16px;
+          }
+          //Report
+          &:nth-child(4) {
+            .text {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @mixin item-color($name, $color) {
+    &--#{$name}:before {
+      background-color: $color;
+    }
+  }
+
+  @include item-color('red', $radical-red);
+  @include item-color('cornell-red', $cornell-red);
+  @include item-color('orange', $color-orange);
+  @include item-color('blue', $primary-500);
+  @include item-color('green', $color-green);
+  @include item-color('iris-blue', $color-iris);
+}
+
+@mixin background-color($name, $color) {
+  .risk--#{$name} {
+    background-color: $color;
+  }
+}
+
+@include background-color('red', $radical-red);
+@include background-color('cornell-red', $cornell-red);
+@include background-color('orange', $color-orange);
+@include background-color('green', $color-green);
+@include background-color('gray', $neutral-400);
+
+
+@media print {
+  // Basic print color preservation
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  // Mobile-specific viewport fixes only
+  html {
+    zoom: 1 !important; // Prevent mobile zoom scaling
+    -webkit-text-size-adjust: 100% !important;
+    -ms-text-size-adjust: 100% !important;
+  }
+
+  body {
+    zoom: 1 !important; // Prevent mobile zoom scaling
+    transform: none !important; // Remove any scaling transforms
+    background-color: #f9fafb !important; // Keep the gray-50 background
+
+    min-width: 1100px !important; // A4 width 
+    min-height: 1500px !important; // A4 height at 300dpi
+  }
+
+  .min-h-screen {
+    zoom: 1 !important; // Prevent mobile zoom scaling
+    transform: none !important; // Remove any scaling transforms
+  }
+
+  // Key fix: Force desktop grid layout on mobile print
+  .analysisReport {
+    &__cardWrapper {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 1.5rem !important;
+    }
+    
+    &__card {
+      min-width: unset !important;
+      width: 100% !important;
+    }
+    
+    // Remove mobile transforms that break print layout
+    &__graph:first-child {
+      transform: none !important;
+    }
+    
+    &__scoreItems {
+      margin-left: 0 !important;
+    }
+    
+    &__scoreContent {
+      gap: 2rem !important;
+    }
+    
+    &__applicationWrapper {
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+    }
+  }
+
+  .h-96 {
+    width: 100% !important;
+    height: 100% !important;
+
+    // Force canvas elements (Chart.js) to use full width
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  }
+
+  // Force desktop layout for main content grids  
+  [class*="lg:grid-cols-2"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  [class*="lg:flex-row"] {
+    flex-direction: row !important;
+  }
+
+  // Basic page setup
+  @page {
+    size: letter;
+    margin: 0.5in;
+  }
+
+  .print-hide {
+    display: none !important;
+  }
+
+  .content--padding-height {
+    padding: 0 !important;
+  }
+}
+

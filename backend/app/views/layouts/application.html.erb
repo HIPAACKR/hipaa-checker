@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sttr</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1, shrink-to-fit=no">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <script src="https://js.stripe.com/v3/"></script>
+  <%= javascript_include_tag "codemirror" %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= javascript_pack_tag 'application' %>
+</head>
+<body>
+<%= render 'layouts/navbar' %>
+<div class="container" id="flash-message">
+  <% if notice %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+  <% if alert %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <%= alert %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+</div>
+<%= render partial: "layouts/loading" %>
+<div class="min-vh-80">
+    <%= yield %>
+</div>
+<footer class="footer" style="text-align: center; color: darkblue">
+  <span>This project is funded by NIH-STTR phase II, NIH-STTR phase I and Center for Technology Commercialization(CTC), Wisconsin, USA.</span>
+  <span> | © Copyright <%= Time.now.strftime("%Y") %> HipaaChecker.health</span>
+</footer>
+</body>
+
+</html>

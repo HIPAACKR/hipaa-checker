@@ -1,0 +1,407 @@
+@use '@/design/styles/' as *;
+
+.dashboard {
+  $root: &;
+  display: flex;
+  flex-direction: column;
+  &__loader {
+    .e-loader-container {
+      margin: 50px 0px;
+    }
+  }
+
+  &__server-error-message {
+    width: 100%;
+    padding: 17px;
+    margin-top: 20px;
+    font-size: $font-size-tiny;
+    text-align: center;
+    background: $radical-light-red;
+    border-radius: 6px;
+  }
+  &__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    .heading[data-type='h5'] {
+      margin-bottom: 4px;
+      @include device(sp) {
+        font-size: $font-size-small;
+        font-weight: $font-weight-semi-bold;
+        line-height: 28px;
+      }
+    }
+    .text[data-size='fs-16'] {
+      line-height: 24px;
+      @include device(sp) {
+        font-size: $font-size-tiny;
+        line-height: 26px;
+      }
+    }
+    @include device(sp) {
+      flex-direction: column;
+      gap: 20px;
+      justify-content: flex-start;
+      .button[data-type='primary'] {
+        width: fit-content;
+        height: fit-content;
+        padding: 8px 16px;
+      }
+    }
+  }
+
+  &__topCard {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+    @include device(sp) {
+      grid-template-columns: repeat(2, 1fr);
+      .icon--21 {
+        width: 14px;
+      }
+    }
+  }
+
+  &__card {
+    width: 100%;
+    padding: 24px;
+    background: $white;
+    border-radius: 8px;
+
+    .dropdown {
+      margin-top: 24px;
+      user-select: none;
+      background-color: $neutral-800;
+      border-radius: 4px;
+      &__placeHolder {
+        position: relative;
+        padding: 7px 12px;
+        padding-right: 32px;
+        border: unset;
+        &::after {
+          position: absolute;
+          right: 12px;
+          width: 16px;
+          height: 16px;
+          content: '';
+          background-image: url('/images/icons/arrowDownWhite.svg');
+          transition: transform 0.3s ease;
+        }
+        .text {
+          &[data-color='neutral-800'] {
+            color: $white;
+          }
+          &[data-size='fs-14'] {
+            font-size: $font-size-micro;
+            line-height: 16px;
+          }
+          &[data-weight='regular'] {
+            font-weight: $font-weight-medium;
+          }
+        }
+        img {
+          display: none;
+        }
+        &--focus {
+          &::after {
+            transform: rotate(180deg);
+          }
+        }
+      }
+      &__optionsWrapper {
+        top: 28px;
+        max-height: 280px;
+        overflow-y: auto;
+        .text {
+          word-break: break-all;
+        }
+      }
+    }
+  }
+
+  &__blurred-card {
+    width: 100%;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  &__sectionScore {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 24px;
+
+    @include device(sp) {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #{$root}__card:first-child {
+      width: 50%;
+      min-width: 480px;
+      @include device(sp) {
+        width: 100%;
+        min-width: unset;
+      }
+    }
+  }
+
+  &__title {
+    font-size: $font-size-semi-small;
+    font-weight: $font-weight-semi-bold;
+    line-height: 28px;
+  }
+
+  &__scannedHead {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: space-between;
+
+    @include device(sp) {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__riskContent {
+    display: flex;
+    flex-direction: row;
+
+    @include device(sp) {
+      margin-left: 16px;
+    }
+  }
+
+  &__riskItem {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-micro;
+    font-weight: $font-weight-medium;
+    line-height: 16px;
+    color: $neutral-500;
+    white-space: nowrap;
+
+    & + & {
+      margin-left: 36px;
+    }
+  }
+
+  &__riskItem:before {
+    position: absolute;
+    top: 50%;
+    left: -15px;
+    display: block;
+    width: 8px;
+    height: 8px;
+    content: '';
+    background-color: $neutral-400;
+    border-radius: 50%;
+    transform: translateY(-50%);
+  }
+
+  &__table {
+    width: 100%;
+    overflow-x: auto;
+    @include device(sp) {
+      overflow-x: scroll;
+    }
+  }
+
+  &__scannedTable,
+  &__rulesTable {
+    width: 100%;
+    margin-top: 24px;
+    overflow: hidden;
+    border: 1px solid $neutral-200;
+    border-radius: 8px;
+    @include device(sp) {
+      overflow: scroll;
+    }
+
+    th,
+    td {
+      text-align: left;
+      border-bottom: 1px solid $neutral-200;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    th {
+      padding: 12px 24px;
+      font-size: $font-size-micro;
+      font-weight: $font-weight-semi-bold;
+      line-height: 20px;
+      color: $neutral-500;
+      text-transform: uppercase;
+      background-color: $neutral-50;
+    }
+    /* stylelint-disable-next-line no-descending-specificity */
+    td {
+      padding: 12px 16px;
+      font-size: $font-size-semi-tiny;
+      font-weight: $font-weight-medium;
+      line-height: 20px;
+      color: $neutral-800;
+      vertical-align: middle;
+    }
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    td:first-child {
+      padding-top: 14px;
+    }
+  }
+  &__scannedTable {
+    th {
+      &:last-child {
+        text-align: center;
+      }
+    }
+  }
+  @include device(sp) {
+    &__rulesTable {
+      min-width: 1254px;
+    }
+    &__scannedTable {
+      min-width: 480px;
+    }
+  }
+
+  &__vulnerabilityCounts {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+    margin-left: 15px;
+    margin-top: 7px;
+  }
+
+  &__productName {
+    max-width: 250px;
+    width: 250px;
+    white-space: wrap;
+    line-height: 16px;
+
+    @media screen and (max-width: 768px) {
+      max-width: 100px;
+      width: 100px;
+    }
+  }
+
+  &__vulnerabilityWrapper{
+    margin-left: 12px;
+  }
+
+  &__sectionRules {
+    margin-top: 24px;
+  }
+
+  &__rulesTable {
+    /* stylelint-disable-next-line no-descending-specificity */
+    td {
+      .status {
+        color: $neutral-600;
+      }
+      .icon--high-risk {
+        margin-right: 12px;
+      }
+    }
+  }
+
+  &__ruleName {
+    max-width: 400px;
+  }
+
+  &__scoreHead {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__scoreContent {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+    @include device(sp) {
+      gap: 0;
+    }
+  }
+
+  &__scoreItems {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-self: center;
+    justify-content: center;
+    @include device(sp) {
+      margin-left: -30px;
+    }
+  }
+
+  &__scoreItem {
+    position: relative;
+    display: flex;
+    font-size: $font-size-semi-tiny;
+    font-weight: $font-weight-medium;
+    line-height: 16px;
+    color: $neutral-500;
+  }
+
+  &__scoreItem:before {
+    position: absolute;
+    top: 50%;
+    left: -22px;
+    display: block;
+    width: 12px;
+    height: 12px;
+    content: '';
+    background-color: $neutral-400;
+    border-radius: 3px;
+    transform: translateY(-50%);
+  }
+  &__graph {
+    height: fit-content;
+    @include align();
+
+    &:first-child {
+      padding: 44px 0 18px 0;
+      @include device(sp) {
+        transform: translate(-15%);
+      }
+    }
+  }
+
+  $dark-red: #8b0000;
+  $deep-carmine-pink: #fef5f6;
+
+  @mixin item-color($name, $color) {
+    &--#{$name}:before {
+      background-color: $color;
+    }
+  }
+  .segmentedBarChart--dark-red {
+    background-color: #ac0c22 !important;
+  }
+
+  @include item-color('red', $radical-red);
+  @include item-color('orange', $color-orange);
+  @include item-color('blue', $primary-500);
+  @include item-color('green', $color-green);
+  @include item-color('iris-blue', $color-iris);
+  @include item-color('dark-red', $dark-red);
+  @include item-color('cornell-red', $cornell-red);
+  @include item-color('deep-carmine-pink', $deep-carmine-pink);
+}

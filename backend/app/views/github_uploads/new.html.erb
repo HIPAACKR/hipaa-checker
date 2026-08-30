@@ -1,0 +1,53 @@
+<div class="container mt-5">
+  <h3 class="text-center">Enter Your Github Repository URL</h3>
+  <%= form_for @github_upload do |form| %>
+    <div class="row mt-4">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 mb-2">
+        <%= form.collection_select :repo_type, [["Public", "public"], ["Private", "private"]], :last, :first, {}, class: "form-control" %>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 mb-2">
+        <%= form.text_area :github_url, class: "form-control", placeholder: "https://github.com/the/repo", style: "height: 50px" %>
+      </div>
+    </div>
+
+    <div class="row mt-4 access_token" style="display: <%= form.object.private_repo? ? "block" : "none" %>">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 mb-2">
+        <%= form.text_area :access_token, class: "form-control", placeholder: "Put your access token here" %>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-3" style="text-align: right; font-weight: bold">Platform</div>
+      <div class="col-md-6 mb-2">
+        <%= form.select :platform, UserUpload::PLATFORMS.collect{|platform| [platform, platform]}, { include_blank: true }, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-3">
+        <%= form.submit 'Submit', class: 'btn btn-md btn-primary form-control' %>
+      </div>
+      <div class="col-md-3">
+        <%= link_to 'Cancel', :back, class: 'btn btn-md btn-danger form-control' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  $("#github_upload_repo_type").change(function () {
+    const repo_type = $(this).val();
+    if(repo_type === 'private'){
+      $("#github_upload_access_token").closest('.access_token').show()
+    }
+    else{
+      $("#github_upload_access_token").closest('.access_token').hide()
+    }
+  })
+</script>

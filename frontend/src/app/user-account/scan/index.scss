@@ -1,0 +1,43 @@
+@use '@/design/styles/' as *;
+
+.scan {
+  $root: &;
+
+  &__section-option {
+    width: 100%;
+    padding: 24px;
+    @include device(sp) {
+      padding: 24px 16px;
+    }
+    margin-top: 16px;
+    background: $white;
+    border-radius: 8px;
+    @include align($direction: column);
+
+    &__upload {
+      @include align($colGap: 16px);
+      margin-top: 40px;
+      @include device(sp) {
+        @include align($direction: column, $rowGap: 16px);
+      }
+    }
+
+    &__file,
+    &__url {
+      padding: 32px;
+      cursor: pointer;
+      background-color: $neutral-50;
+      border: 1px solid transparent;
+      @include align($direction: column, $rowGap: 8px);
+      border-radius: 12px;
+      transition: all 0.2s 0s ease;
+      @include device(sp) {
+        padding: 24px 16px;
+      }
+      &:hover {
+        background-color: $primary-25;
+        border-color: $primary-300;
+      }
+    }
+  }
+}
