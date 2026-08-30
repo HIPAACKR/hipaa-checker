@@ -1,0 +1,28 @@
+- id: event_tracking_audit
+  description: >-
+    This app audits user activity via Audited gem
+  type: RegexAnd
+  pattern:
+    - audited
+    - has_paper_trail
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "strong"
+      relative_impacts: []
+  severity: warning
+
+- id: logger_data
+  description: >-
+    This app saves log data into server's log file
+  type: RegexAnd
+  pattern:
+    - puts
+    - logger.info
+    - logger.error
+    - logger.fatal
+    - logger.debug
+  vulnerability_impacts:
+   - vulnerability_id: inconsistent_audit_trail
+     severity: "minor"
+     relative_impacts: []
+  severity: warning

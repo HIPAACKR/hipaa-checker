@@ -1,0 +1,23 @@
+# Ignore Git
+.git
+.gitignore
+
+# Ignore logs and temp files
+log/*
+tmp/*
+*.log
+*.sql
+
+# Ignore system files
+.DS_Store
+
+# Ignore build artifacts
+coverage
+node_modules
+vendor/bundle
+
+# Ignore large files or folders
+storage/*
+extracted/*
+github_uploads/*
+public/assets/*

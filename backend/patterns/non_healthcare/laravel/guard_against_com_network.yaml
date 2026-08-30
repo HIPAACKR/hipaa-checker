@@ -1,0 +1,44 @@
+- id: trusted_server_communication
+  description: >-
+    This application implements network throttling limiter to prevent dos attack.
+  type: RegexAnd
+  pattern:
+    - Limit::perMinute
+    - Limit::perHour
+    - Limit::perSecond
+    - ThrottleRequestsException
+    - throttle:api
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "strong"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: authentication_via_api_token
+  description: >-
+    Checks whether authentication is implemented as OAuth2 for Single Sign On(SSO) System
+  type: RegexOr
+  pattern:
+    - use HasApiTokens
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "strong"
+      relative_impacts: []
+  severity: warning
+
+- id: authentication_via_jwt
+  description: >-
+    Checks whether authentication is implemented via jwt
+  type: RegexOr
+  pattern:
+    - getJWTIdentifier\(
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "strong"
+      relative_impacts: []
+  severity: warning
+
+
+

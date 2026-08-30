@@ -1,0 +1,66 @@
+- id: authorization_exception_for_destruction
+  description: >-
+    Handles iOS authorization failures for protected health information (PHI)
+  pattern:
+    - \bLAErrorAuthorizationFailed\b
+    - \bLAErrorNotInteractive\b
+    - \bNSError\.domain == LAErrorDomain\b
+    - \bcase (\.accessDenied|\.notAuthorized)\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts: []
+
+- id: illegal_access_for_destruction
+  description: >-
+    Prevents unauthorized PHI access through system security policies
+  pattern:
+    - \bSecAccessControlCreateFlags\.?(kSecAccessControlUserPresence|kSecAccessControlBiometryAny)\b
+    - \bLAErrorUserCancel\b
+    - \bLAErrorSystemCancel\b
+    - \bkSecAttrAccessibleWhenPasscodeSetThisDeviceOnly\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts: []
+
+- id: authorization_enforcement_for_destruction
+  description: >-
+    Enforces PHI access through iOS Security Framework policies
+  pattern:
+    - \bSecItemCopyMatching\b.*?kSecUseAuthenticationUI\s*=\s*kSecUseAuthenticationUIFail
+    - \bevaluatePolicy\(LAPolicyDeviceOwnerAuthentication\b
+    - \bSecAccessControlCreateWithFlags\b.*?kSecAccessControlApplicationPassword
+    - \brequireUserPresence\(\)\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts: []
+
+- id: access_control_exception_for_destruction
+  description: >-
+    Implements Keychain access controls for PHI protection
+  pattern:
+    - \bkSecAttrAccessibleAfterFirstUnlockThisDeviceOnly\b
+    - \bSecAccessControlCreateWithFlags\b.*?(biometryCurrentSet|devicePasscode)
+    - \buserInteractionAllowed\s*=\s*false\b
+    - \bvalidateAuthentication\(UIViewController\)\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "optimal"
+      relative_impacts: []
+
+- id: biometric_authentication_for_destruction
+  description: >-
+    Requires biometric authentication for PHI access per HIPAA
+  pattern:
+    - \bLAPolicyDeviceOwnerAuthenticationWithBiometrics\b
+    - \bLAContext\.canEvaluatePolicy\(\.deviceOwnerAuthenticationWithBiometrics\b
+    - \bLocalizedReason\s*=\s*["']Access health records["']
+    - \bkSecAccessControlBiometryCurrentSet\b
+    - \bLAErrorBiometryLockout\b
+    - \baddConstraint\(\.touchIDAny\)\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "optimal"
+      relative_impacts: []

@@ -1,0 +1,84 @@
+  - id: api_abuse_prevention
+    description: >-
+      Prevents the app from sending multiple API Requests.
+    type: RegexOr
+    pattern:
+      - \rest_framework.throttling\.AnonRateThrottle\
+      - \rest_framework.throttling\.UserRateThrottle\
+      - throttle_classes\s*=\s*\[\s*\w+,\s*\w+\s*\]
+      - throttle_scope
+      - throttle_classes
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "moderate"
+        relative_impacts: []
+    manual_check: false
+    severity: warning
+
+  - id: data_transmission_security_over_network
+    description: >-
+      Data sent over the network is properly secured.
+    type: RegexOr
+    pattern:
+      - SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+      - SECURE_SSL_REDIRECT\s*=\s*True
+      - SESSION_COOKIE_SECURE\s*=\s*True
+      - SESSION_COOKIE_SECURE\s*=\s*True
+      - CSRF_TRUSTED_ORIGINS\s*=\s*\[
+      - SESSION_COOKIE_HTTPONLY\s*=\s*True
+      - SECURE_HSTS_SECONDS\s*=\s*0
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: transmition_secuirity
+            factor: "minor"
+          - subrule_id: authorization_over_network
+            factor: "strong"
+    manual_check: true
+    severity: warning
+
+  - id: authorization_over_network
+    description: >-
+      Data sent over network has proper authorization and authentication.
+    type: RegexOr
+    pattern:
+      - REST_FRAMEWORK\s*=\s*{[^}]*'DEFAULT_AUTHENTICATION_CLASSES'[^}]*('rest_framework.authentication.(TokenAuthentication|SessionAuthentication|BasicAuthentication|RemoteUserAuthentication)'[^}]*)+}
+      - \@api_view
+      - AUTHENTICATION_CLASSES
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: transmition_secuirity
+            factor: "minor"
+          - subrule_id: data_transmission_security_over_network
+            factor: "minor"
+          - subrule_id: token_and_credential_management
+            factor: "strong"
+    manual_check: false
+    severity: warning
+
+  - id: token_and_credential_management
+    description: >-
+      Checks whether the application properly stores and uses tokens and credentials.
+    type: RegexOr
+    pattern:
+      - from\s+rest_framework\.authtoken\.models\s+import\s+Token
+      - Token\.objects\.get\(
+      - Token\.objects\.get_or_create\s*\(
+      - Token\.objects\.create\(
+      - make_password\(
+      - check_password\(
+      - SESSION_ENGINE\s*=\s*'django.contrib.sessions.backends.signed_cookies'
+      - SocialToken\.objects\.get\(
+      - PasswordResetTokenGenerator\(\)
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: authorization_over_network
+            factor: "minor"
+
+    manual_check: false
+    severity: warning

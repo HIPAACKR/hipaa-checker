@@ -1,0 +1,59 @@
+- id: authorization
+  description: >-
+    "Detects the implementation of authorization to access sensitive resources."
+  type: RegexAnd
+  pattern:
+    - \[Authorize\(
+    - \[AllowAnonymous
+    - \w+\.AddAuthorization\(
+    - \w+\.AddAuthentication\(
+    - \w+\.AddSingleton\<IAuthorizationHandler\,
+    - AuthorizationHandler\<RequirementType\>
+    - AuthorizationHandlerContext
+    - IAuthorizationHandler
+    - AuthorizePageHandler\(
+    - AuthorizeCore\(
+    - JwtSecurityTokenHandler\(
+  severity: 0
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: authorization_policy_check
+          factor: "negligible"
+        - subrule_id: authorization_claim_check
+          factor: "minor"
+
+- id: authorization_claim_check
+  description: >-
+    "Checks user claims for authorization to access resources."
+  type: RegexAnd
+  pattern:
+    - \.RequireClaim\(
+    - \.HasClaim\(
+  severity: 0
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "moderate"
+      relative_impacts:
+        - subrule_id: authorization
+          factor: "minor"
+        - subrule_id: authorization_policy_check
+          factor: "negligible"
+
+- id: authorization_policy_check
+  description: >-
+    "Checks user-defined policies for authorization to access resources."
+  type: RegexAnd
+  pattern:
+    - \[Authorize\(Policy
+    - \w+\.AddPolicy\(
+  severity: 0
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: authorization
+          factor: "minor"
+        - subrule_id: authorization_claim_check
+          factor: "negligible"

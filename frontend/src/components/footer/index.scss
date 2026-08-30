@@ -1,0 +1,239 @@
+@use '@/design/styles/' as *;
+.footer {
+  $root: &;
+  padding: 80px 0px 0px 0px;
+  overflow: hidden;
+  background-color: $primary-970;
+  @include device(sp) {
+    padding: 30px 20px 0px 20px;
+  }
+  &__container {
+    max-width: $width-main-container;
+    margin: 0 auto;
+  }
+  &__wrapper {
+    position: relative;
+    z-index: 1;
+    @include align($direction: row, $start: flex-start, $colGap: 120px, $position: space-between);
+    padding: 0px;
+
+    @include device(sp) {
+      @include align($direction: column, $start: flex-start, $rowGap: 30px);
+      padding: 0px;
+    }
+  }
+
+  &__notice-wrapper {
+    padding: 7px 16px;
+    font-size: $font-size-tiny;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 24px;
+    color: $neutral-200;
+    text-align: center;
+    background-color: $primary-600;
+    @include device(sp) {
+      font-size: $font-size-semi-tiny;
+    }
+  }
+  &__strong {
+    font-weight: $font-weight-semi-bold;
+  }
+
+  &__logo-description {
+    @include align($direction: column, $start: flex-start, $rowGap: 20px);
+
+    @include device(sp) {
+      @include align($direction: column, $start: flex-start, $rowGap: 10px);
+    }
+  }
+  &__logo {
+    margin-left: -10px;
+    @include device(sp) {
+      width: 196px;
+      height: 35px;
+    }
+  }
+  &__description {
+    max-width: 313px;
+    font-size: $font-size-tiny;
+    font-weight: $font-weight-regular;
+    line-height: 28px;
+    color: $neutral-300;
+    text-align: left;
+    letter-spacing: -0.02em;
+    @include device(sp) {
+      max-width: 486px;
+    }
+  }
+  &__icons {
+    @include align($direction: row, $position: flex-start, $colGap: 32px);
+  }
+  &__icon:hover {
+    opacity: 0.6;
+    transition: all 0.125s 0s ease;
+  }
+  &__company-resource {
+    @include align($direction: row, $start: flex-start, $colGap: 64px);
+    @include device(sp) {
+      @include align(
+        $direction: column,
+        $position: flex-start,
+        $start: flex-start,
+        $rowGap: 30px,
+        $colGap: 15vw
+      );
+      flex-wrap: wrap;
+    }
+  }
+  &__company,
+  &__resource {
+    @include align($direction: column, $start: flex-start, $rowGap: 20px);
+    @include device(sp) {
+      @include align($direction: column, $start: flex-start, $rowGap: 6px);
+    }
+  }
+  &__company-title,
+  &__resource-title {
+    font-size: $font-size-semi-small;
+    font-weight: $font-weight-semi-bold;
+    line-height: 28px;
+    color: $white;
+  }
+  &__company-links {
+    @include align($direction: column, $start: flex-start, $rowGap: 12px);
+    font-size: $font-size-tiny;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px;
+    color: $neutral-300;
+    @include device(sp) {
+      @include align($direction: column, $start: flex-start, $rowGap: 0px);
+    }
+  }
+  &__company-link:hover {
+    transition: all 0.125s 0s ease;
+    @include device(pc) {
+      color: $primary-600;
+    }
+  }
+  &__resource-links {
+    @include align($direction: column, $start: flex-start, $rowGap: 12px);
+    font-size: $font-size-tiny;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px;
+    white-space: nowrap;
+    color: $neutral-300;
+
+    @include device(sp) {
+      @include align($direction: column, $start: flex-start, $rowGap: 0px);
+    }
+  }
+  &__resource-link:hover {
+    transition: all 0.125s 0s ease;
+    @include device(pc) {
+      color: $primary-600;
+    }
+  }
+   &__products-section {
+    @include align($direction: row, $position: center, $colGap: 80px);
+    padding: 20px 0px 30px 0px;
+    
+    @include device(sp) {
+      @include align($direction: column, $position: center, $rowGap: 20px);
+      padding: 30px 0px;
+    }
+  }
+
+  &__products,
+  &__upcoming-products {
+    @include align($direction: row, $position: center, $colGap: 16px);
+    
+    @include device(sp) {
+      @include align($direction: column, $position: center, $rowGap: 10px);
+    }
+  }
+
+  &__products-title,
+  &__upcoming-products-title {
+    font-size: $font-size-semi-small;
+    font-weight: $font-weight-semi-bold;
+    line-height: 28px;
+    color: $white;
+    white-space: nowrap;
+    
+    @include device(sp) {
+      font-size: $font-size-tiny;
+    }
+  }
+
+  &__products-icons,
+  &__upcoming-products-icons {
+    @include align($direction: row, $position: center, $colGap: 16px);
+  }
+
+  &__product-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    // &:hover {
+    //   transform: translateY(-3px);
+      
+    // }
+  }
+
+  &__product-icon {
+    width: 60px;
+    height: 60px;
+    transition: all 0.3s ease;
+    
+    @include device(sp) {
+      width: 45px;
+      height: 45px;
+    }
+  }
+
+  &__upcoming-product {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+  }
+
+  &__upcoming-product-icon {
+    width: 60px;
+    height: 60px;
+    
+    @include device(sp) {
+      width: 45px;
+      height: 45px;
+    }
+  }
+
+  &__copywrite-wrapper {
+    position: relative;
+    z-index: 1;
+    @include align($direction: row, $position: space-between);
+    padding: 16px 0;
+    @include device(sp) {
+      gap: 16px;
+      @include align($direction: column, $position: space-between, $rowGap: 16px);
+    }
+  }
+  &__copywrite {
+    font-size: $font-size-tiny;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px;
+    color: $neutral-300;
+    letter-spacing: -0.02em;
+    @include device(sp) {
+      font-size: $font-size-tiny;
+      line-height: 20px;
+    }
+  }
+}

@@ -1,0 +1,60 @@
+- id: user_authentication
+  description: >-
+    Checks whether authentication is implemented or not
+  type: RegexOr
+  pattern:
+    - \bauthenticate_([a-zA-Z_]+)\b
+    - \w+_signed_in\?
+    - sign_in
+    - sign_in_and_redirect
+    - \.authenticate\(
+    - current_user
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: user_authentication_via_social_media
+          factor: "negligible"
+        - subrule_id: user_authentication_using_two_factor_auth
+          factor: "minor"
+  severity: warning
+
+- id: user_authentication_via_social_media
+  description: >-
+    Checks whether authentication is implemented via social media or not
+  type: RegexOr
+  pattern:
+    - omniauth-([a-zA-Z]+)
+    - omniauth_
+    - from_omniauth
+    - omniauthable
+    - provider\s*:facebook
+    - provider\s*:twitter
+    - provider\s*:linkedin
+    - provider\s*:github
+    - provider\s*:openid
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: user_authentication
+          factor: "negligible"
+        - subrule_id: user_authentication_using_two_factor_auth
+          factor: "minor"
+  severity: warning
+
+- id: user_authentication_using_two_factor_auth
+  description: >-
+    Checks whether two factors authentication is implemented or not
+  type: RegexOr
+  pattern:
+    - two_factor_authenticatable
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: user_authentication
+          factor: "negligible"
+        - subrule_id: user_authentication_via_social_media
+          factor: "negligible"
+  severity: warning

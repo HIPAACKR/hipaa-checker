@@ -1,0 +1,102 @@
+- id: encrypt_information
+  description: >-
+    Application encrypts sensitive information before transmission.
+  pattern:
+    - encrypt\(
+    - createCipher\(
+    - createCipheriv\(
+    - crypto\.createCipher\(
+    - crypto\.createCipheriv\(
+    - \.update\(
+    - \.final\(
+    - \.setAutoPadding\(
+    - \.createSecretKey\(
+    - \.encrypt\(
+  vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "negligible"
+        relative_impacts:
+             - subrule_id: transmit_information
+               factor: "minor"
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: dencrypt_information
+  description: >-
+    Data decryption is used properly using cryptography.
+  pattern:
+    - createDecipher\(
+    - createDecipheriv\(
+    - crypto\.createDecipher\(
+    - crypto\.createDecipheriv\(
+    - \.update\(
+    - \.final\(
+    - \.setAutoPadding\(
+    - \.decrypt\(
+    - \.createDecipherStream\(
+  vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "negligible"
+        relative_impacts:
+             - subrule_id: encrypt_information
+               factor: "minor"
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: transmit_information
+  description: >-
+    The application securely establish secure channel to transmit sensitive information.
+  pattern:
+    - require\(['"]crypto['"]\)
+    - \.createDiffieHellman\(
+    - \.generateKeys\(
+    - \.createDiffieHellman\(
+    - \.computeSecret\(
+  vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts:
+             - subrule_id: encrypt_information
+               factor: "moderate"
+             - subrule_id: decrypt_information
+               factor: "moderate" 
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: insecure_file_write
+  description: >-
+    Detects writing of request data to a file, which may expose sensitive user information.
+  type: RegexAnd
+  pattern:
+    - fs\.writeFile\(
+    - (querystring\.stringify|JSON\.stringify)\(req
+  vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "strong"
+        relative_impacts:
+             - subrule_id: database_security
+               factor: "strong"
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: database_security
+  description: >-
+    Ensures secure database access and query execution.
+  type: RegexAnd
+  pattern:
+    - (query\(|execute\()
+    - (connection\.query\()
+    - (connection\.execute\()
+  vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts:
+             - subrule_id: insecure_file_write
+               factor: "strong"
+  severity: 0
+  weight: 1
+  score: 5

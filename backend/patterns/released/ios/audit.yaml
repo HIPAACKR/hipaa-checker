@@ -1,0 +1,53 @@
+- id: data_access_audit
+  description: >-
+    Monitors how app accesses private data (photos, contacts, location) with proper auditing.
+  pattern:
+    - (PHPhotoLibrary|CNContactStore|CLLocationManager|EKEventStore)\.(requestAuthorization|requestAccess|requestWhenInUseAuthorization)
+    - (PHAsset|CNContact|CLLocation|EKEvent)\.fetch
+    - (os_log|NSLog|print)\("(Accessed|Retrieved).*(photo|contact|location|event)"
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "optimal"
+      relative_impacts: []
+  manual_check: false
+
+
+- id: user_event_tracking_audit
+  description: >-
+    Tracks user actions and critical operations for accountability.
+  pattern:
+    - logEvent\(
+    - Analytics\.logEvent\(
+    - Parameters\.screenName
+    - (FirebaseAnalytics|Mixpanel|Amplitude)\.(logEvent|track|setCurrentScreen)
+    - (os_log|NSLog|print)\("(User performed|Tracked).*(action|event)"
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "optimal"
+      relative_impacts: []
+  manual_check: false
+
+- id: application_life_cycle_audit
+  description: >-
+    Tracks application state changes and lifecycle events.
+  pattern:
+    - (applicationDidBecomeActive|applicationWillResignActive|applicationDidEnterBackground|applicationWillEnterForeground)\(
+    - (os_log|NSLog|print)\("App state changed to.*"
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "negligible"
+      relative_impacts: []
+  manual_check: true
+
+- id: application_performance_audit
+  description: >-
+    Implements crash reporting and performance monitoring.
+  pattern:
+    - Crashlytics\.crashlytics\(\).record\(error
+    - Trace\.start\(name:.*\)\.stop\(\)
+    - Performance\.performance\(\).startTrace\(name
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "minor"
+      relative_impacts: []
+  manual_check: true

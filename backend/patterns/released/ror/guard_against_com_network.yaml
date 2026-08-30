@@ -1,0 +1,17 @@
+  - id: tokenized_server_communication
+    description: >-
+      Checks whether token based server communication is implemented or not
+    type: RegexOr
+    pattern:
+      - JWT\.decode
+      - JWT\.encode
+      - \.headers\[\s*['"]Authorization['"]\s*\]
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts: []
+    manual_check: false
+    severity: warning
+
+
+

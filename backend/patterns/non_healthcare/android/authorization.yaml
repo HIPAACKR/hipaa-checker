@@ -1,0 +1,75 @@
+- id: authorization_exception
+  description: >-
+    This Application implements authorization to access sensitive resources.
+  type: RegexAnd
+  pattern:
+    - AuthorizationException
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "moderate"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 5
+- id: illegal_access
+  description: >-
+    This Application restricts illegal access to sensitive resources.
+  type: RegexAnd
+  pattern:
+    - IllegalAccessException
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "moderate"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: authorization_enforcement
+  description: >-
+    This Application detects explicit authorization enforcement by throwing a Security Exception when unauthorized access occurs.
+  type: RegexAnd
+  pattern:
+    - SecurityException
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "moderate"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: access_control_exception
+  description: >-
+    This Application identifies cases where access control is applied, preventing unauthorized operations using AccessControlException.
+  type: RegexAnd
+  pattern:
+    - AccessControlException
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "moderate"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: biometric_authentication
+  description: >-
+    This app checks standard authentication via biometric information.
+  type: RegexAnd
+  pattern:
+    - USE_BIOMETRIC
+    - USE_FINGERPRINT
+    - (BiometricPrompt|BiometricManager)\.?[A-Za-z]*
+    - BiometricManager\.(BIOMETRIC_SUCCESS|BIOMETRIC_ERROR_|BIOMETRIC_STRONG|BIOMETRIC_WEAK)
+    - BiometricPrompt\s*\(|authenticate\(promptInfo\)
+    - KeyGenParameterSpec\.Builder.*setUserAuthenticationRequired\(true\)
+    - setDeviceCredentialAllowed\(true\)
+    - FingerprintManager\.?[A-Za-z]*|FingerprintManagerCompat
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "moderate"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 5

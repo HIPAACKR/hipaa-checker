@@ -1,0 +1,125 @@
+- id: authorization_exception_integrity
+  description: >-
+    Handles iOS authorization failures for protected health information (PHI)
+  pattern:
+    - \bLAErrorAuthorizationFailed\b
+    - \bLAErrorNotInteractive\b
+    - \bNSError\.domain == LAErrorDomain\b
+    - \bcase (\.accessDenied|\.notAuthorized)\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts: []
+  manual_check: false
+
+- id: illegal_access_integrity
+  description: >-
+    Prevents unauthorized PHI access through system security policies
+  pattern:
+    - \bSecAccessControlCreateFlags\.?(kSecAccessControlUserPresence|kSecAccessControlBiometryAny)\b
+    - \bLAErrorUserCancel\b
+    - \bLAErrorSystemCancel\b
+    - \bkSecAttrAccessibleWhenPasscodeSetThisDeviceOnly\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts: []
+  manual_check: false
+
+- id: authorization_enforcement_integrity
+  description: >-
+    Enforces PHI access through iOS Security Framework policies
+  pattern:
+    - \bSecItemCopyMatching\b.*?kSecUseAuthenticationUI\s*=\s*kSecUseAuthenticationUIFail
+    - \bevaluatePolicy\(LAPolicyDeviceOwnerAuthentication\b
+    - \bSecAccessControlCreateWithFlags\b.*?kSecAccessControlApplicationPassword
+    - \brequireUserPresence\(\)\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts: []
+  manual_check: true
+
+- id: access_control_exception_integrity
+  description: >-
+    Implements Keychain access controls for PHI protection
+  pattern:
+    - \bkSecAttrAccessibleAfterFirstUnlockThisDeviceOnly\b
+    - \bSecAccessControlCreateWithFlags\b.*?(biometryCurrentSet|devicePasscode)
+    - \buserInteractionAllowed\s*=\s*false\b
+    - \bvalidateAuthentication\(UIViewController\)\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "optimal"
+      relative_impacts: []
+  manual_check: true
+
+- id: biometric_authentication_integrity
+  description: >-
+    Requires biometric authentication for PHI access per HIPAA
+  pattern:
+    - \bLAPolicyDeviceOwnerAuthenticationWithBiometrics\b
+    - \bLAContext\.canEvaluatePolicy\(\.deviceOwnerAuthenticationWithBiometrics\b
+    - \bLocalizedReason\s*=\s*["']Access health records["']
+    - \bkSecAccessControlBiometryCurrentSet\b
+    - \bLAErrorBiometryLockout\b
+    - \baddConstraint\(\.touchIDAny\)\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "optimal"
+      relative_impacts: []
+  manual_check: false
+
+- id: user_authentication_oauth_integrity
+  description: >-
+    Checks whether the app uses iOS OAuth-based authentication (e.g., ASWebAuthenticationSession, AppAuth).
+  pattern:
+    - \b(ASWebAuthenticationSession|SFAuthenticationSession|OIDAuthState|OIDAuthorizationService|OIDTokenResponse|OIDAuthorizationRequest|OAuth[2]?\b|OpenIDConnect|startWithRedirectURL\:|authStateByPresentingAuthorizationRequest\:|authStateWithAuthorizationResponse\:|performAuthorizationRequest\:|authCallbackURLScheme|code=([A-Za-z0-9_\-]+))|\bOIDServiceConfiguration\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"  # OAuth alone is not HIPAA-compliant without MFA
+      relative_impacts:
+         - subrule_id: user_social_authentication
+           factor: "negligible"   # Firebase Auth may add redundancy
+         - subrule_id: multi_factor_authentication
+           factor: "minor"   # MFA mitigates OAuth risks significantly
+  manual_check: true
+
+- id: user_social_authentication_integrity
+  description: >-
+    Checks whether the app uses social platform authentication (e.g., Google, Facebook, Firebase social providers).
+  pattern:
+    - \b(FIRGoogleAuthProvider|FIRFacebookAuthProvider|FIREmailAuthProvider|signInWithCredential|GIDSignInResult|GIDGoogleUser|GIDConfiguration)\b
+    - \b(FBSDKLoginManager|logInWithPermissions|handleFacebookAccessToken|FBSDKAccessToken|FBSDKProfile)\b
+    - \b(GIDSignIn|GoogleSignIn|signInWithGoogle|restorePreviousSignIn|GIDSignInButton|GIDClientID)\b
+    - \b(TWTRAPIClient|TWTRLogin|TWTRSession|TwitterKit|logInWithCompletion)\b
+    - \b(LISDKAPI|LISDKSessionManager|LISDKAuth|createSessionWithAuth|linkedInAuthToken)\b
+    - \b(MSALPublicClientApplication|MSALInteractiveTokenParameters|MSALAccount|acquireTokenWithParameters)\b
+    - \b(AWSIdentityProviderManager|AWSCognitoAuth|loginsForIdentityProvider|AmazonLogin)\b
+    - \b(GitHubAuthProvider|OAuthSwift|GitHubAPIManager|authGitHubWithPermissions)\b
+
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"  # Social auth alone lacks HIPAA-required controls (e.g., MFA)
+      relative_impacts:
+         - subrule_id: multi_factor_authentication
+           factor: "minor"   # MFA reduces risk to negligible
+         - subrule_id: user_authentication_oauth
+           factor: "negligible"   # OAuth overlaps with social auth flows
+  manual_check: true
+
+- id: multi_factor_authentication_integrity
+  description: >-
+    Checks for multi-factor authentication (MFA) implementation (e.g., biometrics, phone/SMS, TOTP).
+  pattern:
+    - \b(LAContext|evaluatePolicy|LAPolicyDeviceOwnerAuthenticationWithBiometrics|LAPolicyDeviceOwnerAuthentication|enrollWithMultiFactor|verifyPhoneNumber|FIRPhoneAuthProvider|multiFactorUser|TOTPGenerator|sendEmailVerification|NSFaceIDUsageDescription|SecAccessControlCreateFlags\.biometryCurrentSet)\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "optimal"
+      relative_impacts:
+         - subrule_id: user_authentication_oauth
+           factor: "negligible"  # MFA mitigates OAuth risks
+         - subrule_id: user_social_authentication
+           factor: "negligible"  # MFA mitigates Firebase risks
+  manual_check: true
+

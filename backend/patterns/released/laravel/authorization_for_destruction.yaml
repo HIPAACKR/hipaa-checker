@@ -1,0 +1,13 @@
+  - id: authorization_exception_on_destroy
+    description: >-
+      This Application implements authorization to destroy sensitive resources.
+    type: RegexAnd
+    pattern:
+      - AuthorizationException
+      - abort\(403
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "strong"
+        relative_impacts: []
+    manual_check: false
+    severity: warning

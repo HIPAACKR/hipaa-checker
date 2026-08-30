@@ -1,0 +1,85 @@
+name: Deploy HIPAA Checker Frontend
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose deployment target"
+        required: true
+        default: staging
+        type: choice
+        options:
+          - staging
+          - live
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      API_BASE_URL: ${{ github.event.inputs.environment == 'live' && secrets.NEXT_PUBLIC_API_BASE_URL_LIVE || secrets.NEXT_PUBLIC_API_BASE_URL }}
+      API_BASE_URL_V2: ${{ github.event.inputs.environment == 'live' && secrets.NEXT_PUBLIC_API_BASE_URL_V2_LIVE || secrets.NEXT_PUBLIC_API_BASE_URL_V2 }}
+      LLM_API_BASE_URL: ${{ github.event.inputs.environment == 'live' && secrets.NEXT_PUBLIC_LLM_API_BASE_URL_LIVE || secrets.NEXT_PUBLIC_LLM_API_BASE_URL }}
+      ENABLE_LLM_FEATURES: ${{ github.event.inputs.environment == 'live' && secrets.NEXT_PUBLIC_ENABLE_LLM_FEATURES_LIVE || secrets.NEXT_PUBLIC_ENABLE_LLM_FEATURES }}
+      STRIPE_KEY: ${{ github.event.inputs.environment == 'live' && secrets.NEXT_PUBLIC_STRIPE_PUBLIC_KEY_LIVE || secrets.NEXT_PUBLIC_STRIPE_PUBLIC_KEY }}
+      HOST: ${{ github.event.inputs.environment == 'live' && secrets.EC2_HOST_LIVE || secrets.EC2_HOST }}
+      ENV_FILE: ${{ github.event.inputs.environment == 'live' && secrets.ENV_FILE_CONTENTS_LIVE || secrets.ENV_FILE_CONTENTS }}
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Log in to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and Tag Docker Image
+        run: |
+          docker build -t ${{ secrets.ECR_REPO_NAME }} \
+            --build-arg NEXT_PUBLIC_API_BASE_URL=$API_BASE_URL \
+            --build-arg NEXT_PUBLIC_API_BASE_URL_V2=$API_BASE_URL_V2 \
+            --build-arg NEXT_PUBLIC_LLM_API_BASE_URL=$LLM_API_BASE_URL \
+            --build-arg NEXT_PUBLIC_ENABLE_LLM_FEATURES=$ENABLE_LLM_FEATURES \
+            --build-arg NEXT_PUBLIC_STRIPE_PUBLIC_KEY=$STRIPE_KEY \
+            .
+
+          docker tag ${{ secrets.ECR_REPO_NAME }}:latest ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPO_NAME }}:latest
+
+      - name: Push Image to ECR
+        run: docker push ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPO_NAME }}:latest
+
+      - name: SSH into EC2 and Deploy
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
+
+          echo "
+            mkdir -p ~/hipaachecker/frontend-deploy
+
+            echo '$ENV_FILE' > ~/hipaachecker/frontend-deploy/.env
+
+            echo 'version: \"3.8\"' > ~/hipaachecker/frontend-deploy/docker-compose.yml
+            echo 'services:' >> ~/hipaachecker/frontend-deploy/docker-compose.yml
+            echo '  frontend:' >> ~/hipaachecker/frontend-deploy/docker-compose.yml
+            echo '    image: ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPO_NAME }}:latest' >> ~/hipaachecker/frontend-deploy/docker-compose.yml
+            echo '    ports:' >> ~/hipaachecker/frontend-deploy/docker-compose.yml
+            echo '      - \"5002:5002\"' >> ~/hipaachecker/frontend-deploy/docker-compose.yml
+            echo '    env_file:' >> ~/hipaachecker/frontend-deploy/docker-compose.yml
+            echo '      - .env' >> ~/hipaachecker/frontend-deploy/docker-compose.yml
+
+            cd ~/hipaachecker/frontend-deploy
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+            docker-compose pull
+            docker-compose down || true
+            docker-compose rm -f frontend
+            docker image prune -f
+            docker-compose up -d
+          " | ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$HOST

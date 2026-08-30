@@ -1,0 +1,97 @@
+@use '@/design/styles/' as *;
+
+.CapabilitiesContainer {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  text-align: center;
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 16px;
+    margin-bottom: 18px;
+    border-radius: 999px;
+    background: $enterprise-light-blue;
+    color: $enterprise-blue;
+    font-size: $font-size-semi-tiny;
+    line-height: 1;
+    font-weight: $font-weight-bold;
+  }
+
+  &__heading,
+  h3.CapabilitiesContainer__heading,
+  .heading.CapabilitiesContainer__heading {
+    font-size: $font-size-large;
+    line-height: 1.15;
+    font-weight: $font-weight-light;
+    color: $enterprise-primary;
+    margin: 0 0 42px;
+    letter-spacing: -0.8px;
+
+    span {
+      font-weight: $font-weight-bold;
+      color: $enterprise-primary;
+    }
+
+    @include device(sp) {
+      font-size: $font-size-medium;
+      margin-bottom: 30px;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 26px 70px;
+    text-align: left;
+
+    @include device(sp) {
+      grid-template-columns: 1fr;
+      gap: 18px;
+      padding: 0 20px;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+
+    p,
+    p.text,
+    .text.CapabilitiesContainer__text {
+      margin: 0;
+      color: $neutral-700;
+      font-size: $font-size-tiny;
+      line-height: 1.55;
+      font-weight: $font-weight-regular;
+
+      strong {
+        color: $neutral-800;
+        font-weight: $font-weight-bold;
+      }
+
+      @include device(sp) {
+        font-size: $font-size-semi-tiny;
+      }
+    }
+  }
+
+  &__check {
+    width: 24px;
+    height: 24px;
+    margin-top: 2px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: $enterprise-blue;
+    color: $white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-semi-tiny;
+    font-weight: $font-weight-bold;
+    line-height: 1;
+  }
+}

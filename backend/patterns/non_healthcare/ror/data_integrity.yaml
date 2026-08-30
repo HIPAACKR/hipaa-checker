@@ -1,0 +1,100 @@
+- id: illegal_access
+  description: >-
+    This Application implements authorization to access sensitive resources to prevent improper alteration or destruction.
+  type: RegexAnd
+  pattern:
+    - include CanCan::Ability
+    - authorize!
+    - authorize
+    - load_and_authorize_resource
+    - \.accessible_by\(
+    - Pundit::Authorization
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts: []
+  severity: warning
+
+- id: authorization_exception
+  description: >-
+    This Application restricts illegal access to sensitive resources to prevent improper alteration or destruction.
+  type: RegexAnd
+  pattern:
+    - CanCan::AccessDenied
+    - load_and_authorize_resource
+    - authorize!
+    - Pundit::NotAuthorizedError
+
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts: []
+  severity: warning
+
+- id: database_migration
+  description: >-
+    This Application uses database migration to define schema and uses primary keys to enforce data integrity.
+  type: RegexAnd
+  pattern:
+    - ActiveRecord::Migration
+    - ^create_table\s+:(\w+)\s*(,|\s|$)
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts: []
+  severity: warning
+
+- id: data_validation
+  description: >-
+    This Application implements data validation rules in order to ensure valid data.
+  type: RegexAnd
+  pattern:
+    - validates_presence_of
+    - s*validates\s+:\w+\s*
+    - s*validate\s+:\w+\s*
+    - s*validates_associated\s+:\w+\s*
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "minor"
+      relative_impacts: []
+  severity: warning
+
+- id: database_transaction
+  description: >-
+    This Application uses database transactions in order to prevent data from partial updates that could compromise data integrity.
+  type: RegexAnd
+  pattern:
+    - ActiveRecord::Base.transaction
+    - ActiveRecord::Rollback
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts: []
+  severity: warning
+
+- id: active_record_model
+  description: >-
+    This Application uses Object Relational Mapper to interact with the database eloquently which  provides fluent syntax for database queries and handles many data integrity issues automatically.
+  type: RegexAnd
+  pattern:
+    - ApplicationRecord
+    - ActiveRecord::Base
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: database_transaction
+          factor: "minor"
+  severity: warning
+
+- id: error_handling
+  description: >-
+    This Application handles errors to identify and address faulty or invalid data.
+  type: RegexAnd
+  pattern:
+    - \.errors\.full_messages
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "negligible"
+      relative_impacts: []
+  severity: warning

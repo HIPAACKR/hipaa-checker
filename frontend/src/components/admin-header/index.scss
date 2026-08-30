@@ -1,0 +1,128 @@
+@use '@/design/styles/' as *;
+
+.adminHeader {
+  $root: &;
+
+  @include align(row, space-between, center);
+  width: 100%;
+  height: 72px;
+  padding: 0 32px;
+  background: $white;
+  @include device(sp) {
+    height: 64px;
+    padding: 0 20px;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    background: $neutral-50;
+    border-radius: 6px;
+  }
+
+  &__profile {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  &__profileIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    font-size: $font-size-semi-tiny;
+    font-weight: $font-weight-semi-bold;
+    line-height: 20px;
+    color: $neutral-600;
+    background: $primary-50;
+    border-radius: 20px;
+  }
+
+  &__profileTitle {
+    font-size: $font-size-semi-tiny;
+    line-height: 20px;
+    color: $neutral-600;
+
+    @include device(sp) {
+      display: none;
+    }
+
+    .icon {
+      margin-left: 8px;
+    }
+  }
+
+  &__dropdownMenu {
+    position: absolute;
+    top: 74px;
+    right: 24px;
+    z-index: 2;
+    min-width: 275px;
+    background-color: $white;
+    border-radius: 8px;
+    box-shadow:
+      0px 12px 16px -4px rgba(16, 24, 40, 0.08),
+      0px 4px 6px -2px rgba(16, 24, 40, 0.03);
+
+    @include device(sp) {
+      top: 66px;
+      right: 20px;
+    }
+    #{$root}__dropdownHead {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 12px 16px;
+      border-bottom: 1px solid $neutral-200;
+    }
+
+    #{$root}__dropdownProfile {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      align-items: center;
+
+      span {
+        span {
+          font-weight: $font-weight-regular;
+        }
+      }
+      /* stylelint-disable-next-line no-duplicate-selectors */
+      span {
+        font-size: $font-size-semi-tiny;
+        font-weight: $font-weight-semi-bold;
+        line-height: 20px;
+        color: $neutral-600;
+      }
+    }
+    #{$root}__dropdownMenuItem {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      padding: 15px 16px;
+      align-items: center;
+      font-size: $font-size-semi-tiny;
+      font-weight: $font-weight-medium;
+      line-height: 20px;
+      color: $neutral-600;
+      cursor: pointer;
+      //border-radius: 6px;
+      &:hover {
+        background-color: $neutral-100;
+      }
+    }
+
+    #{$root}__dropdownMenuItem:nth-child(even) {
+      border-bottom: 1px solid $neutral-200;
+    }
+  }
+}

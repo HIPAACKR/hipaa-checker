@@ -1,0 +1,68 @@
+- id: secured_url_data_transmission
+  description: >-
+    This Application uses secure connection (HTTPS) to transmit data.
+  pattern:
+    - NSURLSessionConfiguration\.defaultSessionConfiguration\(\)
+    - NSURLSession\.sessionWithConfiguration:delegate:delegateQueue
+    - NSURLSession\.dataTaskWithURL
+    - NSURLSession\.dataTaskWithRequest
+    - NSMutableURLRequest\.setValue:forHTTPHeaderField
+    - NSURLSession\.sharedSession\(\)
+    - <key>NSAppTransportSecurity</key>\s*<dict>\s*<key>NSAllowsArbitraryLoads</key>\s*<false/>
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: check_certificates_revocation
+          factor: "minor"
+        - subrule_id: server_certificate_pinning
+          factor: "negligible"
+        - subrule_id: custom_ssl_validation
+          factor: "moderate"
+  
+- id: insecure_protocol_usage
+  description: >-
+    This Application detects insecure protocols like TLSv1.0 or TLSv1.1.
+  pattern:
+    - kCFStreamSocketSecurityLevelTLSv1
+    - kCFStreamSocketSecurityLevelSSLv3
+    - NSURLSessionConfiguration\.TLSMinimumSupportedProtocol
+    - NSURLSessionConfiguration\.TLSMaximumSupportedProtocol
+    - NSURLSessionConfiguration\.setTLSMinimumSupportedProtocol
+    - NSURLSessionConfiguration\.setTLSMaximumSupportedProtocol
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "moderate"
+      relative_impacts:
+        - subrule_id: secured_url_data_transmission
+          factor: "minor"
+  
+- id: check_certificates_revocation
+  description: >-
+    This Application checks the revocation status of certificates.
+  pattern:
+    - SecTrustSetNetworkFetchAllowed
+    - SecTrustEvaluateWithError
+    - SecTrustSetVerifyDate
+    - SecPolicyCreateRevocation
+    - kSecRevocationOCSPMethod
+    - kSecRevocationCRLMethod
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "moderate"
+      relative_impacts: []
+  
+- id: authorized_api_call
+  description: >-
+    This Application uses Authorization header to secure external API calls.
+  pattern:
+    - NSMutableURLRequest\.setValue:forHTTPHeaderField:\s*@"Authorization"
+    - NSURLRequest\.setValue:forHTTPHeaderField:\s*@"Authorization"
+    - NSURLSession\.dataTaskWithRequest:\s*.*Authorization
+    - NSURLRequest\.allHTTPHeaderFields\s*.*Authorization
+    - NSURLSessionConfiguration\.HTTPAdditionalHeaders\s*.*Authorization
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "strong"
+      relative_impacts: []
+

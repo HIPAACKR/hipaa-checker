@@ -1,0 +1,20 @@
+- id: user_inactivity
+  description: >-
+    Checks if the app enforces session timeout/reauthentication after user inactivity.
+  pattern:
+    - \b(applicationWillResignActive|applicationDidBecomeActive|sceneWillResignActive|sceneDidBecomeActive)\s*\(.*\).*\{(.*resetSession|invalidateSession|logout|checkInactivity|navigateToLogin)\b
+    - \b(Timer\.scheduledTimer\(.*timeInterval:\s*\d+\.*\d+,.*repeats:\s*(false|NO))\b
+    - \bDispatchQueue\.main\.asyncAfter\(.*deadline:\s*\.now\(\s*\)\s*\+\s*\d+\.*\d+\s*\)\s*\{.*(invalidateSession|logout|showReauth)\b
+    - \b(touchesBegan\(|gestureRecognizer\(\s*for:\s*UITapGestureRecognizer\.self\s*\)).*\{(.*updateLastActivityTime|resetInactivityTimer)\b
+    - \b(UserDefaults\.standard\.(set|objectForKey)\s*\(\s*@?"lastActivityDate"|"sessionExpiry")\b
+    - \b(Date\(\).timeIntervalSince\(lastActivityDate\s*\)\s*>\s*\d+)\b  # Timeout check
+    - \b(LAContext\(\).evaluatePolicy\(\.deviceOwnerAuthentication,\s*localizedReason:.*\))\b
+    - \b(presentViewController\(\s*AuthViewController\.self|performSegue\(withIdentifier:\s*"showLogin"\s*))\b
+    - \bNotificationCenter\.default\.addObserver\(\s*.*name:\s*UIApplication\.(didEnterBackground|willEnterForeground)Notification\b
+    - \bNotificationCenter\.default\.post\(\s*name:\s*Notification\.Name\(\s*"SessionExpired"\s*\)\b
+    - \b(SecItemCopyMatching\(\s*.*kSecAttrAccessibleWhenUnlockedThisDeviceOnly\b|if\s+\(token\.isExpired\s*==\s*true)\b
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "strong"
+      relative_impacts: []
+  manual_check: false

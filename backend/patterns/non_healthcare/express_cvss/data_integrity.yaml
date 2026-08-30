@@ -1,0 +1,110 @@
+- id: ensuring_data_integrity
+  description: >-
+    This Application implements authorization to access sensitive resources.
+  type: RegexAnd
+  pattern:
+    - \.hash\(
+    - \.compare\(
+    - \.readFileSync\( 
+    - \.pipe(
+    - \.createWriteStream(
+  vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts: 
+             - subrule_id:  improper_logging_of_sensitive_information
+               factor:  "minor"            
+  severity: 0
+  weight: 1
+  score: 2.5
+
+- id: removes_malicious_content 
+  description: >-
+    This Application removes malicious content to make data secured.  
+  type: RegexAnd
+  pattern:
+    - require\(['"]sanitize['"]\)
+    - \.serializeUser\(
+    - \.deserializeUser\(
+    - \.value\(
+  vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "minor"
+        relative_impacts: 
+             - subrule_id:  potential_security_risks
+               factor:  "negligible"
+  severity: 0
+  weight: 1
+  score: 2.5 
+
+- id: unvalidated_user_input 
+  description: >-
+    Detects the use of unvalidated user input in redirections.
+  type: RegexAnd
+  pattern:
+    - res\.redirect\s*\(\s*['"].*\+.*req\.query\[['"]([^'"]+)['"]\]
+    - res\.redirect\s*\(\s*['"](http[s]?:\/\/[^\s'"]+)['"]\s*\)
+  vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts: 
+             - subrule_id:  sql_injection
+               factor:  "moderate"
+  severity: 0
+  weight: 1
+  score: 2.5 
+
+- id: improper_logging_of_sensitive_information
+  description: >-
+    Detects logging of sensitive request headers that may expose security tokens.
+  type: RegexAnd
+  pattern:
+    - \.log\s*\(\s*['"].*['"]\s*\+\s*req\.headers\s*\)
+  vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts: 
+             - subrule_id:  ensuring_data_integrity
+               factor:  "moderate"
+  severity: 0
+  weight: 1
+  score: 2.5
+
+- id: potential_security_risks
+  description: >-
+    Detects direct assignment of user-controlled plan properties without sanitization.
+  type: RegexAnd
+  pattern:
+    - plan\.properties\s*=
+    - (req\.query|req\.body|req\.params)
+    - plan\.subscriptionOffers\s*=
+  vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts: 
+             - subrule_id: removes_malicious_content 
+               factor: "minor" 
+  severity: 0
+  weight: 1
+  score: 2.5
+
+- id: sql_injection
+  description: >-
+    Detects SQL injection vulnerabilities.
+  pattern:
+    - (query\(|execute\()
+    - (connection\.prepare\()
+  vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts: 
+             - subrule_id: unvalidated_user_input 
+               factor: "strong" 
+  severity: 0
+  weight: 1
+  score: 2.5
+
+
+
+
+

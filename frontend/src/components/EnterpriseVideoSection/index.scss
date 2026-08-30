@@ -1,0 +1,117 @@
+@use '@/design/styles/' as *;
+
+.EnterpriseVideoSection {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 18px;
+    margin-bottom: 20px;
+    border-radius: 999px;
+    background: $enterprise-light-blue;
+    color: $enterprise-blue;
+    font-size: $font-size-semi-tiny;
+    line-height: 1;
+    font-weight: $font-weight-bold;
+  }
+
+  &__heading,
+  h3.EnterpriseVideoSection__heading,
+  .heading.EnterpriseVideoSection__heading {
+    max-width: 960px;
+    margin: 0 auto;
+    color: $enterprise-primary;
+    font-size: $font-size-large;
+    line-height: 1.15;
+    font-weight: $font-weight-light;
+    letter-spacing: -0.8px;
+
+    strong {
+      font-weight: $font-weight-bold;
+    }
+
+    span {
+      display: block;
+      font-weight: $font-weight-light;
+    }
+
+    @include device(sp) {
+      font-size: $font-size-medium;
+      line-height: 1.22;
+    }
+  }
+
+  &__description,
+  p.EnterpriseVideoSection__description,
+  .text.EnterpriseVideoSection__description {
+    max-width: 740px;
+    margin: 18px auto 36px;
+    color: $enterprise-primary;
+    font-size: $font-size-tiny;
+    line-height: 1.55;
+
+    @include device(sp) {
+      font-size: $font-size-semi-tiny;
+      margin-bottom: 28px;
+    }
+  }
+
+  &__thumbnailWrapper {
+    position: relative;
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+
+    @include device(sp) {
+      padding: 0 20px;
+    }
+  }
+
+  &__thumbnailButton {
+    cursor: pointer;
+    position: relative;
+  }
+
+  &__videoContainer {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 14px;
+
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+    }
+  }
+
+  &__thumbnail {
+    border-radius: 14px;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  &__caption,
+  p.EnterpriseVideoSection__caption,
+  .text.EnterpriseVideoSection__caption {
+    font-size: $font-size-semi-tiny;
+    color: $enterprise-primary;
+    margin-top: 18px;
+
+    @include device(sp) {
+      font-size: $font-size-micro;
+      text-align: center;
+    }
+  }
+}

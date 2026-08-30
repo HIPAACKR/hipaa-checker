@@ -1,0 +1,65 @@
+@use '@/design/styles/' as *;
+
+.carousel {
+  $root: &;
+
+  .slick-track {
+    display: flex !important;
+  }
+
+  .slick-slide {
+    height: auto;
+    > div {
+      height: 100%;
+    }
+  }
+
+  @media screen and (max-width: 650px) {
+    .slick-track {
+      display: block;
+    }
+
+    .slick-slide {
+      height: auto;
+      > div {
+        height: auto;
+      }
+    }
+  }
+}
+
+.slick-dots {
+  position: unset;
+  margin-top: 46px;
+  li {
+    width: fit-content;
+    height: fit-content;
+    margin: unset;
+    margin-left: 5px;
+  }
+  li button {
+    width: 10px;
+    height: 10px;
+  }
+  li button:before {
+    width: 10px;
+    height: 10px;
+    color: unset;
+    content: '';
+    background-color: $neutral-300;
+    border-radius: 50%;
+    opacity: 1;
+  }
+  li.slick-active button:before {
+    width: 25.3px;
+    height: 10px;
+    color: unset;
+    content: '';
+    background-color: $primary-500;
+    border-radius: 35px;
+    opacity: 1;
+  }
+}
+li.slick-active {
+  margin-right: 15px;
+}

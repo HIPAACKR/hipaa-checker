@@ -1,0 +1,9 @@
+@use '@/design/styles/' as *;
+
+.cardsWrapper {
+  @include align(row, left, center, 32px, 32px);
+  flex-wrap: wrap;
+  @include device(sp) {
+    @include align(row, center, center, 24px, 24px);
+  }
+}

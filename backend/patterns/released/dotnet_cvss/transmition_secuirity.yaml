@@ -1,0 +1,90 @@
+  - id: uses_https
+    description: >-
+      This Application uses secure connection to transmit data.
+    type: RegexAnd
+    pattern:
+      - \.AddHttpsRedirection\(
+      - \.UseHttpsRedirection\(
+      - \.AddSignalR\(
+      - HttpClient\(
+      - SslStream\(
+      - TlsStream\(
+    severity: 0
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "optimal"
+        relative_impacts:
+          - subrule_id: transmission_security_secure_connection
+            factor: "minor"
+          - subrule_id: data_encryption_moderate
+            factor: "negligible"
+          - subrule_id: data_decryption_moderate
+            factor: "negligible"
+
+    manual_check: false
+  - id: transmission_security_secure_connection
+    description: >-
+      This Application uses secure connection to transmit data.
+    type: RegexAnd
+    pattern:
+      - Socket\(
+      - TcpClient\(
+      - TcpListener\(
+      - UdpClient\(
+      - SecureString\(
+    severity: 2
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: uses_https
+            factor: "negligible"
+          - subrule_id: data_encryption_moderate
+            factor: "minor"
+          - subrule_id: data_decryption_moderate
+            factor: "minor"
+
+    manual_check: true
+  - id: data_encryption_moderate
+    description: >-
+      Encryption via the OpenSSL and the AES-256-CBC cipher is present.
+    type: RegexAnd
+    pattern:
+      - RSA\(
+      - AES\(
+      - HMAC\(
+      - TripleDES\(
+    severity: 2
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: uses_https
+            factor: "negligible"
+          - subrule_id: transmission_security_secure_connection
+            factor: "negligible"
+          - subrule_id: data_decryption_moderate
+            factor: "negligible"
+
+    manual_check: true
+  - id: data_decryption_moderate
+    description: >-
+      Data decryption is used properly using the Cryptography.
+    type: RegexAnd
+    pattern:
+      - AesCryptoServiceProvider\(
+      - RSACryptoServiceProvider\(
+      - TripleDESCryptoServiceProvider\(
+      - Decrypt\(
+    severity: 2
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: uses_https
+            factor: "negligible"
+          - subrule_id: transmission_security_secure_connection
+            factor: "negligible"
+          - subrule_id: data_encryption_moderate
+            factor: "negligible"
+    manual_check: false

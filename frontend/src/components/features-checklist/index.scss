@@ -1,0 +1,33 @@
+@use '@/design/styles/' as *;
+
+.featuresChecklist {
+  $root: &;
+  @include align($start: flex-start, $colGap: 160px);
+  width: 1233px;
+  margin: 30px auto;
+  @include device(sp) {
+    width: 100%;
+    padding: 0px 20px;
+    @include align($rowGap: 24px, $direction: column, $position: flex-start, $start: flex-start);
+  }
+  &__details {
+    @include align($rowGap: 24px, $direction: column, $position: flex-start, $start: flex-start);
+
+    @include device(sp) {
+      max-width: none;
+      margin-top: 0px;
+    }
+  }
+  &__check-content {
+    @include align($colGap: 16px, $position: flex-start, $start: flex-start);
+    .text[data-color='neutral-700'] {
+      transition: all 0.125s 0s ease;
+    }
+
+    &:hover {
+      .text[data-color='neutral-700'] {
+        color: $primary-600;
+      }
+    }
+  }
+}

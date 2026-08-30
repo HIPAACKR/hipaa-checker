@@ -1,0 +1,106 @@
+@use '@/design/styles/' as *;
+
+.codeView {
+  $root: &;
+  &__header {
+    width: calc(100% + 64px);
+    padding: 12px 32px;
+    margin-top: -32px;
+    margin-left: -32px;
+    @include align($colGap: 32px);
+    background-color: $white;
+    @include device(sp) {
+      width: calc(100% + 32px);
+      padding: 12px 20px;
+      margin-top: -16px;
+      margin-left: -16px;
+    }
+    &__content {
+      @include align($direction: column, $start: flex-start, $rowGap: 12px);
+      width: 100%;
+      &__hamburger {
+        @include align($colGap: 8px);
+        @include device(sp) {
+          display: none;
+        }
+        &__item {
+          cursor: pointer;
+        }
+      }
+      &__button {
+        @include align($colGap: 16px);
+      }
+      &__application {
+        @include align($direction: column, $start: flex-start);
+        @include device(sp) {
+          display: none;
+        }
+      }
+      &__name {
+        display: -webkit-box;
+        width: 364px;
+        overflow: hidden;
+        font-feature-settings: 'palt';
+        font-kerning: auto;
+        word-break: break-all;
+        overflow-wrap: break-word;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+      }
+      &__details {
+        @include align($colGap: 12px);
+        &__data {
+          @include align($colGap: 4px);
+        }
+      }
+
+      &__back-button {
+        padding: 7.5px;
+        cursor: pointer;
+        background-color: $neutral-25;
+        border-radius: 50%;
+        &:hover {
+          background-color: $neutral-300;
+          box-shadow: 0px 8px 24px 0px rgba(149, 157, 165, 0.2);
+        }
+      }
+    }
+  }
+
+  &__main-container {
+    padding: 16px 32px;
+    @include device(sp) {
+      padding: 12px 0;
+      .text[data-color='neutral-800'] {
+        padding-top: 20px;
+        margin-bottom: 20px;
+        font-size: $font-size-semi-small;
+        text-align: center;
+      }
+    }
+
+    &__items {
+      padding: 16px;
+      padding-left: 5px;
+      background-color: $white;
+      @include align($direction: column, $rowGap: 12px, $start: flex-start);
+    }
+
+    &__item {
+      /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
+      font-family: 'IBM Plex Mono';
+      font-size: $font-size-semi-tiny;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px;
+      color: $neutral-900;
+      letter-spacing: -0.2px;
+      word-break: break-all;
+      white-space: pre-wrap;
+      border-radius: 8px;
+      &:first-child {
+        margin-bottom: 38px;
+      }
+    }
+  }
+}

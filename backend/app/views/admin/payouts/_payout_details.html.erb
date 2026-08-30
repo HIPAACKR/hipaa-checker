@@ -1,0 +1,136 @@
+<h2>Payout Details</h2>
+
+<div class="panel">
+  <h3>Payout Summary</h3>
+  <table class="attributes_table">
+    <tr><th>Payout ID:</th><td><%= link_to payout.id, "https://dashboard.stripe.com/payouts/#{payout.id}", target: "_blank" %></td></tr>
+    <tr><th>Amount ($):</th><td><%= (payout.amount / 100.0).round(2) %></td></tr>
+    <tr><th>Currency:</th><td><%= payout.currency.upcase %></td></tr>
+    <tr><th>Status:</th><td><%= payout.status %></td></tr>
+    <tr><th>Arrival Date:</th><td><%= Time.at(payout.arrival_date).strftime("%B %d, %Y %H:%M") %></td></tr>
+    <tr><th>Created At:</th><td><%= Time.at(payout.created).strftime("%B %d, %Y %H:%M") %></td></tr>
+  </table>
+</div>
+
+<div class="panel">
+  <h3>Related Transactions</h3>
+
+  <% if transactions.data.any? %>
+    <table class="index_table attributes_table">
+      <thead>
+      <tr>
+        <th>Transaction ID</th>
+        <th>Charge ID</th>
+        <th>Amount ($)</th>
+        <th>Net Amount ($)</th>
+        <th>Currency</th>
+        <th>Customer Email</th>
+        <th>Organization</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Created At</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% transactions.auto_paging_each do |txn| %>
+        <% charge = txn.source ? (Stripe::Charge.retrieve(txn.source) rescue nil) : nil %>
+        <% customer = Stripe::Customer.retrieve(charge.customer) rescue nil %>
+
+        <tr>
+          <td><%= link_to txn.id, "https://dashboard.stripe.com/balance/#{txn.id}", target: "_blank" %></td>
+          <td>
+            <% if txn.source.present? %>
+              <%= link_to txn.source, "https://dashboard.stripe.com/payments/#{txn.source}", target: "_blank" %>
+            <% else %>
+              N/A
+            <% end %>
+          </td>
+          <td><%= (txn.amount / 100.0).round(2) %></td>
+          <td><%= (txn.net / 100.0).round(2) %></td>
+          <td><%= txn.currency.upcase %></td>
+          <td><%= customer&.email %></td>
+          <td><%= User.find_by(email: customer&.email)&.organization&.name %></td>
+          <td><%= txn.description %></td>
+          <td><%= txn.status %></td>
+          <td><%= Time.at(txn.created).strftime("%B %d, %Y %H:%M") %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No transactions found for this payout.</p>
+  <% end %>
+</div>
+
+<style>
+  /* Panel Styling */
+  .panel {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+
+  /* Table Styling */
+  .attributes_table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .attributes_table th {
+    background-color: #2c3e50; /* Dark header */
+    color: white;
+    padding: 10px;
+    text-align: left;
+  }
+
+  .attributes_table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  /* Index Table Styling */
+  .index_table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+  }
+
+  .index_table th {
+    background-color: #34495e; /* Darker header */
+    color: white;
+    padding: 10px;
+  }
+
+  .index_table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  /* Status Tags */
+  .status_tag.ok {
+    background-color: #27ae60;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+  }
+
+  .status_tag.warning {
+    background-color: #f39c12;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+  }
+
+  .status_tag.error {
+    background-color: #e74c3c;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+  }
+</style>
+

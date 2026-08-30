@@ -1,0 +1,44 @@
+@use '@/design/styles/' as *;
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+ .tab {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 1px solid #0092E3;
+  border-radius: 5px;
+  background-color: #ffffff;   
+  color: #0092E3;             
+  transition: all 0.3s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: #0092E3;
+    color: #ffffff;
+  }
+
+  &.active-tab {
+    background-color: #0092E3; 
+    color: #ffffff;           
+  }
+}
+
+
+/* Styling for tab content */
+.tabContent {
+  margin-top: 20px;
+  padding: 20px;
+  // border: 1px solid #ccc; /* Border around the tab content */
+  border-radius: 8px; /* Optional: rounded corners for a cleaner look */
+}
+
+.tabContent ul {
+  padding-left: 20px;
+}
+
+.tabContent ul li {
+  margin-bottom: 10px;
+}

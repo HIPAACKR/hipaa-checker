@@ -1,0 +1,103 @@
+- id: user_authentication
+  description: >-
+    Checks whether authentication is implemented or not.
+  type: RegexAnd
+  pattern:
+    - UseAuthentication\(
+    - Authenticate\(
+    - WebSecurity\.Login\(
+    - ValidateAntiForgeryToken\]
+    - PasswordSignInAsync\(
+  severity: 0
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: user_authentication_identity
+          factor: "negligible"
+        - subrule_id: user_authentication_oauth
+          factor: "negligible"
+        - subrule_id: multifactor_authentication
+          factor: "minor"
+
+- id: user_authentication_identity
+  description: >-
+    Checks whether authentication is implemented using ASP.NET Core Identity.
+  type: RegexAnd
+  pattern:
+    - AddIdentity\(
+    - AddDefaultIdentity\(
+  severity: 0
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "moderate"
+      relative_impacts:
+        - subrule_id: user_authentication_identity
+          factor: "negligible"
+        - subrule_id: user_authentication
+          factor: "negligible"
+        - subrule_id: multifactor_authentication
+          factor: "moderate"
+
+- id: user_authentication_oauth
+  description: >-
+    Checks whether authentication is implemented using OAuth.
+  type: RegexAnd
+  pattern:
+    - \.AddAuthentication\(
+    - AddOAuth\(
+    - OAuthDefaults\(
+  severity: 0
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: user_authentication_identity
+          factor: "negligible"
+        - subrule_id: user_authentication
+          factor: "negligible"
+        - subrule_id: multifactor_authentication
+          factor: "minor"
+
+- id: multifactor_authentication
+  description: >-
+    "Detects implementation of Multi-Factor Authentication (MFA)."
+  type: RegexAnd
+  pattern:
+    - TwoFactorEnabled
+    - TwoFactorSignInAsync\(
+    - SendTwoFactorCodeAsync\(
+    - GenerateTwoFactorTokenAsync\(
+    - RequireConfirmedAccount\s*=\s*true
+    - \.TwoFactorAuthenticatorSignInAsync\(
+    - \.GetTwoFactorEnabledAsync\(
+    - \.GenerateTwoFactorTokenAsync\(
+  severity: 0
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: user_authentication
+          factor: "negligible"
+        - subrule_id: user_authentication_oauth
+          factor: "negligible"
+        - subrule_id: social_login
+          factor: "minor"
+        - subrule_id: user_authentication_identity
+          factor: "negligible"
+
+- id: social_login
+  description: >-
+    "Detects implementation of social login providers."
+  type: RegexAnd
+  pattern:
+    - AddGoogle\(
+    - AddFacebook\(
+    - AddMicrosoftAccount\(
+    - AddGitHub\(
+    - OAuthDefaults\.
+  severity: 0
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "negligible"
+      relative_impacts: []

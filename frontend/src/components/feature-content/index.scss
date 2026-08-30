@@ -1,0 +1,90 @@
+@use '@/design/styles/' as *;
+
+.featureContent {
+  min-width: 850px;
+  @include device(pc) {
+    height: 810px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.5) $white;
+  }
+
+  img {
+    width: 788px;
+    height: auto;
+    @include device(sp) {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+    }
+  }
+  @include device(sp) {
+    min-width: unset;
+  }
+  &--italic {
+    font-style: italic;
+  }
+  &--ml-50 {
+    margin-left: 50px;
+  }
+  &--mt-48 {
+    margin-top: 48px;
+  }
+  &--mt-20 {
+    margin-top: 20px;
+  }
+
+  &--mb-48 {
+    margin-bottom: 48px;
+  }
+  &--mb-20 {
+    margin-bottom: 20px;
+  }
+  &--mb-32 {
+    margin-bottom: 32px;
+  }
+  &--mb-28 {
+    margin-bottom: 28px;
+  }
+  &--mt-8 {
+    margin-top: 8px;
+  }
+  &--green {
+    color: $color-green;
+  }
+  &--red {
+    color: $cornell-red;
+  }
+  ul {
+    margin-top: 8px;
+    margin-left: 30px;
+    li {
+      list-style: disc;
+    }
+  }
+  a {
+    font-weight: $font-weight-semi-bold;
+    color: $primary-500;
+    text-decoration: underline;
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+  .heading {
+    margin-bottom: 8px;
+    @include device(sp) {
+      &[data-type='h4'] {
+        font-size: $font-size-semi-medium;
+        line-height: 32px;
+      }
+      &[data-type='h5'] {
+        font-size: $font-size-small;
+        line-height: 28px;
+      }
+    }
+  }
+  .subtitle {
+    margin-bottom: 8px;
+    font-weight: $font-weight-semi-bold;
+  }
+}

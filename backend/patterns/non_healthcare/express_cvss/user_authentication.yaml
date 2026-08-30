@@ -1,0 +1,75 @@
+- id: passport_authentication
+  description: >-
+    Ensures Passport.js authentication is securely implemented.
+  type: RegexAnd
+  pattern:
+    - passport\.authenticate\(
+    - req\.logIn\(
+    - passport\.initialize\(
+    - passport\.session\(
+  vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "moderate"
+        relative_impacts: 
+             - subrule_id: multifactor_authentication
+               factor: "minor"
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: user_authentication_social
+  description: >-
+    Checks whether authentication is implemented or not using social media. 
+  type: RegexOr
+  pattern:
+    - \.Strategy
+    - \.authenticate\(['"]facebook['"]\)
+    - \.authenticate\(['"]linkedin['"]\)
+    - \.authenticate\(['"]twitter['"]\)
+    - \.authenticate\(['"]github['"]\)
+  vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "moderate"
+        relative_impacts: 
+             - subrule_id: oauth_authentication
+               factor: "minor"
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: oauth_authentication
+  description: >-
+    Detects OAuth 2.0 authentication implementation.
+  type: RegexAnd
+  pattern:
+    - require\(['"]passport['"]\)
+    - passport\.use\(
+    - (OAuth2Strategy|Strategy)\(
+  vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts: 
+             - subrule_id: multifactor_authentication
+               factor: "moderate"
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: multifactor_authentication
+  description: >-
+    Detects implementation of multi-factor authentication.
+  type: RegexAnd
+  pattern:
+    - (sendTwoFactorCode|sendMfaCode)
+    - (verifyMfaToken|verifyTwoFactorToken)
+    - (useMfa|useTwoFactorAuth)
+  vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "optimal"
+        relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 5
+
+
+

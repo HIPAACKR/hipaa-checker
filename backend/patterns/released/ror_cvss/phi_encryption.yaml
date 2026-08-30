@@ -1,0 +1,14 @@
+  - id: data_encryption_phi
+    description: >-
+      Encryption via AES symmetric encryption algorithm
+    pattern:
+      - has_encrypted
+      - ^attr_encrypted\s*:\s*\w+
+      - ^encrypts\s*:\s*\w+
+      - encrypted\s*:\s*true
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "strong"
+        relative_impacts: []
+    manual_check: true
+    severity: warning

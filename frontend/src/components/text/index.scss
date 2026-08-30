@@ -1,0 +1,204 @@
+@use '@/design/styles/' as *;
+
+.text {
+  $root: &;
+
+  //size
+  &[data-size='fs-38'] {
+    font-size: $font-size-large;
+    line-height: 57px;
+  }
+  &[data-size='fs-24'] {
+    font-size: $font-size-semi-medium;
+    line-height: 28px;
+    @include device(sp) {
+      font-size: $font-size-semi-small;
+      line-height: 20px;
+    }
+  }
+  &[data-size='fs-20'] {
+    font-size: $font-size-small;
+    line-height: 28px;
+    @include device(sp) {
+      font-size: $font-size-semi-small;
+      line-height: 20px;
+    }
+  }
+  &[data-size='fs-18'] {
+    font-size: $font-size-semi-small;
+    line-height: 28px;
+    @include device(sp) {
+      font-size: $font-size-semi-tiny;
+      line-height: 20px;
+    }
+  }
+  &[data-size='fs-16'] {
+    font-size: $font-size-tiny;
+    line-height: 26px;
+    @include device(sp) {
+      font-size: $font-size-semi-tiny;
+      line-height: 20px;
+    }
+  }
+  &[data-size='fs-14'] {
+    font-size: $font-size-semi-tiny;
+    line-height: 28px;
+  }
+  &[data-size='fs-12'] {
+    font-size: $font-size-micro;
+    line-height: 16px;
+  }
+
+  //weight
+  &[data-weight='bold'] {
+    font-weight: $font-weight-bold;
+  }
+  &[data-weight='semi-bold'] {
+    font-weight: $font-weight-semi-bold;
+  }
+  &[data-weight='medium'] {
+    font-weight: $font-weight-medium;
+  }
+  &[data-weight='regular'] {
+    font-weight: $font-weight-regular;
+  }
+
+  //align
+  &[data-align='left'] {
+    text-align: left;
+  }
+  &[data-align='center'] {
+    text-align: center;
+  }
+  &[data-align='right'] {
+    text-align: right;
+  }
+
+  //color
+  &[data-color='dark'] {
+    color: $dark;
+  }
+  &[data-color='white'] {
+    color: $white;
+  }
+  &[data-color='primary-950'] {
+    color: $primary-950;
+  }
+  &[data-color='primary-900'] {
+    color: $primary-900;
+  }
+  &[data-color='primary-800'] {
+    color: $primary-800;
+  }
+  &[data-color='primary-870'] {
+    color: $primary-870;
+  }
+  &[data-color='primary-850'] {
+    color: $primary-850;
+  }
+  &[data-color='primary-700'] {
+    color: $primary-700;
+  }
+
+  &[data-color='primary-600'] {
+    color: $primary-600;
+  }
+
+  &[data-color='primary-500'] {
+    color: $primary-500;
+  }
+
+  &[data-color='primary-400'] {
+    color: $primary-400;
+  }
+
+  &[data-color='primary-300'] {
+    color: $primary-300;
+  }
+
+  &[data-color='primary-200'] {
+    color: $primary-200;
+  }
+
+  &[data-color='primary-100'] {
+    color: $primary-100;
+  }
+
+  &[data-color='primary-50'] {
+    color: $primary-50;
+  }
+
+  &[data-color='primary-25'] {
+    color: $primary-25;
+  }
+
+  &[data-color='neutral-950'] {
+    color: $neutral-950;
+  }
+
+  &[data-color='neutral-900'] {
+    color: $neutral-900;
+  }
+
+  &[data-color='neutral-800'] {
+    color: $neutral-800;
+  }
+
+  &[data-color='neutral-700'] {
+    color: $neutral-700;
+  }
+
+  &[data-color='neutral-600'] {
+    color: $neutral-600;
+  }
+
+  &[data-color='neutral-500'] {
+    color: $neutral-500;
+  }
+
+  &[data-color='neutral-400'] {
+    color: $neutral-400;
+  }
+
+  &[data-color='neutral-300'] {
+    color: $neutral-300;
+  }
+
+  &[data-color='neutral-200'] {
+    color: $neutral-200;
+  }
+
+  &[data-color='neutral-100'] {
+    color: $neutral-100;
+  }
+
+  &[data-color='neutral-50'] {
+    color: $neutral-50;
+  }
+
+  &[data-color='neutral-25'] {
+    color: $neutral-25;
+  }
+  &[data-color='neutral-gray'] {
+    color: $neutral-gray;
+  }
+
+  &[data-color='radical-red'] {
+    color: $radical-red;
+  }
+  &[data-color='yellow-ochre'] {
+    color: $yellow-ochre;
+  }
+  &[data-color='green-cyan'] {
+    color: $green-cyan;
+  }
+  &[data-color='cornell-red'] {
+    color: $cornell-red;
+  }
+  &[data-color='yellowish-orange'] {
+    color: $yellowish-orange;
+  }
+  &[data-color='deep-aqua'] {
+    color: $deep-aqua;
+  }
+}

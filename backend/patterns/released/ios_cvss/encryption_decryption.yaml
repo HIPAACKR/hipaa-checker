@@ -1,0 +1,234 @@
+- id: optimal_cryptographic_security
+  description: >-
+    Uses iOS CryptoKit with modern algorithms and secure implementations
+  pattern:
+    - \bCryptoKit\.AES\.GCM\b.*(nonce|sealedBox).*\.combined
+    - \bSecureEnclave\.P256\.KeyAgreement\b
+    - \bCCKeyDerivationPBKDF\(.*kCCPRFHmacAlgSHA512
+    - \bSecKeyCreateSignature\(.*kSecKeyAlgorithmECDSASignatureRFC4754
+    - \bNISTSecureEnclaveKeyParameter\b
+    - \bCryptoTokenKit\.TokenSession\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: strong_cryptographic_security
+          factor: "negligible"
+        - subrule_id: moderate_cryptographic_security
+          factor: "negligible"
+        - subrule_id: minor_cryptographic_security
+          factor: "negligible"
+        - subrule_id: negligible_cryptographic_security
+          factor: "negligible"
+        - subrule_id: custom_crypto_tink_encryption
+          factor: "negligible"
+  manual_check: false
+
+- id: strong_cryptographic_security
+  description: >-
+    CommonCrypto implementations with proper configuration
+  pattern:
+    - \bCCCryptorCreateWithMode\(.*kCCAlgorithmAES.*kCCOptionPKCS7Padding
+    - \bSecKeyGeneratePair\(.*kSecAttrKeyTypeRSA.*kSecAttrKeySizeInBits2048
+    - \bkSecAttrAccessibleAfterFirstUnlockThisDeviceOnly\b
+    - \bCC_SHA256_Init\(
+    - \bSecTrustEvaluateWithError\(
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: optimal_cryptographic_security
+          factor: "minor"
+        - subrule_id: moderate_cryptographic_security
+          factor: "negligible"
+        - subrule_id: minor_cryptographic_security
+          factor: "negligible"
+        - subrule_id: negligible_cryptographic_security
+          factor: "negligible"
+        - subrule_id: custom_crypto_tink_encryption
+          factor: "negligible"
+  manual_check: false
+
+- id: moderate_cryptographic_security
+  description: >-
+    Legacy crypto implementations needing upgrade
+  pattern:
+    - \bkCCAlgorithmDES\b
+    - \bkCCOptionECBMode\b
+    - \bSecPaddingPKCS1\b
+    - \bkSecAttrKeySizeInBits1024\b
+    - \bCC_MD5_Init\(
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts:
+        - subrule_id: optimal_cryptographic_security
+          factor: "moderate"
+        - subrule_id: strong_cryptographic_security
+          factor: "minor"
+        - subrule_id: minor_cryptographic_security
+          factor: "negligible"
+        - subrule_id: negligible_cryptographic_security
+          factor: "negligible"
+        - subrule_id: custom_crypto_tink_encryption
+          factor: "negligible"
+  manual_check: true
+
+- id: minor_cryptographic_security
+  description: Weak crypto patterns with PHI exposure risk
+  pattern:
+    - \bNSDataWritingFileProtectionNone\b
+    - \bkSecAttrAccessibleAlways\b
+    - \bAES\.CBC\.encrypt\(.*iv:\s*Data\(repeating:\s*0
+    - \bCC_SHA1_Init\(
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "minor"
+      relative_impacts:
+        - subrule_id: optimal_cryptographic_security
+          factor: "strong"
+        - subrule_id: strong_cryptographic_security
+          factor: "moderate"
+        - subrule_id: moderate_cryptographic_security
+          factor: "minor"
+        - subrule_id: negligible_cryptographic_security
+          factor: "negligible"
+        - subrule_id: custom_crypto_tink_encryption
+          factor: "negligible"
+  manual_check: true
+
+- id: negligible_cryptographic_security
+  description: Critical vulnerabilities violating HIPAA
+  pattern:
+    - \bUserDefaults\.standard\.set\(.*(key|token|secret)
+    - \bMD5\.self\b
+    - \bSecItemAdd\(.*kSecValueData:Data\(\).*\-dump
+    - \bprint\(.*password
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "negligible"
+      relative_impacts: []
+  manual_check: true
+
+- id: optimal_hashing_security
+  description: Prioritize for PHI protection. Uses SHA-256/512 with HMAC or CryptoKit.
+  pattern:
+    - \bCC_SHA256_Init\b
+    - \bCryptoKit\.SHA256\b
+    - \bkCCHmacAlgSHA256\b
+    - \bCCKeyDerivationPBKDF\(.*kCCPRFHmacAlgSHA512\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: strong_hashing_security
+          factor: "negligible"
+        - subrule_id: moderate_hashing_security
+          factor: "negligible"
+        - subrule_id: minor_hashing_security
+          factor: "negligible"
+        - subrule_id: negligible_hashing_security
+          factor: "negligible"
+  manual_check: false
+
+- id: strong_hashing_security
+  description: Secure key derivation (PBKDF2 > 10k iterations) or Apple CryptoKit implementations.
+  pattern:
+    - \bCCKeyDerivationPBKDF\(.*rounds\s*=\s*[1-9]\d{4,}\b
+    - \bSecKeyGeneratePair\(.*kSecAttrKeyTypeECSECPrimeRandom\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: optimal_hashing_security
+          factor: "minor"
+        - subrule_id: moderate_hashing_security
+          factor: "negligible"
+        - subrule_id: minor_hashing_security
+          factor: "negligible"
+        - subrule_id: negligible_hashing_security
+          factor: "negligible"
+  manual_check: false
+
+
+- id: moderate_hashing_security
+  description: Uses deprecated SHA-1 or insufficient PBKDF2 iterations (<10k).
+  pattern:
+    - \bCC_SHA1_Init\b
+    - \bkCCHmacAlgSHA1\b
+    - \bCCKeyDerivationPBKDF\(.*rounds\s*=\s*[1-9]\d{0,3}\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts:
+        - subrule_id: optimal_hashing_security
+          factor: "moderate"
+        - subrule_id: strong_hashing_security
+          factor: "minor"
+        - subrule_id: minor_hashing_security
+          factor: "negligible"
+        - subrule_id: negligible_hashing_security
+          factor: "negligible"
+  manual_check: true
+
+
+- id: minor_hashing_security
+  description: Uses MD5 or weak cryptographic primitives.
+  pattern:
+    - \bCC_MD5_Init\b
+    - \bkCCAlgorithmDES\b
+    - \bkCCBlockSizeDES\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "minor"
+      relative_impacts:
+        - subrule_id: optimal_hashing_security
+          factor: "strong"
+        - subrule_id: strong_hashing_security
+          factor: "moderate"
+        - subrule_id: moderate_hashing_security
+          factor: "minor"
+        - subrule_id: negligible_hashing_security
+          factor: "negligible"
+  manual_check: true
+
+- id: negligible_hashing_security
+  description: Hardcoded credentials or plaintext PHI storage.
+  pattern:
+    - \bNSString\s*\*\s*password\s*=\s*@".*"
+    - \bUserDefaults\.standard\.set\(.*forKey:\s*"PHI_
+    - \bkSecAttrAccessibleAlways\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "negligible"
+      relative_impacts: []
+  manual_check: true
+  
+- id: secure_data_storage
+  description: HIPAA-compliant PHI storage
+  pattern:
+    - \bNSFileProtectionComplete\b
+    - \bkSecAttrAccessibleWhenUnlockedThisDeviceOnly\b
+    - \bSQLITE_HAS_CODEC\b
+    - \bKeychainServices\.passwordReference\(\)
+    - \bCKSQLiteDatabaseProtectionModeComplete\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts:
+        - subrule_id: database_encryption
+          factor: "negligible"
+  manual_check: true
+
+- id: code_obfuscation_validation
+  description: Basic reverse-engineering protection
+  pattern:
+    - \bSWIFT_OBFUSCATE\(\)
+    - \b\-enable\-library\-evolution\b
+    - \b\-Xfrontend\s+\-enable\-opaque\-types\b
+    - \bSTRIP_INSTALLED_PRODUCT\s*=\s*YES\b
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts: []
+  manual_check: true

@@ -1,0 +1,235 @@
+<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/47.3.0/ckeditor5.css" />
+
+<div class="blog-form">
+  <div class="field">
+    <label for="blog_title">Title</label>
+    <input type="text" id="blog_title" value="<%= @blog ? @blog.title : '' %>" />
+  </div>
+
+  <div class="field">
+    <label for="blog_photo">Photo</label>
+
+    <input type="file" id="blog_photo" name="blog[photo]" accept="image/*" />
+
+    <input type="hidden"
+           id="blog_photo_url"
+           name="blog[photo_url]"
+           value="<%= @blog&.photo_url %>">
+  </div>
+
+  <div class="field">
+    <label for="blog_readTime">Read Time</label>
+    <input type="number" id="blog_readTime" value="<%= @blog ? @blog.read_time : '' %>" />
+  </div>
+
+
+  <div class="field">
+    <label for="blog_category">Category</label>
+    <input type="text" id="blog_category" value="<%= @blog ? @blog.category : '' %>" />
+  </div>
+
+  <div class="field">
+    <label for="blog_description">Description</label>
+    <input type="text" id="blog_description" value="<%= @blog ? @blog.description : '' %>" />
+  </div>
+
+  <div class="field">
+  <label>Body</label>
+  <textarea id="blog_body"><%= @blog ? @blog.body : '' %></textarea>
+  <button type="button" id="save_blog" data-id="<%= @blog ? @blog.id : '' %>">Save Blog</button>
+  </div>
+</div>
+
+
+
+
+
+<script src="https://cdn.ckeditor.com/ckeditor5/47.3.0/ckeditor5.umd.js"></script>
+<script>
+    const {
+        ClassicEditor,
+        Essentials,
+        Bold,
+        Italic,
+        Font,
+        Paragraph,
+        Image,
+        ImageToolbar,
+        ImageInsert,
+        ImageUpload,
+        Table,
+        TableToolbar,
+        BlockQuote,
+        Underline,
+        MediaEmbed,
+        Link
+    } = CKEDITOR;
+
+    class MyUploadAdapter {
+        constructor(loader) { this.loader = loader; }
+
+        upload() {
+            return this.loader.file.then(file => {
+                const data = new FormData();
+                data.append('upload', file);
+
+                return fetch('/admins/ckeditor_uploads', {  // <-- fixed URL
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: data
+                })
+                  .then(response => {
+                      if (!response.ok) throw new Error('Upload failed');
+                      return response.json();
+                  })
+                  .then(result => ({ default: result.url }));
+            });
+        }
+
+        abort() {}
+    }
+
+    function MyCustomUploadAdapterPlugin(editor) {
+        editor.plugins.get('FileRepository').createUploadAdapter = loader => {
+            return new MyUploadAdapter(loader);
+        };
+    }
+
+    let ckeditorInstance;
+
+    ClassicEditor
+      .create(document.querySelector('#blog_body'), {  // <-- attach to textarea
+          licenseKey: 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3OTY4NjA3OTksImp0aSI6IjBmN2FmYjYzLTI5NjAtNDYzNC1hMGY0LTI5MzhiNDEyZTVjNCIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiXSwiZmVhdHVyZXMiOlsiRFJVUCIsIkUyUCIsIkUyVyJdLCJyZW1vdmVGZWF0dXJlcyI6WyJQQiIsIlJGIiwiU0NIIiwiVENQIiwiVEwiLCJUQ1IiLCJJUiIsIlNVQSIsIkI2NEEiLCJMUCIsIkhFIiwiUkVEIiwiUEZPIiwiV0MiLCJGQVIiLCJCS00iLCJGUEgiLCJNUkUiXSwidmMiOiI4ODQ4YjBmYSJ9.hSbp1SiHNZjn6YSNrjuUk7p36WjvvMj37t9RCwiOeDx8wM7aiLtf9V07v39YjXNhOXUxxP2XrG3KZH7FfNo5Xw',
+          plugins: [
+              Essentials,
+              Bold,
+              Italic,
+              Font,
+              Paragraph,
+              Image,
+              ImageToolbar,
+              ImageInsert,
+              ImageUpload,
+              Table,
+              TableToolbar,
+              BlockQuote,
+              Underline,
+              MediaEmbed,
+              Link
+          ],
+          extraPlugins: [ MyCustomUploadAdapterPlugin ],
+          toolbar: [
+              'undo', 'redo', '|',
+              'bold', 'italic', 'underline', '|',
+              'link',
+              'blockQuote', '|',
+              'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
+              'insertTable',
+              'insertImage',
+              'mediaEmbed'
+          ],
+          image: {
+              toolbar: [
+                  'imageTextAlternative',
+                  'toggleImageCaption',
+                  'imageStyle:inline',
+                  'imageStyle:block',
+                  'imageStyle:side'
+              ]
+          },
+          table: {
+              contentToolbar: [
+                  'tableColumn',
+                  'tableRow',
+                  'mergeTableCells'
+              ]
+          }
+      })
+      .then(editor => {
+          ckeditorInstance = editor;     // <-- set this, no extra listeners
+      })
+      .catch(error => console.error(error));
+
+    document.getElementById("save_blog").addEventListener("click", function () {
+        const title = document.getElementById("blog_title").value;
+        const photo = document.getElementById("blog_photo_url").value;
+        const category = document.getElementById("blog_category").value;
+        const description = document.getElementById("blog_description").value;
+        const readTime = document.getElementById("blog_readTime").value;
+        const body = ckeditorInstance.getData();
+        const blogId = this.getAttribute("data-id"); // Get blog id from button data-id attribute
+
+        // Determine whether it's an update or create based on the presence of blogId
+        const method = blogId ? "PATCH" : "POST";
+        const url = blogId ? `/api/v1/blogs/${blogId}` : "/api/v1/blogs";  // Use the correct URL for updating
+
+        fetch(url, {
+            method: method,
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                blog: {
+                    title: title,
+                    category: category,
+                    photo_url: photo,
+                    description: description,
+                    read_time: readTime,
+                    body: body
+                }
+            })
+        })
+
+          .then(data => {
+              if (method === "PATCH") {
+                  alert("Blog updated!");
+              } else {
+                  alert("Blog saved!");
+              }
+              window.location.href = "/admin/blogs";  // Redirect after save or update
+          })
+          .catch(err => {
+              console.error(err);
+              alert("An error occurred while saving the blog.");
+          });
+    });
+
+
+    document.getElementById("blog_photo").addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const data = new FormData();
+        data.append("upload", file);
+
+        const res = await fetch("/admins/ckeditor_uploads", {
+            method: "POST",
+            headers: {
+                "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: data
+        });
+
+        if (!res.ok) {
+            alert("Image upload failed");
+            return;
+        }
+
+        const result = await res.json();
+
+        // store URL for save
+        document.getElementById("blog_photo_url").value = result.url;
+    });
+
+</script>
+
+<style>
+    .blog-form .field { margin-bottom: 12px; }
+    .blog-form label { display: block; margin-bottom: 4px; }
+    .blog-form input[type="text"],
+    .blog-form textarea { width: 100%; box-sizing: border-box; display: block; }
+    .blog-form input[type="file"] { display: block; }
+</style>

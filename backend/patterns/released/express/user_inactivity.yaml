@@ -1,0 +1,82 @@
+  - id: handles_user_inactivity
+    description: >-
+      The appplication detects and handles user inactivity within the specified timeframe.
+    type: RegexAnd
+    pattern:
+      - \.session
+      - \.session_type
+      - timeout
+      - timedout
+      - haltOnTimedout
+      - destroy\(
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "moderate"
+        relative_impacts:
+          - subrule_id: session_management
+            factor: "minor"
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: detect_shut_down
+    description: >-
+      The appplication maintains keepAlive to detect and shut down the agent to transfer data when it is no longer needed.  
+    type: RegexAnd
+    pattern:
+      - \.setKeepAlive\(
+      - \.setTimeout\(\)
+      - \.connect\(
+      - \.pipe\(
+      - \.closeAllConnections\(\)
+      - \.closeIdleConnections\(\)
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "moderate"
+        relative_impacts:
+          - subrule_id: session_management
+            factor: "minor"
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: session_management
+    description: >-
+      Ensures secure session handling.
+    type: RegexAnd
+    pattern:
+      - require\(['"]express-session['"]\)
+      - session\(\{
+      - secret:\s*
+      - (secret:|cookie:)
+      - (maxAge:|expires:)
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: handles_user_inactivity
+            factor: "moderate"
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: input_validation
+    description: >-
+      Ensures input validation mechanisms are implemented.
+    type: RegexAnd
+    pattern:
+      - (req\.params|req\.query|req\.body)
+      - (express-validator|validator\.isEmail\()
+      - (sanitize|escape)
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts: []
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+

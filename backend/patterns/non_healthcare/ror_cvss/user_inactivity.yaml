@@ -1,0 +1,13 @@
+- id: user_inactivity
+  description: >-
+    User Inactivity Or auto log off is detected and handled properly
+  type: RegexAnd
+  pattern:
+    - :timeoutable
+    - \.timeout_in\s*=\s*
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "moderate"
+      relative_impacts: []
+
+  severity: warning

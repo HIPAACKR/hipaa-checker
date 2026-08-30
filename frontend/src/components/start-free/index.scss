@@ -1,0 +1,72 @@
+@use '@/design/styles/' as *;
+
+.startFree {
+  position: relative;
+  z-index: 0;
+  @include align(column, flex-start, center, 0, 32px);
+  width: 100%;
+  min-height: 372px;
+  padding: 72px 227px;
+  overflow: hidden;
+  background: $footer-pc-gradient;
+  @include device(sp) {
+    min-height: 260px;
+    padding: 40px 16px;
+    background: $footer-sp-gradient;
+  }
+  &::after {
+    position: absolute;
+    top: -450px;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 1312.997px;
+    content: '';
+    background-image: url('/images/common/footer-bg-pc.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    scale: 1.1;
+    @include device(sp) {
+      top: -88px;
+      height: 506.56px;
+      background-image: url('/images/common/footer-bg-sp.svg');
+    }
+  }
+  &__textWrapper {
+    @include align(column, flex-start, center, 0, 24px);
+    .heading {
+      @include device(pc) {
+        white-space: pre-line;
+      }
+    }
+    .subtitle {
+      font-weight: $font-weight-regular;
+      color: $primary-50;
+      text-align: center;
+    }
+  }
+  &__dualColorHeader {
+    @include align($start: flex-start, $colGap: 14px);
+    flex-wrap: wrap;
+    max-width: 720px;
+    margin: 0 auto;
+    @include device(sp) {
+      column-gap: 6px;
+      max-width: 380px;
+    }
+  }
+  &__button {
+    width: 188px;
+    
+  }
+.startFree__subtitle {
+  display: block;
+  max-width: 700px; 
+  margin: 0 auto;
+  color: white;
+  font-size: 18px;
+  line-height: 1.6;
+  text-align: center;
+  padding: 0 1rem;
+}
+}

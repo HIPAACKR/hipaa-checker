@@ -1,0 +1,36 @@
+@use '@/design/styles/' as *;
+
+.breadcrumb {
+  $root: &;
+
+  @include align($direction: column, $start: flex-start, $rowGap: 12px);
+  width: 100%;
+  &__wrapper {
+    @include align($colGap: 8px);
+    @include device(sp) {
+      @include align($colGap: 7px);
+    }
+  }
+  &__header {
+    a {
+      width: 32px;
+      height: 32px;
+    }
+    .text[data-size='fs-18'] {
+      font-size: $font-size-semi-small;
+      font-weight: $font-weight-semi-bold;
+      line-height: 28px;
+    }
+    @include align($colGap: 16px);
+    &__backButton {
+      padding: 7.5px;
+      background-color: $neutral-25;
+      border-radius: 50%;
+      transition: all 0.125s 0s ease;
+      &:hover {
+        background-color: $neutral-300;
+        box-shadow: 0px 8px 24px 0px rgba(149, 157, 165, 0.2);
+      }
+    }
+  }
+}

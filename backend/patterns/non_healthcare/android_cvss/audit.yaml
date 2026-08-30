@@ -1,0 +1,144 @@
+- id: data_access_audit
+  description: >-
+    This app monitors insights into how app and its dependencies access private data from users by performing data access auditing.
+  type: RegexAnd
+  pattern:
+    - AppOpsManager\.OnOpNotedCallback
+    - (ContentProvider|ContentResolver)\.query\(
+    - (onRequestPermissionsResult|checkSelfPermission)
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "none"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 5
+  url: https://developer.android.com/guide/topics/data/audit-access
+
+#- id: data_modification_audit
+#  description: >-
+#    This app monitors insights into how app and its dependencies access private data from users by performing data access auditing.
+#  type: RegexAnd
+#  pattern:
+#    - (SQLiteDatabase\.update\(|SharedPreferences\.edit\().*(put|remove|clear|commit|apply).*\)(?:.*\s+)*(?:.*\s+)*\(Log\.
+#    - (HttpURLConnection\.openConnection\(|OkHttpClient\.newCall\(|Retrofit\.\w+\.enqueue\().*Request.*(POST|PUT|DELETE|PATCH|GET).*\)(?:.*\s+)*(?:.*\s+)*\(Log\.
+#  vulnerability_impacts:
+#    - vulnerability_id: inconsistent_audit_trail
+#      severity: "none"
+#      relative_impacts: []
+#  severity: 0
+#  weight: 1
+#  score: 5
+#  url: https://developer.android.com/guide/topics/data/audit-access
+
+#- id: security_event_audit
+#  description: >-
+#    This app ensures logging of security-critical events, such as authentication attempts, access violations, or privilege escalations.
+#  type: RegexAnd
+#  pattern:
+#    - ((BiometricPrompt\.authenticate\(|AccountManager\.getAuthToken\(|onAuthenticationFailed\(\)))(?:.*\s+)*(Log\.)
+#    - (SecurityException|AccessDeniedException)(?:.*\s+)*(Log\.)
+#    - (UsageStatsManager\.queryUsageStats\(|AccessibilityService)(?:.*\s+)*(Log\.)
+#
+#  vulnerability_impacts:
+#    - vulnerability_id: inconsistent_audit_trail
+#      severity: "none"
+#      relative_impacts: []
+#  severity: 0
+#  weight: 1
+#  score: 5
+#  url: https://developer.android.com/guide/topics/data/audit-access
+
+#- id: audit_integrity_temper_protection
+#  description: >-
+#    This app ensures audit logs cannot be tampered with or deleted without proper authorization.
+#  type: RegexAnd
+#  pattern:
+#    - (MessageDigest\.getInstance\(|Mac\.getInstance\(|Cipher\.getInstance\()(?:.*\s+)*(Log\.)
+#    - (SyslogHandler|FirebaseCrashlytics|Loggly|Sentry)(?:.*\s+)*(Log\.)
+#
+#  vulnerability_impacts:
+#    - vulnerability_id: inconsistent_audit_trail
+#      severity: "none"
+#      relative_impacts: []
+#  severity: 0
+#  weight: 1
+#  score: 5
+#  url: https://developer.android.com/guide/topics/data/audit-access
+
+- id: user_event_tracking_audit
+  description: >-
+    This app tracks user actions, ensuring critical operations are logged for accountability.
+  type: RegexAnd
+  pattern:
+    - logEvent\(
+    - FirebaseAnalytics\.Param\.SCREEN_NAME
+    - FirebaseAnalytics\.Param\.SCREEN_CLASS
+    - FirebaseAnalytics\.Event\.SCREEN_VIEW
+    #- (FirebaseAnalytics|MixpanelAPI|Amplitude|NewRelic|Bugfender|Sentry|AppDynamics)\.(logEvent|track|recordBreadcrumb|setAttribute|captureMessage|addData)\(.*(app_launch|user_login|user_logout|foreground|background|login|logout).*\\?.*\)
+    - (FirebaseAnalytics|MixpanelAPI|Amplitude|NewRelic|Bugfender|Sentry|AppDynamics)\.(logEvent|track|recordBreadcrumb|setAttribute|captureMessage|addData)
+
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "optimal"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 5
+  url: https://developer.android.com/guide/topics/data/audit-access
+
+- id: application_life_cycle_audit
+  description: >-
+    This app tracks the application life cycle and states to monitor the application.
+  type: RegexAnd
+  pattern:
+    - ActivityLifecycleCallbacks\.(onActivityResumed|onActivityPaused|onActivityStarted|onActivityStopped|onActivityCreated|onActivityDestroyed)\(
+
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "negligible"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 5
+  url: https://developer.android.com/guide/topics/data/audit-access
+
+- id: application_performance_audit
+  description: >-
+    This app implements standard app performance monitoring, crash and error reporting for auditing.
+  type: RegexAnd
+  pattern:
+    - FirebaseCrashlytics\.getInstance\(\)\.setCrashlyticsCollectionEnabled\(true
+    - FirebaseCrashlytics\.getInstance\(\)\.recordException\(
+    - FirebasePerformance\.getInstance\(\)\.newTrace\(
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "minor"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 5
+  url: https://developer.android.com/guide/topics/data/audit-access
+
+#- id: policy_enforcement_violation_detection_audit
+#  description: >-
+#    This app ensures compliance with access policies and detects unauthorized actions.
+#  type: RegexAnd
+#  pattern:
+#    - DevicePolicyManager\.setPermissionGrantState\(.*(GRANT|DENY).*.*\)(?:.*\s+)*(?:.*\s+)*\(Log\.
+#    - ClipboardManager\.getPrimaryClip\(|UsageStatsManager\.queryUsageStats\(.*.*\)(?:.*\s+)*(?:.*\s+)*\(Log\.
+#    - LocationManager\.requestLocationUpdates\(|FusedLocationProviderClient\.getLastLocation\(.*\)(?:.*\s+)*(?:.*\s+)*\(Log\.
+#    - Camera\.open\(|Camera2\.openCamera\(.*\)(?:.*\s+)*(?:.*\s+)*\(Log\.
+#    - AudioRecord\.startRecording\(.*\)(?:.*\s+)*(?:.*\s+)*\(Log\.
+#    - TelephonyManager\.getCellLocation\(|SmsManager\.sendTextMessage\(.*\)(?:.*\s+)*(?:.*\s+)*\(Log\.
+#    - File\.createTempFile\(|File\.listFiles\(.*\)(?:.*\s+)*(?:.*\s+)*\(Log\.
+#    - KeyChain\.getPrivateKey\(|KeyStore\.getInstance\(.*\)(?:.*\s+)*(?:.*\s+)*\(Log\.
+#
+#  vulnerability_impacts:
+#    - vulnerability_id: inconsistent_audit_trail
+#      severity: "none"
+#      relative_impacts: []
+#  severity: 0
+#  weight: 1
+#  score: 5
+#  url: https://developer.android.com/guide/topics/data/audit-access

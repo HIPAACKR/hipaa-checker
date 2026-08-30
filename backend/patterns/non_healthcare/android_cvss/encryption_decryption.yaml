@@ -1,0 +1,303 @@
+- id: optimal_cryptographic_security
+  description: >-
+    The App uses highly secure cryptographic implementations that ensure data protection with modern algorithms and methods.
+  pattern:
+    - Cipher\.getInstance\(\s*"\s*AES\/(CBC|GCM)\)
+    - KeyGenerator\.getInstance\(
+    - SecureRandom\(
+    - Cipher\.getInstance\(\s*".*HmacSHA256".*\)
+
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: strong_cryptographic_security
+          factor: "negligible"
+        - subrule_id: moderate_cryptographic_security
+          factor: "negligible"
+        - subrule_id: minor_cryptographic_security
+          factor: "negligible"
+        - subrule_id: negligible_cryptographic_security
+          factor: "negligible"
+        - subrule_id: custom_crypto_tink_encryption
+          factor: "negligible"
+
+  severity: 3
+  weight: -1
+  score: 2
+- id: strong_cryptographic_security
+  description: >-
+    These cryptographic methods are secure but may not always be the optimal choice for every application, depending on specific use cases. They are widely used and offer strong security guarantees.
+  type: Regex
+  pattern:
+    - PBEKeySpec
+    - Cipher\.getinstance\("rsa/.+/oaeppadding
+    - KeyPairGenerator\.getInstance\("EC"
+    - KeyStore\.getInstance\("AndroidKeyStore
+
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: optimal_cryptographic_security
+          factor: "minor"
+        - subrule_id: moderate_cryptographic_security
+          factor: "negligible"
+        - subrule_id: minor_cryptographic_security
+          factor: "negligible"
+        - subrule_id: negligible_cryptographic_security
+          factor: "negligible"
+        - subrule_id: custom_crypto_tink_encryption
+          factor: "negligible"
+
+  severity: 3
+  weight: -1
+  score: 1
+- id: moderate_cryptographic_security
+  description: >-
+    These cryptographic methods are considered secure for most applications but may have certain vulnerabilities that could potentially be exploited under specific circumstances.
+  type: Regex
+  pattern:
+    - Cipher\.getInstance\(.*rc2
+    - Cipher\.getInstance\(.*DES
+    - Cipher\.getInstance\(\s*"\s*AES\/ECB
+    - Cipher\.getInstance\("RSA/ECB/PKCS1Padding
+    - MessageDigest\.getInstance\("SHA-1
+
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts:
+        - subrule_id: optimal_cryptographic_security
+          factor: "moderate"
+        - subrule_id: strong_cryptographic_security
+          factor: "minor"
+        - subrule_id: minor_cryptographic_security
+          factor: "negligible"
+        - subrule_id: negligible_cryptographic_security
+          factor: "negligible"
+        - subrule_id: custom_crypto_tink_encryption
+          factor: "negligible"
+
+  severity: 3
+  weight: -1
+  score: 2
+- id: minor_cryptographic_security
+  description: These cryptographic methods might be acceptable in some situations but have limitations that can reduce the overall strength of encryption and data protection.
+  pattern:
+    - Cipher\.getInstance\("AES
+    - MessageDigest\.getInstance\("MD5
+    - Cipher\.getInstance\("\s*AES/ECB/PKCS5Padding"\)\s*;\s*keySize=\s*128
+
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "minor"
+      relative_impacts:
+        - subrule_id: optimal_cryptographic_security
+          factor: "strong"
+        - subrule_id: strong_cryptographic_security
+          factor: "moderate"
+        - subrule_id: moderate_cryptographic_security
+          factor: "minor"
+        - subrule_id: negligible_cryptographic_security
+          factor: "negligible"
+        - subrule_id: custom_crypto_tink_encryption
+          factor: "negligible"
+
+  type: RegexOr
+  severity: 3
+  weight: -1
+  score: 2
+- id: negligible_cryptographic_security
+  description: These cryptographic methods should be avoided entirely as they provide weak or outdated protection and could lead to significant vulnerabilities.
+  pattern:
+    - Cipher\.getinstance\(\"rsa/.+/nopadding\)
+
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "negligible"
+      relative_impacts: []
+
+  type: RegexOr
+  severity: 3
+  weight: -1
+  score: 3
+- id: optimal_hashing_security
+  description: >-
+    These patterns should be prioritized in Android apps that need to protect sensitive data, such as user credentials or cryptographic keys. Algorithms like SHA-256 or SHA-512 are considered secure for modern applications.
+  pattern:
+    - getInstance\(.*SHA-256.*\)
+    - getInstance\(.*SHA-512.*\)
+    - Mac\.getInstance\("HmacSHA256
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: strong_hashing_security
+          factor: "negligible"
+        - subrule_id: moderate_hashing_security
+          factor: "negligible"
+        - subrule_id: minor_hashing_security
+          factor: "negligible"
+        - subrule_id: negligible_hashing_security
+          factor: "negligible"
+
+  severity: 3
+  weight: -1
+  score: 2
+- id: strong_hashing_security
+  description: >-
+    These algorithms offer strong cryptographic security, but they might not be as widely used as SHA-256 in some older systems
+  type: Regex
+  pattern:
+    - PBEKeySpec
+    - getInstance\(.*SHA-3.*
+
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: optimal_hashing_security
+          factor: "minor"
+        - subrule_id: moderate_hashing_security
+          factor: "negligible"
+        - subrule_id: minor_hashing_security
+          factor: "negligible"
+        - subrule_id: negligible_hashing_security
+          factor: "negligible"
+
+  severity: 3
+  weight: -1
+  score: 1
+- id: moderate_hashing_security
+  description: >-
+    While still secure, these algorithms like SHA-1 should be avoided due to vulnerabilities to collision attacks.
+  type: Regex
+  pattern:
+    - \.getInstance\(.*SHA-1.*\)
+    - DigestUtils\.sha\(
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts:
+        - subrule_id: optimal_hashing_security
+          factor: "moderate"
+        - subrule_id: strong_hashing_security
+          factor: "minor"
+        - subrule_id: minor_hashing_security
+          factor: "negligible"
+        - subrule_id: negligible_hashing_security
+          factor: "negligible"
+
+  severity: 3
+  weight: -1
+  score: 2
+- id: minor_hashing_security
+  description: These algorithms like MD5 are deprecated for general use and should not be used in new applications. If legacy support is necessary, mitigation techniques should be applied.
+  pattern:
+    - getInstance\(.*MD5.*\)
+    - DigestUtils\.md5\(
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "minor"
+      relative_impacts:
+        - subrule_id: optimal_hashing_security
+          factor: "strong"
+        - subrule_id: strong_hashing_security
+          factor: "moderate"
+        - subrule_id: moderate_hashing_security
+          factor: "minor"
+        - subrule_id: negligible_hashing_security
+          factor: "negligible"
+
+  type: RegexOr
+  severity: 3
+  weight: -1
+  score: 2
+- id: negligible_hashing_security
+  description: These patterns detect poor hashing practices, such as hardcoded or plaintext hash values, and should be eliminated from production code due to severe security risks.
+  pattern:
+    - java\.security\.MessageDigest
+    - String hash = ".*"
+    - (get|set)\(.*password.*\)
+
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "negligible"
+      relative_impacts: []
+
+  type: RegexOr
+  severity: 3
+  weight: -1
+  score: 3
+
+- id: secure_data_storage
+  description: >-
+    Checks whether application is implementing secure data storage methodologies.
+  type: RegexAnd
+  pattern:
+    - MasterKeys\.getOrCreate\(
+    - EncryptedFile\.Builder\(
+    - EncryptedSharedPreferences\.create\(
+    - Room\.databaseBuilder\(.*,\s*.*\.class,\s*".*"\)\.openHelperFactory\(SupportFactory\(
+    - EncryptedFile\(.*context,\s*
+    - KeyStore\.getInstance\(
+    - android\.security\.keystore\.KeyGenParameterSpec\.Builder
+    - Cipher\.getInstance\(\s*"\s*AES\/GCM
+    - KeyGenerator\.getInstance\(
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts:
+        - subrule_id: database_encryption
+          factor: "negligible"
+
+  severity: 0
+  weight: 1
+  score: 2.5
+
+- id: code_bbfuscation_validation
+  description: >-
+    Ensures that ProGuard or R8 rules are configured to obfuscate sensitive methods and protect application logic from reverse engineering.
+  type: RegexAnd
+  pattern:
+    - <proguard-configuration>
+    - -keep\s+(public\s+)?class\s+(\w+\.)+\*\*(\s+\{.*;\s*\})?
+    - -printmapping\s+.*mapping\.txt
+    - (minifyEnabled|shrinkResources)\s*true
+    - (PackageManager\.GET_SIGNATURES|getPackageInfo|Signature\.equals)
+    - (-keepclassmembers|\-keepattributes|\-dontwarn).*(\*|\.)
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 2.5
+
+- id: custom_crypto_tink_encryption
+  description: This App uses Google Tink library for cryptographic operations.
+  type: RegexAnd
+  pattern:
+    - KeysetHandle\.generateNew\(
+    - Aead.encrypt\(
+    - Aead.decrypt\(
+    - KeysetHandle\.(read|write)
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts:
+        - subrule_id: optimal_cryptographic_security
+          factor: "moderate"
+        - subrule_id: strong_cryptographic_security
+          factor: "minor"
+        - subrule_id: moderate_cryptographic_security
+          factor: "negligible"
+        - subrule_id: negligible_cryptographic_security
+          factor: "negligible"
+        - subrule_id: minor_cryptographic_security
+          factor: "negligible"
+
+  severity: 0
+  weight: 1
+  score: 5

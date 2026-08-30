@@ -1,0 +1,15 @@
+- id: policy_violation_handling
+  description: >-
+    Ensures policy violations trigger appropriate security responses.
+  type: RegexAnd
+  pattern:
+    - throw\s+new\s+SecurityException
+    - throw\s+new\s+AccessDeniedException
+    - .accessDeniedHandler\(
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 5

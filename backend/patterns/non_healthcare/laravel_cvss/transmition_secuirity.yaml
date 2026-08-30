@@ -1,0 +1,12 @@
+- id: enforce_https
+  description: >-
+    This Application uses secure connection to transmit data.
+  type: RegexAnd
+  pattern:
+    - forceScheme\(\'https\'\)
+    - ->createToken\(
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "strong"
+      relative_impacts: []
+

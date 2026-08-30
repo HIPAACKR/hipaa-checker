@@ -1,0 +1,18 @@
+- id: authorization
+  description: >-
+    This Application implements authorization to access sensitive resources.
+  type: RegexAnd
+  pattern:
+    - Gate::define\(
+    - Gate::allows\(
+    - Gate::denies\(
+    - Gate::any\(
+    - Gate::none\(
+    - Gate::authorize\(
+    - Gate::check\(
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "optimal"
+      relative_impacts: []
+  severity: warning
+

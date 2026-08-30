@@ -1,0 +1,16 @@
+@use '@/design/styles/' as *;
+
+.downloads {
+  $root: &;
+  background-color: $milk-white;
+  &__content {
+    @include align(row, flex-start, flex-start, 112px);
+    max-width: $width-main-container;
+    padding: 72px 0;
+    margin: 0 auto;
+    @include device(sp) {
+      @include align(column, flex-start, flex-start, 0, 36px);
+      padding: 40px 20px;
+    }
+  }
+}

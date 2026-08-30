@@ -1,0 +1,83 @@
+@use '@/design/styles/' as *;
+
+.solutions {
+  padding-top: 64px;
+  @include align(column, flex-start, center, 0px, 56px);
+  @include device(sp) {
+    gap: 32px;
+    padding-top: 56px;
+  }
+
+  &__content {
+    @include align(row, space-between, center);
+    align-self: stretch;
+    @include device(sp) {
+      @include align(column, flex-start, center, 0, 35px);
+      padding: 0;
+      &:nth-child(even) {
+        flex-direction: column-reverse;
+      }
+      img {
+        width: 100%;
+        max-width: 567px;
+        height: auto;
+      }
+    }
+  }
+
+  &__image-wrapper {
+    width: 50%;
+    @include align(column, flex-start, flex-start, 0, 35px);
+
+    &:nth-child(even) {
+      align-items: flex-end;
+    }
+
+    @include device(sp) {
+      align-items: center;
+      width: 100%;
+      max-width: unset;
+      &:nth-child(even) {
+        align-items: center;
+      }
+    }
+  }
+
+  &__cardWrapper {
+    width: 50%;
+    @include align(column, flex-start, flex-start, 0, 35px);
+
+    &:nth-child(even) {
+      padding-left: 80px;
+    }
+
+    @include device(sp) {
+      align-items: center;
+      width: 100%;
+      max-width: unset;
+      &:nth-child(even) {
+        padding-left: 0px;
+      }
+    }
+  }
+  &__card {
+    max-width: 510px;
+    .heading[data-type='h4'] {
+      font-weight: $font-weight-bold;
+      @include device(sp) {
+        font-size: $font-size-small;
+        line-height: 28px;
+      }
+    }
+    .text[data-size='fs-18'] {
+      margin-top: 16px;
+      letter-spacing: -0.18px;
+      @include device(sp) {
+        margin-top: 8px;
+        font-size: $font-size-tiny;
+        line-height: 26px;
+        letter-spacing: -0.2px;
+      }
+    }
+  }
+}

@@ -1,0 +1,77 @@
+- id: authorization_access_resources    
+  description: >-
+    This Node.js application implements authorization to access sensitive resources. 
+  type: RegexAnd
+  pattern:
+    - require\(['"]passport['"]\)
+    - require\(['"]jsonwebtoken['"]\)
+    - \.authenticate\(
+    - \.isAuthenticated\(
+    - (hasRole|hasPermission)
+    - compareSync\(
+    - sign\(
+    - verify\( 
+    - fromAuthHeaderAsBearerToken\(
+  vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization 
+        severity: "moderate"
+        relative_impacts: 
+             - subrule_id:  access_control_middleware
+               factor: "moderate" 
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: autho_removes_malicious_content 
+  description: >-
+    This Node.js application converts the data to a serialized format and removes malicious content from user input. 
+  type: RegexAnd
+  pattern:
+    - require\(['"]sanitize['"]\)
+    - \.serializeUser\(
+    - \.deserializeUser\(
+    - \.value\(
+  vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization 
+        severity: "negligible"
+        relative_impacts:
+             - subrule_id:  weak_authorization
+               factor: "negligible" 
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: access_control_middleware
+  description: >-
+    Ensures access control middleware is enforced.
+  type: RegexAnd
+  pattern:
+    - require\(['"](express-jwt|acl|express-jwt-permissions)['"]\)
+    - app\.use\(
+  vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization 
+        severity: "moderate"
+        relative_impacts:
+             - subrule_id:  authorization_access_resources
+               factor: "minor" 
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: weak_authorization
+  description: >-
+    Detects direct mapping of external keys without proper authorization.
+  type: RegexAnd
+  pattern:
+    - entitlementExtkeys?\[
+    - externalKey
+    - retVal\s*=\s*entitlementExtkeys\[\s*entitlements\.entitlement\[i\]\.externalKey\s*\]
+  vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization 
+        severity: "minor"
+        relative_impacts: 
+             - subrule_id: autho_removes_malicious_content
+               factor: "negligible"
+  severity: 0
+  weight: 1
+  score: 5

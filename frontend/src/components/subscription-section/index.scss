@@ -1,0 +1,59 @@
+@use '@/design/styles/' as *;
+
+.subscription {
+  $root: &;
+  //font-family: Arial, sans-serif;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  &__title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  &__subtitle {
+    font-size: 1rem;
+    text-align: center;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  &__toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  &__toggle-btn {
+  background-color: $neutral-50;
+  border: 1px solid transparent;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-radius: 100px;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #fff;        
+    color: #0092E3;               
+    border-color: #0092E3;        
+  }
+
+  &--active {
+    background-color: #0092E3;
+    color: white;
+    border-color: #0092E3;
+  }
+}
+
+
+  &__plans {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    justify-items: center;
+    gap: 1.5rem;
+  }
+}

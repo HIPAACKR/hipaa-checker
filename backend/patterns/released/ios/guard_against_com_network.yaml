@@ -1,0 +1,95 @@
+- id: trusted_server_communication
+  description: >-
+    Ensures proper certificate validation using iOS Security Framework
+  pattern:
+    - SecTrustEvaluateWithError
+    - SecPolicyCreateSSL
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "strong"
+      relative_impacts:
+           - subrule_id: strict_hostname_validation
+             factor: "negligible"
+  manual_check: false
+
+- id: insecure_server_communication
+  description: >-
+    Disables secure transport layer protections (ATS exceptions)
+  pattern:
+    - <key>NSExceptionAllowsInsecureHTTPLoads</key>\s*<true/>
+    - allowsInvalidSSLCertificate\s*=\s*YES
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "negative_strong"
+      relative_impacts:
+           - subrule_id: secured_url_data_transmission
+             factor: "minor"
+  manual_check: true
+
+- id: server_certificate_pinning
+  description: >-
+    Implements certificate/public key pinning using TrustKit or native methods
+  pattern:
+    - TSKPinningValidator
+    - kTSKPublicKeyHashes
+    - SecCertificateCopyData.*==.*kSSLPinnedServerKeys
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "strong"
+      relative_impacts: []
+  manual_check: false
+
+- id: disabled_certificate_validation
+  description: >-
+    Bypasses certificate validation checks in URLSession delegates
+  pattern:
+    - didReceiveChallenge.*\.\s*completionHandler\(.*NSURLSessionAuthChallengePerformDefaultHandling
+    - (evaluateServerTrust|validateCertificate).*return\s*YES
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "negative_strong"
+      relative_impacts:
+           - subrule_id: trusted_server_communication
+             factor: "minor"
+           - subrule_id: server_certificate_pinning
+             factor: "minor"
+  manual_check: true
+
+- id: strict_hostname_validation
+  description: >-
+    Enforces strict hostname verification in certificate validation
+  pattern:
+    - SecPolicyCreateSSL.*true
+    - serverTrust\.validationForHost\(host\)
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "moderate"
+      relative_impacts: []
+  manual_check: true
+
+- id: secured_webview_communication
+  description: >-
+    Enforces secure WebKit content loading policies
+  pattern:
+    - WKWebViewConfiguration.*allowsInlineMediaPlayback\s*=\s*NO
+    - allowsBackForwardNavigationGestures\s*=\s*NO
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "moderate"
+      relative_impacts:
+           - subrule_id: secured_webview_content
+             factor: "minor"
+  manual_check: true
+
+- id: secured_webview_content
+  description: >-
+    Prevents insecure mixed content in WKWebView
+  pattern:
+    - WKWebViewConfiguration.*allowsAirPlayForMediaPlayback\s*=\s*NO
+    - allowsPictureInPictureMediaPlayback\s*=\s*NO
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "minor"
+      relative_impacts: []
+  manual_check: true
+

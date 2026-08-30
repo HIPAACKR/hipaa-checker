@@ -1,0 +1,108 @@
+  - id: authentication_mechanisms
+    description: >-
+      Ensures authentication mechanisms are properly enforced.
+    type: RegexAnd
+    pattern:
+      - .authenticate\(
+      - import\s+org\.springframework\.security\.authentication\.UsernamePasswordAuthenticationToken
+      - SecurityContextHolder
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: multifactor_authentication
+            factor: "moderate"
+          - subrule_id: firebase_authentication
+            factor: "negligible"
+          - subrule_id: oauth_authentication
+            factor: "negligible"
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: hardcoded_credentials
+    description: >-
+      Detects hardcoded authentication credentials.
+    type: RegexAnd
+    pattern:
+      - (username\s*=\s*\".*\"|password\s*=\s*\".*\")
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "none"
+        relative_impacts: []
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: oauth_authentication
+    description: >-
+      Ensures OAuth 2.0 authentication is securely implemented.
+    type: RegexAnd
+    pattern:
+      - .oauth2Login\(
+      - .authorizationEndpoint\(
+      - .authorizedClientService\(
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "optimal"
+        relative_impacts:
+          - subrule_id: multifactor_authentication
+            factor: "negligible"
+          - subrule_id: firebase_authentication
+            factor: "negligible"
+          - subrule_id: authentication_mechanisms
+            factor: "negligible"
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: firebase_authentication
+    description: >-
+      Detects Firebase authentication.
+    type: RegexAnd
+    pattern:
+      - import\s+com\.google\.firebase\.auth
+      - FirebaseAuth\.getInstance\(
+      - .verifyIdToken\(
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: multifactor_authentication
+            factor: "moderate"
+          - subrule_id: oauth_authentication
+            factor: "negligible"
+          - subrule_id: authentication_mechanisms
+            factor: "negligible"
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: multifactor_authentication
+    description: >-
+      Detects implementation of multi-factor authentication.
+    type: RegexAnd
+    pattern:
+      - \@RequestMapping\(\"\/mfa\"\)
+      - OncePerRequestFilter
+      - \.verifyOTP\(
+      - MFAAuthenticationFilter
+      - \.SecurityFilterChain
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "optimal"
+        relative_impacts:
+          - subrule_id: firebase_authentication
+            factor: "negligible"
+          - subrule_id: oauth_authentication
+            factor: "negligible"
+          - subrule_id: authentication_mechanisms
+            factor: "negligible"
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5

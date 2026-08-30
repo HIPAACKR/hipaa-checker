@@ -1,0 +1,47 @@
+@use '@/design/styles/' as *;
+
+.testimonial {
+  &__card {
+    display: flex !important;
+    @include align(column, flex-start, center, 0, 32px);
+    max-width: 992px;
+    padding-top: 32px;
+    margin: 0 auto;
+
+    .text[data-size='fs-16'] {
+      margin-bottom: 4px;
+      @include device(sp) {
+        font-size: $font-size-tiny;
+        line-height: 26px;
+      }
+    }
+  }
+  &__logo {
+    margin: 0 auto;
+  }
+  &__comment {
+    font-size: $font-size-medium;
+    font-weight: $font-weight-medium;
+    line-height: 48px;
+    color: $neutral-900;
+    text-align: center;
+    letter-spacing: -1px;
+    @include device(sp) {
+      font-size: $font-size-semi-small;
+      font-weight: $font-weight-regular;
+      line-height: 28px;
+      letter-spacing: -0.18px;
+    }
+  }
+  &__avatar {
+    margin: 0 auto;
+    margin-bottom: 16px;
+    @include device(sp) {
+      width: 48px;
+      height: 48px;
+    }
+  }
+  .slick-dots {
+    margin-top: 32px;
+  }
+}

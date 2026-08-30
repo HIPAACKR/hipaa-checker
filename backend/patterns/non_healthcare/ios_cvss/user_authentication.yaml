@@ -1,0 +1,49 @@
+- id: user_authentication_oauth
+  description: >-
+    Checks whether the app uses iOS OAuth-based authentication (e.g., ASWebAuthenticationSession, AppAuth).
+  pattern:
+    - \b(ASWebAuthenticationSession|SFAuthenticationSession|OIDAuthState|OIDAuthorizationService|OIDTokenResponse|OIDAuthorizationRequest|OAuth[2]?\b|OpenIDConnect|startWithRedirectURL\:|authStateByPresentingAuthorizationRequest\:|authStateWithAuthorizationResponse\:|performAuthorizationRequest\:|authCallbackURLScheme|code=([A-Za-z0-9_\-]+))|\bOIDServiceConfiguration\b
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "strong"
+      relative_impacts:
+         - subrule_id: user_social_authentication
+           factor: "negligible"
+         - subrule_id: multi_factor_authentication
+           factor: "minor" 
+
+- id: user_social_authentication
+  description: >-
+    Checks whether the app uses social platform authentication (e.g., Google, Facebook, Firebase social providers).
+  pattern:
+    - \b(FIRGoogleAuthProvider|FIRFacebookAuthProvider|FIREmailAuthProvider|signInWithCredential|GIDSignInResult|GIDGoogleUser|GIDConfiguration)\b
+    - \b(FBSDKLoginManager|logInWithPermissions|handleFacebookAccessToken|FBSDKAccessToken|FBSDKProfile)\b
+    - \b(GIDSignIn|GoogleSignIn|signInWithGoogle|restorePreviousSignIn|GIDSignInButton|GIDClientID)\b
+    - \b(TWTRAPIClient|TWTRLogin|TWTRSession|TwitterKit|logInWithCompletion)\b
+    - \b(LISDKAPI|LISDKSessionManager|LISDKAuth|createSessionWithAuth|linkedInAuthToken)\b
+    - \b(MSALPublicClientApplication|MSALInteractiveTokenParameters|MSALAccount|acquireTokenWithParameters)\b
+    - \b(AWSIdentityProviderManager|AWSCognitoAuth|loginsForIdentityProvider|AmazonLogin)\b
+    - \b(GitHubAuthProvider|OAuthSwift|GitHubAPIManager|authGitHubWithPermissions)\b
+
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "strong"  # Social auth alone lacks HIPAA-required controls (e.g., MFA)
+      relative_impacts:
+         - subrule_id: multi_factor_authentication
+           factor: "minor"   # MFA reduces risk to negligible
+         - subrule_id: user_authentication_oauth
+           factor: "negligible"   # OAuth overlaps with social auth flows
+
+- id: multi_factor_authentication
+  description: >-
+    Checks for multi-factor authentication (MFA) implementation (e.g., biometrics, phone/SMS, TOTP).
+  pattern:
+    - \b(LAContext|evaluatePolicy|LAPolicyDeviceOwnerAuthenticationWithBiometrics|LAPolicyDeviceOwnerAuthentication|enrollWithMultiFactor|verifyPhoneNumber|FIRPhoneAuthProvider|multiFactorUser|TOTPGenerator|sendEmailVerification|NSFaceIDUsageDescription|SecAccessControlCreateFlags\.biometryCurrentSet)\b
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "optimal"
+      relative_impacts:
+         - subrule_id: user_authentication_oauth
+           factor: "negligible"  # MFA mitigates OAuth risks
+         - subrule_id: user_social_authentication
+           factor: "negligible"  # MFA mitigates Firebase risks

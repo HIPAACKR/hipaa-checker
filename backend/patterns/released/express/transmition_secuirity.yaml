@@ -1,0 +1,63 @@
+  - id: transmit_data_TLS
+    description: >-
+      This Application uses secure connection to transmit data between client and server using Transport Layer Security (TLS) and Secure Socket Layer (SSL) protocols.
+    type: RegexAnd
+    pattern:
+      - require\(['"]tls['"]\)
+      - \.connect\(
+      - \.getCiphers\(
+      - \.authorized
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: secure_connection_TLS
+            factor: "negligible"
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: secure_connection_TLS
+    description: >-
+      This Application uses Secure client connection with TLS. 
+    pattern:
+      - \.encrypted\.pipe\(
+      - \.pipe\(
+      - \.TLSSocket(
+      - \.setEncoding\('utf8'\)
+      - \.on\(
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "moderate"
+        relative_impacts:
+          - subrule_id: transmit_data_TLS
+            factor: "minor"
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: data_transmission_security
+    description: >-
+      Ensures encrypted data transmission.
+    type: RegexAnd
+    pattern:
+      - require\(['"]crypto['"]\)
+      - tls\.createServer\(
+      - (TLSv1|TLSv1\.1)
+      - crypto\.createCipheriv\(
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "minor"
+        relative_impacts:
+          - subrule_id: transmit_data_TLS
+            factor: "negligible"
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+
+
+

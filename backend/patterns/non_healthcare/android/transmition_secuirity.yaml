@@ -1,0 +1,86 @@
+- id: secured_url_data_transmission
+  description: >-
+    This Application uses secure connection to transmit data.
+  type: RegexAnd
+  pattern:
+    - \(HttpsURLConnection\)\s+new
+    - HttpsURLConnection\.setRequestMethod\(
+    - HttpsURLConnection\.setRequestProperty\(
+    - HttpsURLConnection\.setDoOutput\(
+    - HttpsURLConnection\.getInputStream\(
+    - <domain-config\s+cleartextTrafficPermitted="false">
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: check_certificates_revocation
+          factor: "minor"
+        - subrule_id: server_certificate_pinning
+          factor: "negligible"
+        - subrule_id: custom_ssl_validation
+          factor: "moderate"
+
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: insecure_protocol_usage
+  description: >-
+    This Application detects insecure protocols like TLSv1.0 or TLSv1.1.
+  type: RegexAnd
+  pattern:
+    # - \(?=.*setProtocol\)(?=.*(SSL|TLSv1\.0|TLSv1\.1))\S.*
+    - setProtocol\(.*(SSL|TLSv1\.0|TLSv1\.1)
+
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "negative_moderate"
+      relative_impacts:
+        - subrule_id: secured_url_data_transmission
+          factor: "minor"
+
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: check_certificates_revocation
+  description: >-
+    This Application uses checking the revocation status of certificates.
+  type: RegexAnd
+  pattern:
+    - PKIXRevocationChecker.*
+    - CertificateFactory.*CRL.*
+    - TrustManager.*revocation.*
+    - X509TrustManager.*revocation.*
+    - SSLContext.*revocation.*
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "moderate"
+      relative_impacts: []
+
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: authorized_api_call
+  description: >-
+    This Application uses Authorization header to secure external API calls.
+  type: RegexAnd
+  pattern:
+    - addRequestProperty\(".*Authorization.*",\s*".*".*
+    - setRequestProperty\(".*Authorization.*"
+    - HttpURLConnection.*Authorization.*
+    - URLConnection.*Authorization.*
+    - HttpRequest.*Authorization.*
+    - Request.Builder.*header\(".*Authorization.*".*
+    - setRequestProperty\("X-[A-Za-z-]+",\s*".*".*
+    - addRequestProperty\("X-[A-Za-z-]+",\s*".*".*
+    - https?://[^\s?]+\?(.*?token=.*|.*access_token=.*)
+
+  vulnerability_impacts:
+    - vulnerability_id: insecure_network_communication
+      severity: "strong"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 5

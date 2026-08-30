@@ -1,0 +1,106 @@
+  - id: authorization_for_data_integrity
+    description: >-
+      "This application implements authorization to access sensitive resources."
+    type: RegexAnd
+    pattern:
+      - \[Authorize\(
+      - \[AllowAnonymous
+      - \w+\.AddAuthorization\(
+      - \w+\.AddAuthentication\(
+      - \w+\.UseAuthentication\(\)
+      - \w+\.UseAuthorization\(\)
+      - \w+\.AddSingleton\<IAuthorizationHandler\,
+      - \w+\.AddSingleton\<IAuthorizationHandler\,
+      - AuthorizationHandler\<RequirementType\>
+      - AuthorizationHandlerContext
+      - IAuthorizationHandler
+      - AuthorizePageHandler\(
+      - AuthorizeCore\(
+      - JwtSecurityTokenHandler\(
+    severity: 0
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts:
+          - subrule_id: data_transaction
+            factor: "negligible"
+          - subrule_id: data_validation
+            factor: "negligible"
+          - subrule_id: db_exception
+            factor: "negligible"
+
+    manual_check: false
+  - id: data_transaction
+    description: >-
+      "This application implements transaction handling to ensure data consistency."
+    type: RegexAnd
+    pattern:
+      - \w+\.BeginTransaction\s*\(
+      - \w+\.BeginTransactionAsync\s*\(
+      - \w+\.Commit\s*\(
+      - \w+\.Rollback\s*\(
+      - \w+\.CommitAsync\s*\(
+      - \w+\.RollbackAsync\s*\(
+    severity: 0
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts:
+          - subrule_id: data_validation
+            factor: "minor"
+
+    manual_check: true
+  - id: data_validation
+    description: >-
+      "This application implements data annotations to enforce validation rules."
+    type: RegexAnd
+    pattern:
+      - ModelState\.IsValid
+      - \[Key\]
+      - \[Required\]
+      - \[StringLength\(
+      - \[Range\(
+      - \[EmailAddress
+      - \[MaxLength\(
+      - \[MinLength\(
+      - \[RegularExpression\(
+      - \[EmailAddress\]
+      - \[Phone\]
+      - \[Url\]
+      - \[CreditCard\]
+      - \[Compare\(
+      - \[ConcurrencyCheck\]
+      - \[Timestamp\]
+      - \[DataType\(
+      - \[Display\(
+      - \[DisplayFormat\(
+      - \[ScaffoldColumn\(
+    severity: 0
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts: []
+
+    manual_check: false
+  - id: db_exception
+    description: >-
+      "This application handles database exceptions to ensure stability."
+    type: RegexAnd
+    pattern:
+      - catch\s*\(DbUpdateException
+      - catch\s*\(DbUpdateConcurrencyException
+      - catch\s*\(DbEntityValidationException
+      - catch\s*\(SqlException
+      - catch\s*\(EntityCommandExecutionException
+      - catch\s*\(EntityException
+      - catch\s*\(UpdateException
+      - catch\s*\(OptimisticConcurrencyException
+      - catch\s*\(EntityCommandCompilationException
+      - catch\s*\(EntitySqlException
+      - catch\s*\(InvalidOperationException
+    severity: 0
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "strong"
+        relative_impacts: []
+    manual_check: false

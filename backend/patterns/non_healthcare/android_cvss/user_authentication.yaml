@@ -1,0 +1,67 @@
+- id: user_authentication_oauth
+  description: >-
+    Checks whether application is using android API oauth
+  type: RegexAnd
+  pattern:
+    - ([Tt]oken[Rr]esponse|android\.accounts\.AccountManager|AccountManager\.get\(.*\)|\bGetGoogleIdOption\.Builder\b|\bGetGoogleIdOption\b|\bGoogleSignIn\b|\bGoogleSignInClient\b|\bGoogleIdToken\b|\bhandleFacebookAccessToken\b|\bFacebookAuthProvider\b|\bTwitterAuthClient\b|\bParseTwitterUtils\b|\bLinkedInAuth\w*\b|\bLinkedInHelper\b|\bGitHubAuth\w*\b|\bMSAL\w*\b|\bMicrosoftAuthentication\b|\bAmazonLogin\w*\b|\bOAuth\w*\b|\bAccessToken\b|\bTokenRequest\b)
+
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "strong"
+      relative_impacts:
+         - subrule_id: user_authentication_firebase
+           factor: "negligible"
+         - subrule_id: multi_factor_authentication
+           factor: "minor"
+
+
+  severity: 0
+  weight: 1
+  score: 5
+- id: user_authentication_firebase
+  description: >-
+    Checks whether application is using FireBase Authentication
+  type: RegexAnd
+  pattern:
+    - FirebaseUser
+    - sendFirebasePropertyRegisteredUser
+    - FirebaseUserPropertiesSender
+    - currentUser
+    - com\.google\.firebase\:firebase-auth
+    - FirebaseAuth
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "strong"
+      relative_impacts:
+         - subrule_id: user_authentication_oauth
+           factor: "negligible"
+         - subrule_id: multi_factor_authentication
+           factor: "minor"
+
+
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: multi_factor_authentication
+  description: >-
+    This app implements the standard multi-factor authentication
+  type: RegexAnd
+  pattern:
+    - (FirebaseAuth\.getInstance\(\)\.signInWithPhoneNumber\(.*\) PhoneAuthProvider\.getInstance\(\)\.verifyPhoneNumber\(.*\)|PhoneAuthCredential\.create\(.*\)|PhoneAuthProvider\.verifyPhoneNumber\(\)\.addOnCompleteListener\(.*\)|FirebaseAuth\.getInstance\(\)\.getCurrentUser\(\)\.getMultiFactor\(\)\.getEnrolledFactors\(\)|multiFactorUser\.enroll\(.*\)|multiFactorUser\.unenroll\(.*\)|multiFactorUser\.getSession\(\)|Authenticator\.getTotpToken\(.*\)|GoogleAuthProvider\.getCredential\(.*\)|sendEmailVerification\(\)|sendOtpEmail\(\)|verifyOtpFromEmail\(\)|mfaTokenRequest\(\)|mfaVerification\(\))
+
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "optimal"
+      relative_impacts: 
+         - subrule_id: user_authentication_firebase
+           factor: "negligible"
+         - subrule_id: user_authentication_oauth
+           factor: "negligible"
+
+  severity: 0
+  weight: 1
+  score: 5
+
+
+

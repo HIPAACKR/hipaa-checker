@@ -1,0 +1,67 @@
+@forward './constant';
+@forward './base';
+@forward './mixins';
+@forward './font';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Print styles for PDF generation
+@media print {
+  // Hide navigation, sidebar, and header elements
+  nav,
+  .nav-bar,
+  .navbar,
+  .admin-sidebar,
+  .sidebar,
+  header,
+  .header,
+  .admin-header,
+  .admin-header-home {
+    display: none !important;
+  }
+
+  // Hide action buttons (Share and Print as PDF)
+  .print-hide {
+    display: none !important;
+  }
+
+  // Print-specific styles for compliance report
+  body {
+    margin: 0;
+    padding: 0;
+    background: white !important;
+  }
+
+  // Ensure proper page breaks and layout
+  .compliance-report-content,
+  #compliance-report-content {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    background: white !important;
+    box-shadow: none !important;
+  }
+
+  // Card styles for print
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #e5e5e5 !important;
+    background: white !important;
+  }
+
+  // Ensure proper colors for print
+  * {
+    color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  // Page break controls
+  .print-avoid-break {
+    page-break-inside: avoid;
+  }
+
+  .print-page-break {
+    page-break-before: always;
+  }
+}

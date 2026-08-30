@@ -1,0 +1,129 @@
+  - id: jwt_token_handling
+    description: >-
+      Checks whether authentication is implemented or not using JSON Web Token (JWT). 
+    type: RegexAnd
+    pattern:
+      - require\(['"]jsonwebtoken['"]\)
+      - \.sign\(
+      - \.verify\(
+      - fromAuthHeaderAsBearerToken\(
+      - jwt\.(decode|encode)\(
+      - \.expiresIn\(
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "moderate"
+        relative_impacts:
+          - subrule_id: token_credential_management
+            factor: "moderate"
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 2.5
+
+  - id: token_credential_management
+    description: >-
+      Ensures secure handling of authentication tokens and credentials.
+    type: RegexAnd
+    pattern:
+      - require\(['"]jsonwebtoken['"]\)
+      - \.setSigningKey\(
+      - \.decode\(
+      - process\.env\.JWT_SECRET
+      - \.refreshToken\(
+      - \.generateToken\(
+      - \.sessionToken\(
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: jwt_token_handling
+            factor: "strong"
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 2.5
+
+  - id: api_rate_limiting
+    description: >-
+      Detects implementation of API rate limiting to prevent abuse.
+    type: RegexAnd
+    pattern:
+      - require\(['"]express-rate-limit['"]\)
+      - rateLimit\(
+      - \.windowMs\(
+      - \.max\(
+      - \.delayMs\(
+      - \.message\(
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "moderate"
+        relative_impacts:
+          - subrule_id: insecure_redirect
+            factor: "minor"
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 2.5
+
+  - id: insecure_certificate_validation
+    description: >-
+      Detecting insecure SSL certificate validation in Node.js applications.
+    type: RegexAnd
+    pattern:
+      - process\.env\.NODE_TLS_REJECT_UNAUTHORIZED\s*=\s*['"]0['"]
+      - (tls|https)\.connect\([^)]*{\s*rejectUnauthorized:\s*false
+      - new\s+tls\.TLSOptions\([^)]*rejectUnauthorized:\s*false
+      - agent:\s*new\s+https\.Agent\([^)]*rejectUnauthorized:\s*false
+      - options:\s*{\s*rejectUnauthorized:\s*false
+      - rejectUnauthorized:\s*false
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "optimal"
+        relative_impacts:
+          - subrule_id: sensitive_headers_logging
+            factor: "strong"
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 2.5
+
+  - id: insecure_redirect
+    description: >-
+      Detects potential open redirect vulnerabilities.
+    type: RegexAnd
+    pattern:
+      - res\.redirect\(
+      - (req\.query|req\.body|req\.params)
+      - res\.location\(
+      - req\.originalUrl
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: api_rate_limiting
+            factor: "moderate"
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 2.5
+
+  - id: sensitive_headers_logging
+    description: >-
+      Detects logging of sensitive request headers.
+    type: RegexAnd
+    pattern:
+      - (console\.log|console\.error|logger\.info)\(
+      - req\.headers
+      - req\.cookies
+      - req\.session
+      - response\.headers
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: insecure_certificate_validation
+            factor: "strong"
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 2.5

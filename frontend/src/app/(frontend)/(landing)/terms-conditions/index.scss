@@ -1,0 +1,78 @@
+@use '@/design/styles/' as *;
+
+.termsConditions {
+  &__body {
+    @include align(column, center, flex-start, 0, 48px);
+    max-width: 800px;
+    padding: 96px 0;
+    margin: 0 auto;
+    white-space: pre-line;
+    @include device(sp) {
+      padding: 64px 20px;
+    }
+  }
+
+  &__sectionWrapper {
+    @include align(column, center, flex-start, 0, 24px);
+
+    &__content {
+      @include align(column, center, flex-start, 0, 20px);
+    }
+
+    &__ul {
+      padding-left: 24px;
+      list-style-type: none;
+      @include align(column, center, flex-start, 0, 16px);
+
+      li {
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        padding-left: 15px;
+      }
+
+      ::before {
+        position: absolute;
+        top: 10px;
+        left: 0;
+        width: 6px;
+        height: 6px;
+        content: '';
+        background-color: $neutral-500;
+        border-radius: 50%;
+      }
+    }
+
+    &__ol {
+      padding-left: 24px;
+      list-style-type: none;
+      counter-reset: item;
+      @include align(column, center, flex-start, 0, 16px);
+
+      li {
+        display: flex;
+
+        counter-increment: item;
+      }
+
+      li::before {
+        margin-right: 5px;
+        font-weight: 600;
+        line-height: 28px;
+        color: $neutral-500;
+        content: '(' counter(item, upper-alpha) ') ';
+      }
+    }
+  }
+  .heading[data-type='h5'] {
+    margin-bottom: 16px;
+  }
+  .text[data-size='fs-16'] {
+    font-size: $font-size-tiny;
+    line-height: 26px;
+  }
+
+  &__text-bold {
+    font-weight: 700;
+  }
+}

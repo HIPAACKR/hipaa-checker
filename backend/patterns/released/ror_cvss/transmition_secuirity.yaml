@@ -1,0 +1,24 @@
+  - id: enforce_https
+    description: >-
+      This Application uses secure connection to transmit data.
+    type: RegexAnd
+    pattern:
+      - \.force_ssl\s*=\s*true
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts: []
+
+    manual_check: true
+  - id: strict_transport_security
+    description: >-
+      This Application checks if HSTS is enabled or not.
+    type: RegexAnd
+    pattern:
+      - Rack::SSL
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "moderate"
+        relative_impacts: []
+
+    manual_check: false

@@ -1,0 +1,16 @@
+  - id: rbac_enforcement
+    description: >-
+      "Detects enforcement of role-based access control (RBAC)."
+    type: RegexAnd
+    pattern:
+    # - User\.IsInRole\(
+    # - \[Authorize\(
+    # - \[Authorize\([^)]*(Delete|Admin)[^)]*\)\]
+    # - \.HasClaim\(\s*\"Permission\"\s*,\s*\"(Delete|Remove)\"
+      - \[Authorize\([^)]*(Delete|Admin)[^)]*\)\]|\.HasClaim\(\s*\"Permission\"\s*,\s*\"(Delete|Remove)\"|\.IsInRole\(\s*\"(DeletePermission|Admin)\"\s*\)|(public|private|protected)\s+\w+\s+\w*\w*\s*\(\w*\s*|(public|private|protected)?\s*void\s+Delete\w*\s*\(\s*\w+\s+(userId|User\.Id|roleId|Role\.Id|RoleId|UserId)\s*\)(Guid|userId|UserId|User\.Id|roleId|Role\.Id|RoleId)\s+
+    severity: 0
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts: []
+    manual_check: false

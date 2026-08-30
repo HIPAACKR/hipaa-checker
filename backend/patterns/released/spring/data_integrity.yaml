@@ -1,0 +1,104 @@
+  - id: database_security
+    description: >-
+      Ensures secure database access and query execution.
+    type: RegexAnd
+    pattern:
+      - (Statement\.executeQuery\()
+      - (Statement\.executeUpdate\()
+      - (connection\.createStatement\()
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "minor"
+        relative_impacts: []
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: input_validation
+    description: >-
+      Ensures input validation mechanisms are implemented.
+    type: RegexAnd
+    pattern:
+      - (request\.getParameter\()
+      - (request\.getQueryString\()
+      - (request\.getHeader\()
+      - (inputStream\.read\()
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "minor"
+        relative_impacts: []
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: db_transactions
+    description: >-
+      Detects db transactions and constraints
+    type: RegexAnd
+    pattern:
+      - \@Transactional
+      - \@NotNull
+      - \@Size\(
+      - \@UniqueConstraint
+      - \@Column\s*\(\s*unique\s*=\s*true\s*\)
+      - \@Version
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts: []
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: data_encryption
+    description: >-
+      Detects data encryption for data integrity.
+    type: RegexAnd
+    pattern:
+      - MessageDigest\.getInstance\(\s*["']SHA-256["']\s*\)/gm
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts: []
+
+    manual_check: false
+  - id: model_validation
+    description: >-
+      Model Validation
+    type: RegexAnd
+    pattern:
+      - jakarta\.validation\.constraints
+      - (\@Id|\@NotBlank|\@NotNull|\@Size|\@Email|\@Pattern\(|\@Constraint\(|\@RestControllerAdvice|\@Valid|\@Validated)
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts: []
+
+    manual_check: false
+  - id: handle_exceptions
+    description: >-
+      Handle Exceptions
+    type: RegexAnd
+    pattern:
+      - \@ExceptionHandler\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts: []
+
+    manual_check: true
+  - id: weak_random_number_generation
+    description: >-
+      Detects use of insecure random number generation.
+    type: RegexAnd
+    pattern:
+      - new\s+Random\(
+      - SecureRandom\s*\(\)
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "none"
+        relative_impacts: []
+    manual_check: true

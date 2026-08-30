@@ -1,0 +1,10 @@
+@use '@/design/styles/' as *;
+
+.subtitle {
+  $root: &;
+
+  font-size: $font-size-semi-small;
+  font-weight: $font-weight-medium;
+  line-height: 28px;
+  color: $neutral-800;
+}

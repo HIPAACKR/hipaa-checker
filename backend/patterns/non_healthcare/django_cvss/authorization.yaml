@@ -1,0 +1,22 @@
+- id: authorization
+  description: >-
+    This Application implements authorization to access sensitive resources.
+  type: RegexAnd
+  pattern:
+    - AuthenticationForm\(
+    - \@permission_required\(
+    - \.has_perm\(
+    - \@login_required\(
+    - authenticate\s*\(\s*username\s*=\s*["'][A-Za-z0-9_.-]+["']\s*,\s*password\s*=\s*["'][A-Za-z0-9@#$%^&+=*!?.-]+["']\s*\)
+    - Permission\.objects\.create\s*\(
+    - ^@login_required
+    - ^@permission_required\s*\(\s*["'][\w\.]+\s*["']\s*\)
+    - exception\s+PermissionDenied
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "strong"
+      relative_impacts: []
+
+  severity: warning
+
+

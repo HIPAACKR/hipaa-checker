@@ -1,0 +1,123 @@
+@use '@/design/styles/' as *;
+
+.choose-stack-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  .heading {
+    font-size: 3.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #031c5b;
+  }
+
+  .subheading {
+    text-align: center;
+    color: #888;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem;
+    margin-bottom: 0.2rem;
+
+    .tab-button {
+      padding: 1rem 2rem;
+      background: #f2f2f2;
+      border: none;
+      border-radius: 1rem 1rem 0 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-3px);
+      }
+
+      &.active {
+        background: linear-gradient(to right, #490fcf, #4facfe);
+        color: #fff;
+      }
+
+      &:hover:not(.active) {
+        background-color: #b7b7c2;
+        color: #000;
+      }
+    }
+  }
+
+  .content-box {
+    background: #ffffff;
+    border-radius: 1rem;
+    border: 2px solid #e9e6e6; 
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+    padding: 2rem;
+    transition: transform 0.3s ease;
+    margin-top: 2rem;
+
+    &:hover {
+      transform: translateY(-4px);
+    }
+
+    .tab-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+
+      .code-image-block {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .code-image {
+          width: 100%;
+          max-width: 500px;
+          border-radius: 0.5rem;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          margin-bottom: 1rem;
+          transition: transform 0.3s ease;
+
+          &:hover {
+            transform: translateY(-3px);
+          }
+        }
+
+        .results {
+          color: #333;
+          font-size: 1rem;
+          background: #f8f8f8;
+          padding: 0.75rem 1rem;
+          border-radius: 0.5rem;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+          white-space: pre-wrap;
+          max-width: 600px;
+        }
+      }
+
+      .image-block {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .framework-logo {
+          max-width: 100%;
+          max-height: 200px;
+          object-fit: contain;
+          transition: transform 0.3s ease;
+
+          &:hover {
+            transform: translateY(-3px);
+          }
+        }
+      }
+    }
+  }
+}

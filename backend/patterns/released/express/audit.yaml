@@ -1,0 +1,126 @@
+  - id: audit_hash
+    description: >-
+      This app checks or audits whether it generates hash values of data. 
+    type: RegexAnd
+    pattern:
+      - \.compare\(
+      - \.hash\(
+      - \.query\(
+      - \.auditLogs\.createEvent\(
+    vulnerability_impacts:
+      - vulnerability_id: inconsistent_audit_trail
+        severity: "minor"
+        relative_impacts:
+          - subrule_id: audit_via_auditable
+            factor: negligible
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: audit_via_auditable
+    description: >-
+      This app monitors authentication tokens for data access auditing.
+    type: RegexAnd
+    pattern:
+      - \.sso\.getProfileAndToken
+      - \.getUserByEmail\(
+      - \.idpId
+      - \.process\.env\.WORKOS_ORG_ID
+    vulnerability_impacts:
+      - vulnerability_id: inconsistent_audit_trail
+        severity: "minor"
+        relative_impacts:
+          - subrule_id: audit_via_logs_activity
+            factor: negligible
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: audit_via_logs_activity
+    description: >-
+      This app generates digital signatures to ensure data integrity and authentication. 
+    type: RegexAnd
+    pattern:
+      - \.sign\(
+      - \.log\(
+      - \.logTrail\(
+    vulnerability_impacts:
+      - vulnerability_id: inconsistent_audit_trail
+        severity: "moderate"
+        relative_impacts:
+          - subrule_id: user_action_tracking
+            factor: minor
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: error_logging
+    description: >-
+      Prevents logging of sensitive information.
+    type: RegexAnd
+    pattern:
+      - (console\.log|console\.error|console\.warn)
+    vulnerability_impacts:
+      - vulnerability_id: inconsistent_audit_trail
+        severity: "moderate"
+        relative_impacts:
+          - subrule_id: audit_via_logs_activity
+            factor: minor
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: log_integrity_tamper_protection
+    description: >-
+      Ensures logging mechanisms prevent tampering.
+    type: RegexAnd
+    pattern:
+      - (appendOnly|immutableLog|logIntegrityCheck)
+    vulnerability_impacts:
+      - vulnerability_id: inconsistent_audit_trail
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: user_action_tracking
+            factor: moderate
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: user_action_tracking
+    description: >-
+      Ensures user actions (logins, data access, modifications) are tracked.
+    type: RegexAnd
+    pattern:
+      - (userAction|auditTrail|accessLog)
+    vulnerability_impacts:
+      - vulnerability_id: inconsistent_audit_trail
+        severity: "moderate"
+        relative_impacts:
+          - subrule_id: log_integrity_tamper_protection
+            factor: minor
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: dependency_audit_trails
+    description: >-
+      Ensures dependencies have logging and audit trails.
+    type: RegexAnd
+    pattern:
+      - (auditLog|thirdPartyAudit|dependencyLogger)
+    vulnerability_impacts:
+      - vulnerability_id: inconsistent_audit_trail
+        severity: "minor"
+        relative_impacts:
+          - subrule_id: audit_via_auditable
+            factor: negligible
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5

@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="container without-login col-md-5">
+    <h1 class="text-center">Forgot your password?</h1> <br>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="field">
+        <b><%= f.label :email %></b>
+        <%= f.text_field :email, autofocus: true, class: 'form-control' %>
+      </div>
+
+      <br>
+
+      <div class="actions">
+        <%= f.submit "Send me reset password instructions", class: 'btn btn-primary form-control' %> <br><br>
+        <%= link_to 'Cancel', :back, class: 'btn btn-danger form-control' %>
+        <%= render "devise/shared/links" %>
+      </div>
+
+    <% end %>
+
+  </div>
+</div>
+
+

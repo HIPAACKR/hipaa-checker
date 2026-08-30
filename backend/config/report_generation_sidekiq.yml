@@ -1,0 +1,4 @@
+---
+:concurrency: 120
+:queues:
+  - report_generation

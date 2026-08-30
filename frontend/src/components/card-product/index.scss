@@ -1,0 +1,173 @@
+@use '@/design/styles/' as *;
+
+.cardProduct {
+  $root: &;
+
+  @include align(column, flex-start, flex-start, 0, 32px);
+  position: relative;
+  align-self: stretch;
+  max-width: 402px;
+  padding: 20px 20px;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: $white;
+  border-radius: 12px;
+  box-shadow: $card-box-shadow-8;
+  transition: all 0.2s 0s ease;
+
+  .button[data-type='secondary'] {
+  border: 1px solid #0092E3;
+  color: #0092E3;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s 0s ease; 
+
+  .button__icon {
+    fill: #0092E3; 
+  }
+
+  &:hover {
+    background-color: #0092E3;
+    color: #fff;
+
+    .button__icon {
+      fill: #fff;
+    }
+  }
+}
+    
+  @include device(sp) {
+    padding: 20px;
+  }
+
+  &__textWrapper {
+    @include align(column, flex-start, flex-start, 0, 12px);
+    height: 120px;
+    .heading[data-type='h5'] {
+      white-space: pre-line;
+    }
+
+    @include device(sp) {
+      height: unset;
+      .text[data-size='fs-16'] {
+        font-size: $font-size-tiny;
+        line-height: 26px;
+      }
+    }
+  }
+  .button--arrowRightBold {
+    @include device(sp) {
+      -webkit-mask-image: url('/images/icons/arrowDiagonal.svg');
+      mask-image: url('/images/icons/arrowDiagonal.svg');
+    }
+  }
+  &__logo {
+    position: absolute;
+    opacity: 1;
+    transition: all 0.5s ease;
+
+    &__androidStudio {
+      right: -2px;
+      bottom: -8px;
+      @include device(sp) {
+        right: 3px;
+        bottom: 4px;
+        width: 55px;
+        height: 58px;
+      }
+    }
+    &__ios {
+      right: -2px;
+      bottom: -4px;
+      @include device(sp) {
+        right: 2px;
+        bottom: -2px;
+        width: 59px;
+        height: 70px;
+      }
+    }
+    &__python {
+      right: -22px;
+      bottom: -13px;
+      @include device(sp) {
+        right: -7px;
+        bottom: -10px;
+        width: 70px;
+        height: 70px;
+      }
+    }
+    &__laravel {
+      right: -10px;
+      bottom: -8px;
+      @include device(sp) {
+        right: -24px;
+        bottom: -5px;
+        width: 107px;
+        height: 60px;
+      }
+    }
+    &__rails {
+      right: -6px;
+      bottom: -1px;
+      @include device(sp) {
+        right: -5px;
+        bottom: 0px;
+        width: 103px;
+        height: 36px;
+      }
+    }
+    &__express {
+      right: -13px;
+      bottom: -5px;
+      @include device(sp) {
+        right: -2px;
+        bottom: -16px;
+        width: 70px;
+        height: 70px;
+      }
+    }
+    &__dotnet {
+      right: -13px;
+      bottom: -10px;
+      @include device(sp) {
+        right: -2px;
+        bottom: -16px;
+        width: 70px;
+        height: 70px;
+      }
+    }
+    &__spring {
+      right: -2px;
+      bottom: -10px;
+      @include device(sp) {
+        right: -2px;
+        bottom: -16px;
+        width: 70px;
+        height: 70px;
+      }
+    }
+  }
+  &--landingPage {
+    row-gap: 6px;
+    padding: 20px 20px;
+    background-color: $white;
+    box-shadow: unset;
+    #{$root} {
+      &__logo {
+        opacity: 1;
+      }
+      &__textWrapper {
+        height: unset;
+        .heading[data-type='h6'] {
+          font-weight: $font-weight-bold;
+        }
+        .text[data-size='fs-16'] {
+          height: 75px;
+        }
+      }
+    }
+  }
+  
+}
+  

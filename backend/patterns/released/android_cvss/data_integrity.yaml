@@ -1,0 +1,164 @@
+  - id: authorization_exception_integrity
+    description: >-
+      This Application implements authorization to access sensitive resources to prevent improper alteration or destruction.
+    type: RegexAnd
+    pattern:
+      - AuthorizationException
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts: []
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 2.5
+
+
+  - id: illegal_access_integrity
+    description: >-
+      This Application restricts illegal access to sensitive resources to prevent improper alteration or destruction.
+    type: RegexAnd
+    pattern:
+      - IllegalAccessException
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts: []
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 2.5
+
+  - id: authorization_enforcement_integrity
+    description: >-
+      This Application detects explicit authorization enforcement by throwing a Security Exception when unauthorized access occurs.
+    type: RegexAnd
+    pattern:
+      - SecurityException
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts: []
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: access_control_exception_integrity
+    description: >-
+      This Application identifies cases where access control is applied, preventing unauthorized operations using AccessControlException.
+    type: RegexAnd
+    pattern:
+      - AccessControlException
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts: []
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: biometric_authentication_integrity
+    description: >-
+      This app checks standard authentication via biometric information.
+    type: RegexAnd
+    pattern:
+      - USE_BIOMETRIC
+      - USE_FINGERPRINT
+      - (BiometricPrompt|BiometricManager)\.?[A-Za-z]*
+      - BiometricManager\.(BIOMETRIC_SUCCESS|BIOMETRIC_ERROR_|BIOMETRIC_STRONG|BIOMETRIC_WEAK)
+      - BiometricPrompt\s*\(|authenticate\(promptInfo\)
+      - KeyGenParameterSpec\.Builder.*setUserAuthenticationRequired\(true\)
+      - setDeviceCredentialAllowed\(true\)
+      - FingerprintManager\.?[A-Za-z]*|FingerprintManagerCompat
+
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts: []
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: input_validation
+    description: >-
+      This app ensures user inputs are properly sanitized to avoid injection attacks.
+    type: RegexAnd
+    pattern:
+      - SQLiteDatabase\.query\(.*,\s*.*new String\[\]
+      - sanitizeInput\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "minor"
+        relative_impacts: []
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: user_authentication_oauth_integrity
+    description: >-
+      Checks whether application is using android API oauth
+    type: RegexAnd
+    pattern:
+      - ([Tt]oken[Rr]esponse|android\.accounts\.AccountManager|AccountManager\.get\(.*\)|\bGetGoogleIdOption\.Builder\b|\bGetGoogleIdOption\b|\bGoogleSignIn\b|\bGoogleSignInClient\b|\bGoogleIdToken\b|\bhandleFacebookAccessToken\b|\bFacebookAuthProvider\b|\bTwitterAuthClient\b|\bParseTwitterUtils\b|\bLinkedInAuth\w*\b|\bLinkedInHelper\b|\bGitHubAuth\w*\b|\bMSAL\w*\b|\bMicrosoftAuthentication\b|\bAmazonLogin\w*\b|\bOAuth\w*\b|\bAccessToken\b|\bTokenRequest\b)
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: user_authentication_firebase_integrity
+            factor: "negligible"
+          - subrule_id: multi_factor_authentication_integrity
+            factor: "minor"
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+
+  - id: user_authentication_firebase_integrity
+    description: >-
+      Checks whether application is using FireBase Authentication
+    type: RegexAnd
+    pattern:
+      - FirebaseUser
+      - sendFirebasePropertyRegisteredUser
+      - FirebaseUserPropertiesSender
+      - currentUser
+      - com\.google\.firebase\:firebase-auth
+      - FirebaseAuth
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: user_authentication_oauth_integrity
+            factor: "negligible"
+          - subrule_id: multi_factor_authentication_integrity
+            factor: "minor"
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: multi_factor_authentication_integrity
+    description: >-
+      This app implements the standard multi-factor authentication
+    type: RegexAnd
+    pattern:
+    #- (FirebaseAuth\.getInstance\(\)\.signInWithPhoneNumber\(.*\)|PhoneAuthProvider\.getInstance\(\)\.verifyPhoneNumber\(.*\)|PhoneAuthCredential\.create\(.*\)|PhoneAuthProvider\.verifyPhoneNumber\(\)\.addOnCompleteListener\(.*\)|FirebaseAuth\.getInstance\(\)\.getCurrentUser\(\)\.getMultiFactor\(\)\.getEnrolledFactors\(\)|multiFactorUser\.enroll\(.*\)|multiFactorUser\.unenroll\(.*\)|multiFactorUser\.getSession\(\)|Authenticator\.getTotpToken\(.*\)|GoogleAuthProvider\.getCredential\(.*\)|sendEmailVerification\(\)|sendOtpEmail\(\)|verifyOtpFromEmail\(\)|mfaTokenRequest\(\)|mfaVerification\(\))
+      - (signInWithPhoneNumber|PhoneAuthProvider|verifyPhoneNumber|PhoneAuthCredential|PhoneAuthProvider|getMultiFactor|mfaVerification|mfaTokenRequest|verifyOtpFromEmail|sendOtpEmail|sendEmailVerification|verifyOtpFromEmail|mfaTokenRequest|GoogleAuthProvider|getTotpToken|getMultiFactor|multiFactorUser|getEnrolledFactors)
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts:
+          - subrule_id: user_authentication_firebase_integrity
+            factor: "negligible"
+          - subrule_id: user_authentication_oauth_integrity
+            factor: "negligible"
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+

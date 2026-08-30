@@ -1,0 +1,130 @@
+@use '@/design/styles/' as *;
+
+.phoneInput {
+  width: 100%;
+  
+  &__wrapper {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    overflow: visible;
+    background: white;
+    transition: all 0.2s;
+    // max-height: 500px;
+
+    &:hover {
+      border-color: #9ca3af;
+    }
+
+    &:focus-within {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+  }
+
+  &__dropdown {
+    // border-right: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: center;
+    
+    // override dropdown styles to fit inside phone input
+    .dropdown {
+      border: none;
+      display: flex;
+      align-items: center;
+      
+      &__content {
+        margin: 0;
+      }
+
+      &__placeHolder {
+        border: none;
+        border-radius: 0;
+        padding: 0 12px;
+        min-width: 80px;
+        
+        &:hover {
+          background: #f9fafb;
+        }
+
+        &--focus {
+          box-shadow: none;
+        }
+      }
+
+      &__optionsWrapper {
+        left: 0;
+        top: -350px;
+        min-width: 200px;
+        max-height: 300px;
+        overflow: auto;
+      }
+    }
+  }
+
+  &__input {
+    flex: 1;
+    
+    // override textInput styles to fit inside phone input
+    .textInput {
+      border: none;
+      margin: 0;
+
+      &__wrapper {
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        
+        &:hover,
+        &:focus-within {
+          border: none;
+          box-shadow: none;
+        }
+      }
+
+      &__input {
+        padding: 0 12px;
+      }
+
+      &--error {
+        .textInput__wrapper {
+          border: none;
+        }
+      }
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    cursor: pointer;
+    color: #9ca3af;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #6b7280;
+    }
+  }
+
+  // error state for the whole component
+  &--error {
+    .phoneInput__wrapper {
+      border-color: #ef4444;
+      
+      &:focus-within {
+        border-color: #ef4444;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+      }
+    }
+  }
+
+  // disabled state
+  &--disabled {
+    .phoneInput__wrapper {
+      background: #f3f4f6;
+      cursor: not-allowed;
+    }
+  }
+}

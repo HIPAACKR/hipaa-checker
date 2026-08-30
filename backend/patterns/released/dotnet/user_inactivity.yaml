@@ -1,0 +1,19 @@
+  - id: user_inactivity
+    description: >-
+      "Ensures session timeouts are enforced based on inactivity to maintain HIPAA compliance."
+    type: RegexAnd
+    pattern:
+      - \.IdleTimeout\s*=\s*TimeSpan\.FromMinutes\(
+      - \.SlidingExpiration\s*=\s*(true|false)
+      - HttpContext\.Session\.Clear\(\)
+      - HttpContext\.Session\.Abandon\(\)
+      - HttpContext\.SignOutAsync\(
+      - HttpContext\.Session\.\w+\(
+      - TimeSpan\.FromMinutes\(
+      - Session\(
+    severity: 1
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "optimal"
+        relative_impacts: []
+    manual_check: true

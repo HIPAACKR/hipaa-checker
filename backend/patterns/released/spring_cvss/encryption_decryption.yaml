@@ -1,0 +1,110 @@
+  - id: optimal_encryptions
+    description: >-
+      Optimal encryption and hashing algorithms implemented.
+    type: RegexAnd
+    pattern:
+      - AES/GCM/NoPadding
+      - ChaCha20-Poly1305
+      - RSA/ECB/OAEPWith(SHA-256|SHA-512)AndMGF1Padding
+      - ECDH
+      - ECIES
+      - ECDSA
+      - Argon2(id|i|d)
+      - PBKDF2WithHmacSHA(256|512)
+      - BCrypt
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts:
+          - subrule_id: strong_encryption_and_hashing
+            factor: "negligible"
+          - subrule_id: weak_encryption_implementation
+            factor: "minor"
+          - subrule_id: negligible_encryption
+            factor: "minor"
+
+    manual_check: false
+  - id: strong_encryption_and_hashing
+    description: >-
+      Strong encryption and hashing implemented.
+    type: RegexAnd
+    pattern:
+      - AES/CBC/PKCS5Padding
+      - HmacSHA(256|512)
+      - SHA-(256|512)
+      - RSA/ECB/PKCS1Padding
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "negligible"
+        relative_impacts:
+          - subrule_id: weak_encryption_implementation
+            factor: "minor"
+          - subrule_id: negligible_encryption
+            factor: "minor"
+          - subrule_id: optimal_encryptions
+            factor: "moderate"
+
+    manual_check: false
+  - id: weak_encryption_implementation
+    description: >-
+      Detects usage of weak cipher modes like ECB.
+    type: RegexAnd
+    pattern:
+      - AES/ECB/PKCS5Padding
+      - DESede
+      - DES
+      - SHA-1
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "negligible"
+        relative_impacts:
+          - subrule_id: strong_encryption_and_hashing
+            factor: "negligible"
+          - subrule_id: negligible_encryption
+            factor: "minor"
+          - subrule_id: optimal_encryptions
+            factor: "negligible"
+
+    manual_check: false
+  - id: negligible_encryption
+    description: >-
+      Detects missing encryption when handling sensitive data like passwords, keys, SSNs, and tokens.
+    type: RegexAnd
+    pattern:
+      - RC4
+      - MD5
+      - Blowfish
+      - SHA-0
+      - Base64
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "negligible"
+        relative_impacts:
+          - subrule_id: strong_encryption_and_hashing
+            factor: "minor"
+          - subrule_id: weak_encryption_implementation
+            factor: "minor"
+          - subrule_id: optimal_encryptions
+            factor: "minor"
+
+    manual_check: false
+  - id: insecure_key_management
+    description: >-
+      Detects improper handling of cryptographic keys.
+    type: RegexAnd
+    pattern:
+      - (hardcoded|static)\s*(AES|RSA|private|secret)?\s*key
+      - (String\s+key\s*=\s*["']?[a-zA-Z0-9+/=]{16,128}["']?)
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "none"
+        relative_impacts:
+          - subrule_id: strong_encryption_and_hashing
+            factor: "negligible"
+          - subrule_id: weak_encryption_implementation
+            factor: "minor"
+          - subrule_id: negligible_encryption
+            factor: "minor"
+          - subrule_id: optimal_encryptions
+            factor: "negligible"
+    manual_check: false

@@ -1,0 +1,44 @@
+- id: audit_via_auditable
+  description: >-
+    This app monitors insights into how app and its dependencies access private data from users by performing data access auditing.
+  type: RegexAnd
+  pattern:
+    - use \\OwenIt\\Auditing\\Auditable
+    - use Auditable
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: audit_via_revisionable
+          factor: "minor"
+        - subrule_id: audit_via_logs_activity
+          factor: "negligible"
+  severity: warning
+
+- id: audit_via_revisionable
+  description: >-
+    This app stores historical data changed over time via RevisionableTrait.
+  type: RegexAnd
+  pattern:
+    - use RevisionableTrait
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: audit_via_auditable
+          factor: "minor"
+        - subrule_id: audit_via_logs_activity
+          factor: "negligible"
+  severity: warning
+
+- id: audit_via_logs_activity
+  description: >-
+    This app logs user activity via LogsActivity
+  type: RegexAnd
+  pattern:
+    - use LogsActivity
+  vulnerability_impacts:
+    - vulnerability_id: inconsistent_audit_trail
+      severity: "minor"
+      relative_impacts: []
+  severity: warning

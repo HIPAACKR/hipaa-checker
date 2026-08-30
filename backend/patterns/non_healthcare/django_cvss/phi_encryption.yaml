@@ -1,0 +1,57 @@
+- id: data_encryption
+  description: >-
+    Data encryption is used properly using Cryptography
+  pattern:
+    - \.encrypt\(
+    - encrypt\(
+    - Fernet\(
+    - BinaryField\(
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "minor"
+      relative_impacts:
+        - subrule_id: optimal_data_encryption
+          factor: "optimal"
+        - subrule_id: strong_data_encryption
+          factor: "strong"
+        - subrule_id: moderate_cryptographic_security
+          factor: "moderate"
+  severity: warning
+
+- id: data_dycription_in_phi
+  description: >-
+    Data decryption is used properly using the Cryptography for PHI.
+  pattern:
+    - \.decrypt\(
+    - decrypt\(
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "minor"
+      relative_impacts:
+        - subrule_id: data_dycription
+          factor: "moderate"
+  severity: warning
+
+- id: database_column_encryption
+  description: >-
+    Database encrypted fields using symmetric encryption or AES
+  pattern:
+    - EncryptedCharField\(
+    - EncryptedTextField\(
+    - cryptography\.fernet\.Fernet
+    - AES\.new\s*\([^)]*,\s*AES\.MODE_GCM
+    - hashlib\.sha(256|512)\s*\(
+    - hashlib\.md5\s*\(
+    - AES\.new\s*\([^)]*,\s*AES\.MODE_ECB
+    - os\.urandom\s*\(\d+\)
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts:
+        - subrule_id: optimal_data_encryption
+          factor: "optimal"
+        - subrule_id: strong_data_encryption
+          factor: "strong"
+        - subrule_id: moderate_cryptographic_security
+          factor: "moderate"
+  severity: warning

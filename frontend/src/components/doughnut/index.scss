@@ -1,0 +1,142 @@
+@use '@/design/styles/' as *;
+
+.doughnut {
+  $root: &;
+  position: relative;
+
+  &__zero-value-blur {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(
+      108deg,
+      rgba(255, 255, 255, 0.26) 0%,
+      rgba(255, 255, 255, 0.07) 100%
+    );
+    backdrop-filter: blur(2px);
+    transform: translate(-50%, -50%);
+    &__no-data {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: flex;
+      column-gap: 16px;
+      align-items: center;
+      justify-content: center;
+      width: 218px;
+      height: 84px;
+      pointer-events: none;
+      cursor: none;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0px 3px 166px 0px rgba(16, 65, 122, 0.56);
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  @include align($position: flex-start, $start: center, $colGap: 8px);
+  @include device(sp) {
+    @include align($position: flex-start, $start: flex-start, $colGap: 40px, $rowGap: 40px);
+
+    flex-wrap: wrap;
+  }
+  padding: 24px 20px;
+  &__figure {
+    min-width: 230px;
+    height: fit-content;
+    font-size: $font-size-small;
+    font-weight: $font-weight-bold;
+    color: $deep-carmine-pink;
+    @include align(column, flex-start, center, 0, 8px);
+    @include device(sp) {
+      @include align(row, flex-start, center, 16px);
+    }
+    .skeleton-row {
+      width: 120px;
+      margin-left: -20px;
+    }
+    .subtitle {
+      position: relative;
+      margin-left: 20px;
+      font-weight: $font-weight-semi-bold;
+      &::after {
+        position: absolute;
+        top: 10px;
+        left: -20px;
+        width: 8px;
+        height: 8px;
+        content: '';
+        border-radius: 50%;
+      }
+    }
+    &--High {
+      .subtitle::after {
+        background-color: $deep-carmine-pink;
+      }
+    }
+    &--Medium {
+      .subtitle::after {
+        background-color: $chrome-yellow;
+      }
+    }
+    &--Low {
+      .subtitle::after {
+        background-color: $color-iris;
+      }
+    }
+    &--Satisfactory {
+      .subtitle::after {
+        background-color: $color-green;
+      }
+    }
+  }
+  &__diagram {
+    width: 128px;
+    .skeleton-row {
+      width: 128px;
+      height: 128px;
+      margin-left: unset;
+      border-radius: 50%;
+    }
+  }
+  &__legendWrapper {
+    margin-top: 16px;
+    margin-left: 16px;
+    font-size: $font-size-semi-tiny;
+    line-height: 20px;
+    color: $neutral-500;
+    @include align(column, flex-start, flex-start, 0, 8px);
+  }
+  &__legend {
+    position: relative;
+    &::after {
+      position: absolute;
+      top: 5px;
+      left: -16px;
+      width: 8px;
+      height: 8px;
+      content: '';
+      border-radius: 50%;
+    }
+    &:nth-child(1)::after {
+      background-color:#FF8F8F;
+      
+    }
+    &:nth-child(2)::after {
+      background-color: #FF6B6B;
+    }
+    &:nth-child(3)::after {
+      background-color:#F14B4B;
+    }
+    &:nth-child(4)::after {
+      background-color: #D6293D;
+    }
+  }
+  &--font-weight-600 {
+    font-weight: $font-weight-semi-bold;
+    color: $neutral-700;
+  }
+}

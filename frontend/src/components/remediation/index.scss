@@ -1,0 +1,37 @@
+@use '@/design/styles/' as *;
+
+.remediation-plan {
+    width: 100%;
+    padding: 16px;
+    background-color: $neutral-200;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    &__container {
+      height: 482px;
+      overflow-y: auto;
+      border-radius: 8px;
+      &__content {
+        padding: 24px;
+        font-size: $font-size-semi-tiny;
+        font-weight: $font-weight-medium;
+        line-height: 20px;
+        color: $neutral-900;
+        word-break: break-all;
+        white-space: pre-wrap;
+        background-color: $white;
+        border-bottom: 1px solid $neutral-200;
+
+        .issue-summary, .root-cause {
+          color: #293544;
+          font-weight: 400;
+        }
+
+        .vertical_divider {
+          border-left: 2px solid $neutral-200;
+          align-self: stretch;
+          margin: 0 8px;
+          display: inline-block;
+        }
+      }
+    }
+}

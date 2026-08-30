@@ -1,0 +1,75 @@
+<div class="row developers_guide" style="padding: 15px">
+  <h4>User Guide</h4>
+
+<!--  <div style="width: 870px;margin: 0 auto">-->
+<!--    <iframe width="100%" height="520" src="https://www.youtube.com/embed/nfrFJEOHrk8"-->
+<!--            frameborder="1" allowfullscreen>-->
+<!--    </iframe>-->
+<!--  </div>-->
+
+  <ul style="padding-left: 30px" class="user_guide">
+    <li>
+      <strong class="sub-heading">Sign up</strong> - There are two types of registrations. You can <%= link_to "Sign up", new_user_registration_path, target: "_blank" %> as an individual or organization based.       Right after you are signed up, you will have a confirmation link in your email inbox. Please click the confirmation link to get your email verified. Shortly, our team will review your account manually and your account will finally be approved or rejected. <br />
+      <ul>
+        <li><strong>Individual</strong> - You do not need to enter any organization information. You will be treated as admin as well becaue you are the sole user</li>
+        <li><strong>Organization</strong> - you will need to either select an organization from the Organization dropdown select box or you may choose "Other" in case your organization is not yet listed there. If you Choose "Other" and enter your organization name, your organization will be automatically created, approved and be available on the same dropdown box later. Our team will make one or many of your organization's users Admin</li>
+      </ul>
+    </li>
+    <li>
+      <strong class="sub-heading">Subscription Plans</strong> - We are offering 5 categories of subscription models right now. You can check <%= link_to "your current subscription level", new_subscription_url, target: "_blank" %> and upgrade plan as per your need.
+      <ul>
+        <li><strong>Free</strong> - It is completely FREE and you do not need to enter any credit card information! An Individual or organization's Admin is only allowed to get subscribed. An organization of having maximum of 2 users are allowed and each user will be able to upload maximum of 2 APK(s) and generate reports.</li>
+        <li><strong>Individual</strong> - Only 50 USD charge is required in monthly settlement. An Individual will need to enter a valid credit card information once prior to get subscribed. You will have maximum of 5 APK(s) upload quota and generate reports.</li>
+        <li><strong>Basic</strong> - Only 500 USD charge is required in monthly settlement. Any of nn Organization's admins need to enter a valid credit card information once prior to get subscribed. An organization of having maximum of 10 users are allowed and each user will be able to upload maximum of 8 APK(s) and generate reports.</li>
+        <li><strong>Standard</strong> - Only 1000 USD charge is required in monthly settlement. Any of nn Organization's admins need to enter a valid credit card information once prior to get subscribed. An organization of having maximum of 20 users are allowed and each user will be able to upload maximum of 10 APK(s) and generate reports.</li>
+        <li><strong>Premium</strong> - Only 2000 USD charge is required in monthly settlement. Any of nn Organization's admins need to enter a valid credit card information once prior to get subscribed. An organization of having unlimited users are allowed and each user will be able to upload unlimited APK(s) and generate reports.</li>
+      </ul>
+    </li>
+    <li>
+      <strong class="sub-heading">Uploading APK</strong> - After you get subscribed in free or paid plan, you will be able to upload APK and have your HIPAA compliance reports of your Android apps.
+      <ul>
+        <li>From "Uploaded APKs" menu, please click on <%= link_to "Upload new APK", new_user_upload_url, target: "_blank" %> button</li>
+        <li>
+          Choose your Android APK and select your app type(Healthcare is selected by default) and Click on "Upload" button. After a while, you will have your uploaded APKs as below: <br />
+          <%= image_tag "user_guids/apk-uploaded.png", border: 1 %>
+          <br />
+          There are 2 buttons, "Delete" and "Extract"(you need to extract the APK once), so you can either remove it or extract it for HIPAA analysis. <br />
+        </li>
+        <li>
+          Upon clicking over "Extract" button, your report will be ready to check via clicking over "Check Vulnerabilities" button : <br />
+          <%= image_tag "user_guids/apk-extracted.png", border: 1 %> <br />
+          It may require some extra time to get completed! There are 2 buttons, "Delete" and "Check Vulnerabilities", so you can either remove it or generate your report by clicking on later one. <br />
+        </li>
+        <li>
+          Once you click on "Check Vulnerabilities" button, you will have your HIPAA Rules Analysis Report fo your uploaded APK! with "Report" links having further technical details as below <br />
+          <%= image_tag "user_guids/check-vulnerabilities.png", border: 1 %>
+          <br />
+          It also may require some extra time to get finished. If you wish, you can print this report or save it as pdf by clicking on "Print" button above once ready.
+        </li>
+        <li>
+          To view how a specific rule(<strong>Implementation of encryption and decryption</strong> for an example with sub rules included) has made your app HIPAA compliant, please click over the + and it will display the technical details as below: <br />
+          <%= image_tag "user_guids/sample-rule.png", border: 1 %> <br />
+          where green arrow means the sub rule is already implemented and red cross means the sub rule is not implemented yet.
+        </li>
+        <li>
+          Upon clicking over the "Report" button on right side, you will see line number of a code snippet about the detection. <br />
+          <%= image_tag "user_guids/sample-code-identified-with-line-number.png", border: 1 %>
+        </li>
+        <li>
+          If you have your APK already extracted and generated, you can view the report right away by clicking over "Report" button as below: <br />
+          <%= image_tag "user_guids/generated-report.png", border: 1 %>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+</div>
+
+<style>
+  ul.user_guide li{
+    margin-bottom: 16px;
+  }
+  strong.sub-heading{
+    font-size: 18px;
+  }
+</style>

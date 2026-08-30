@@ -1,0 +1,24 @@
+- id: unique_id
+  description: >-
+    Creating a unique primary key in the database for storing PHI
+  pattern:
+    - \b(PRIMARY KEY|UNIQUE|FOREIGN KEY)\b
+    - \b(user_id|userId|user_ID|uuid)\s*=\s*[^\n]*
+    - UserDefaults\.standard\.(set|setValue)\(.*(forKey|key):.*"(user_id|userId|user_ID|uuid)"
+    - (setObject|setValue)\(.*(forKey|key):.*"(user_id|userId|user_ID|uuid)"
+    - (urlString|URLComponents|NSURLComponents|url)\.(append|addQueryItem)\(.*"(user_id|userId|user_ID|uuid)"
+    - \bASIdentifierManager\.shared\(\)\.advertisingIdentifier\b
+    - \bFirebaseAuth\.auth\(\)\.(createUser\(withEmail|currentUser)\b
+    - \bGIDGoogleUser\b
+    - \bCodingKeys\.(user_id|userId|user_ID|uuid)\b
+    - case\s+(user_id|userId|user_ID|uuid)\s*=
+    - \bNSPersistentStoreCoordinator\b.*\baddPersistentStore\b.*\bPHI\b
+
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "strong"
+      relative_impacts: []
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts: []
+  manual_check: false

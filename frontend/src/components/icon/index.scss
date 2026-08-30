@@ -1,0 +1,84 @@
+@use '@/design/styles/' as *;
+
+.icon {
+  $root: &;
+  $icon-shapes: (
+    'compliance-report',
+    'scan',
+    'scanner',
+    'subscription',
+    'products',
+    'dashboard',
+    'download',
+    'chevron-down',
+    'top-scan',
+    'high-risk',
+    'rule',
+    'info',
+    'menu',
+    'logout',
+    'checked-green-2',
+    'dashboardBlue',
+    'three-dots-vertical',
+    'box-lock',
+    'visa_card_icon',
+    'delete',
+    'Down-arrow-icon',
+    'site'
+  );
+
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  background-color: currentColor;
+  background-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  mask-type: alpha;
+
+  @media not all and (min-resolution: 0.001dpcm) {
+    @supports (-webkit-appearance: none) {
+      mask-size: 100% 100%;
+    }
+  }
+
+  @mixin icon-color($name, $color) {
+    &--#{$name} {
+      color: $color;
+    }
+  }
+
+  @include icon-color('blue', $primary-500);
+  @include icon-color('gray', $neutral-600);
+  @include icon-color('light-gray', $neutral-400);
+  @include icon-color('white', $white);
+  @include icon-color('cornell-red', $cornell-red);
+  @include icon-color('red', $radical-red);
+  @include icon-color('orange', $color-orange);
+  @include icon-color('green', $color-green);
+  @include icon-color('iris-blue', $color-iris);
+  @include icon-color('deep-carmine-pink', $deep-carmine-pink);
+
+  @mixin icon-size($size) {
+    &--#{$size} {
+      width: #{$size}px;
+      height: #{$size}px;
+    }
+  }
+
+  @each $size in [16, 20, 21, 24, 40, 56] {
+    @include icon-size($size);
+  }
+
+  @mixin icon-shape($name) {
+    &--#{$name} {
+      mask-image: url('/images/icons/#{$name}.svg');
+    }
+  }
+
+  @each $shape in $icon-shapes {
+    @include icon-shape($shape);
+  }
+}

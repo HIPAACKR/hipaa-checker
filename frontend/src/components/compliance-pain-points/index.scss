@@ -1,0 +1,137 @@
+
+@use '@/design/styles/' as *;
+.home__compliancePainPointsSection {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 80px;
+  @include device(sp){
+    padding-bottom: 30px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .compliancePainPoints__items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 32px;
+    margin-top: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .compliancePainPoints__item {
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 40px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ef4444);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 
+        0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      border-color: #cbd5e1;
+
+      &::before {
+        opacity: 1;
+      }
+
+      .compliancePainPoints__icon {
+        transform: scale(1.1) rotate(5deg);
+      }
+    }
+
+    .compliancePainPoints__icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px -8px rgba(59, 130, 246, 0.5);
+    }
+
+    .compliancePainPoints__title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #1e293b;
+      background: linear-gradient(135deg, #1e293b, #475569);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .compliancePainPoints__description {
+        color: #475467;
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 0;
+        font-weight: 400;
+  }
+
+  }
+
+  @include device(sp){
+    
+    
+    .compliancePainPoints__items {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    
+    .compliancePainPoints__item {
+      padding: 20px;
+      margin: 0px;
+      
+      .compliancePainPoints__icon {
+        width: 40px;
+        height: 40px;
+        margin: 0 auto 20px;
+      }
+      
+      .compliancePainPoints__title {
+        font-size: 20px;
+      }
+      
+      
+    }
+  }
+}

@@ -1,0 +1,16 @@
+  - id: unique_id
+    description: >-
+      Creating a unique primary key in the database for storing PHI
+    pattern:
+      - create_table\s+:\w+
+      - \.primary_key\s*=\s*:uuid
+      - id:\s*:uuid
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts: []
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts: []
+    manual_check: true
+    severity: warning

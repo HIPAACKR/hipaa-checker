@@ -1,0 +1,325 @@
+<div class="content" id="report_print">
+  <div class="container">
+    <div class="mt-5">
+      <h2 class="text-center"><%= @user_upload.is_healthcare ? "HIPAA Rules Analysis Report" : "Secuirity Analysis Report" %></h2>
+      <h3 class="text-center"><%= @user_upload.file.filename.to_s.gsub('.apk', '').humanize %></h3>
+      <div style="width: 100%; text-align: right">
+        <button class="print pull-right">Print</button>
+      </div>
+      <div class="d-flex justify-content-end">
+        <table class="table table-bordered border-secondary table-hover mt-3">
+          <thead class="table-dark text-center">
+          <tr>
+            <th>Rule</th>
+            <th class="text-center" style="width: 8%">Present ?</th>
+            <th class="text-center action" style="width: 8%"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>
+              <span class="rule-title">Implementation of encryption and decryption</span>
+              <%= render partial: 'user_uploads/sub_rules', locals: {rule_name: 'encryption_decryption'} %>
+            </td>
+            <td class="text-center">
+              <% if @user_upload.analyzed_results.with_rule("encryption_decryption").exists? %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#037d50" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#be0000" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                </svg>
+              <% end %>
+            </td>
+            <td class="action">
+              <% if @user_upload.analyzed_results.with_rule("encryption_decryption").exists? %>
+                <%= link_to 'Report', user_upload_analyzed_results_path(@user_upload, rule_name: "encryption_decryption"), class: 'btn btn-sm btn-primary' %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="rule-title"><%= @user_upload.is_healthcare ? "Encrypt PHI whenever appropriate" : "Encrypt Sensitive data whenever appropriate" %></span>
+              <%= render partial: 'user_uploads/sub_rules', locals: {rule_name: 'phi_encryption'} %>
+            </td>
+            <td class="text-center">
+              <% if @user_upload.analyzed_results.with_rule("phi_encryption").exists? %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#037d50" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#be0000" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                </svg>
+              <% end %>
+            </td>
+            <td class="action">
+              <% if @user_upload.analyzed_results.with_rule("phi_encryption").exists? %>
+                <%= link_to 'Report', user_upload_analyzed_results_path(@user_upload, rule_name: "phi_encryption"), class: 'btn btn-sm btn-primary' %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="rule-title"><%= @user_upload.is_healthcare ? "Assigning unique id for identifying and tracking patient’s identity" : "Assigning unique id for identifying and tracking sensitive application data" %></span>
+              <%= render partial: 'user_uploads/sub_rules', locals: {rule_name: 'unique_id'} %>
+            </td>
+            <td class="text-center">
+              <% if @user_upload.analyzed_results.with_rule("unique_id").exists? %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#037d50" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#be0000" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                </svg>
+              <% end %>
+            </td>
+            <td class="action">
+              <% if @user_upload.analyzed_results.with_rule("unique_id").exists? %>
+                <%= link_to 'Report', user_upload_analyzed_results_path(@user_upload, rule_name: "unique_id"), class: 'btn btn-sm btn-primary' %>
+              <% end %>
+            </td>
+          <tr>
+          <tr>
+            <td>
+              <span class="rule-title">Implementing procedures to terminate a session after a predetermined time of inactivity</span>
+              <%= render partial: 'user_uploads/sub_rules', locals: {rule_name: 'user_inactivity'} %>
+            </td>
+            <td class="text-center">
+              <% if @user_upload.analyzed_results.with_rule("user_inactivity").exists? %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#037d50" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#be0000" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                </svg>
+              <% end %>
+            </td>
+            <td class="action">
+              <% if @user_upload.analyzed_results.with_rule("user_inactivity").exists? %>
+                <%= link_to 'Report', user_upload_analyzed_results_path(@user_upload, rule_name: "user_inactivity"), class: 'btn btn-sm btn-primary' %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="rule-title"><%= @user_upload.is_healthcare ? "Implement authentication procedures to verify that a person or entity seeking access to PHI is the one claimed" : "Implement authentication procedures to verify that a person or entity seeking access to application is the one claimed" %></span>
+              <%= render partial: 'user_uploads/sub_rules', locals: {rule_name: 'user_authentication'} %>
+            </td>
+            <td class="text-center">
+              <% if @user_upload.analyzed_results.with_rule("user_authentication").exists? %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#037d50" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#be0000" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                </svg>
+              <% end %>
+            </td>
+            <td class="action">
+              <% if @user_upload.analyzed_results.with_rule("user_authentication").exists? %>
+                <%= link_to 'Report', user_upload_analyzed_results_path(@user_upload, rule_name: "user_authentication"), class: 'btn btn-sm btn-primary' %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="rule-title"><%= @user_upload.is_healthcare ? "Providing access controls to allow PHI access only to persons or programs that have been granted access rights" : "Providing access controls to allow application data access only to persons or programs that have been granted access rights" %></span>
+              <%= render partial: 'user_uploads/sub_rules', locals: {rule_name: 'authorization'} %>
+            </td>
+            <td class="text-center">
+              <% if @user_upload.analyzed_results.with_rule("authorization").exists? %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#037d50" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#be0000" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                </svg>
+              <% end %>
+            </td>
+            <td class="action">
+              <% if @user_upload.analyzed_results.with_rule("authorization").exists? %>
+                <%= link_to 'Report', user_upload_analyzed_results_path(@user_upload, rule_name: "authorization"), class: 'btn btn-sm btn-primary' %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="rule-title">
+                <%= @user_upload.is_healthcare ? "Implement technical security measures to guard against unauthorized access to PHI that is being transmitted over communications network" : "Implement technical security measures to guard against unauthorized access to application data that is being transmitted over communications network" %>
+
+              </span>
+              <%= render partial: 'user_uploads/sub_rules', locals: {rule_name: 'guard_against_com_network'} %>
+            </td>
+            <td class="text-center">
+              <% if @user_upload.analyzed_results.with_rule("guard_against_com_network").exists? %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#037d50" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#be0000" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                </svg>
+              <% end %>
+            </td>
+            <td class="action">
+              <% if @user_upload.analyzed_results.with_rule("guard_against_com_network").exists? %>
+                <%= link_to 'Report', user_upload_analyzed_results_path(@user_upload, rule_name: "guard_against_com_network"), class: 'btn btn-sm btn-primary' %>
+              <% end %>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <span class="rule-title">
+                <%= @user_upload.is_healthcare ? "Implementing audit controls to record and examine activity that contain or use PHI" : "Implementing audit controls to record and examine activity that contain or use sensitive application data" %>
+              </span>
+              <%= render partial: 'user_uploads/sub_rules', locals: {rule_name: 'audit'} %>
+            </td>
+            <td class="text-center">
+              <% if @user_upload.analyzed_results.with_rule("audit").exists? %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#037d50" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#be0000" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                </svg>
+              <% end %>
+            </td>
+            <td class="action">
+              <% if @user_upload.analyzed_results.with_rule("audit").exists? %>
+                <%= link_to 'Report', user_upload_analyzed_results_path(@user_upload, rule_name: "audit"), class: 'btn btn-sm btn-primary' %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="rule-title">
+                <%= @user_upload.is_healthcare ? "Maintain PHI data integrity to prevent improper alteration or destruction" : "Maintain sensitive application data integrity to prevent improper alteration or destruction" %>
+              </span>
+              <%= render partial: 'user_uploads/sub_rules', locals: {rule_name: 'data_integrity'} %>
+            </td>
+            <td class="text-center">
+              <% if @user_upload.analyzed_results.with_rule("data_integrity").exists? %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#037d50" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#be0000" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                </svg>
+              <% end %>
+            </td>
+            <td class="action">
+              <% if @user_upload.analyzed_results.with_rule("data_integrity").exists? %>
+                <%= link_to 'Report', user_upload_analyzed_results_path(@user_upload, rule_name: "data_integrity"), class: 'btn btn-sm btn-primary' %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="rule-title">
+                <%= @user_upload.is_healthcare ? "Mechanisms to corroborate that PHI has not been altered or destroyed in an unauthorized manner" : "Mechanisms to corroborate that sensitive application data has not been altered or destroyed in an unauthorized manner" %>
+              </span>
+              <%= render partial: 'user_uploads/sub_rules', locals: {rule_name: 'authorization_for_destruction'} %>
+            </td>
+            <td class="text-center">
+              <% if @user_upload.analyzed_results.with_rule("authorization_for_destruction").exists? %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#037d50" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#be0000" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                </svg>
+              <% end %>
+            </td>
+            <td class="action">
+              <% if @user_upload.analyzed_results.with_rule("authorization_for_destruction").exists? %>
+                <%= link_to 'Report', user_upload_analyzed_results_path(@user_upload, rule_name: "authorization_for_destruction"), class: 'btn btn-sm btn-primary' %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span  class="rule-title">
+                <%= @user_upload.is_healthcare ? "Implement measures to ensure that transmitted PHI is not improperly modified without detection until disposed of" : "Implement measures to ensure that transmitted application data is not improperly modified without detection until disposed of" %>
+              </span>
+              <%= render partial: 'user_uploads/sub_rules', locals: {rule_name: 'transmition_secuirity'} %>
+            </td>
+            <td class="text-center">
+              <% if @user_upload.analyzed_results.with_rule("transmition_secuirity").exists? %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#037d50" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+              <% else %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#be0000" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                </svg>
+              <% end %>
+            </td>
+            <td class="action">
+              <% if @user_upload.analyzed_results.with_rule("transmition_secuirity").exists? %>
+                <%= link_to 'Report', user_upload_analyzed_results_path(@user_upload, rule_name: "transmition_secuirity"), class: 'btn btn-sm btn-primary' %>
+              <% end %>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    $(".toogle").click(function () {
+      if($(this).text() == '+'){
+        $(this).text("-").next().fadeIn();
+      }
+      else{
+        $(this).text("+").next().fadeOut();
+      }
+    })
+    $("button.print").click(function () {
+      window.print()
+    })
+  })
+</script>
+
+<style>
+  .toogle {
+    float: right;
+    cursor: pointer;
+    font-size: 32px;
+  }
+    .rule-title {
+      font-size: 18px;
+    }
+
+  td > * {
+    vertical-align : middle;
+  }
+
+  @media print {
+    #mainNav, .print, .action {
+      display: none;
+    }
+
+    .hidden_sub_rules {
+      display: block;
+    }
+
+    .body {
+      background-color: #FFFFFF;
+    }
+
+  }
+
+</style>

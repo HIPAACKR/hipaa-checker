@@ -1,0 +1,310 @@
+@use '@/design/styles/' as *;
+
+.button {
+  $root: &;
+  $icons: (
+    'search',
+    'arrowRight',
+    'arrowRightLightPrimary',
+    'download',
+    'arrowRightBold',
+    'arrowLeft',
+    'scan',
+    'printer',
+    'arrowRightWhite'
+  );
+
+  cursor: pointer;
+  border: unset;
+
+  &:hover {
+    @each $icon-name in $icons {
+      #{$root}--#{$icon-name}--animated {
+        animation: moveIconLeftToRight 0.65s ease forwards;
+      }
+    }
+  }
+
+  transition: all 0.125s 0s ease;
+  &__content {
+    @include align(row, center, center);
+    gap: 10px;
+    font-size: $font-size-semi-tiny;
+    font-weight: $font-weight-semi-bold;
+    line-height: 20px;
+
+    &__icon {
+      position: relative;
+      width: 18px;
+      height: 18px;
+      overflow: hidden;
+    }
+  }
+
+  @each $icon-name in $icons {
+    #{$root}--#{$icon-name} {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background-image: unset;
+      -webkit-mask-image: url('/images/icons/#{$icon-name}.svg');
+      mask-image: url('/images/icons/#{$icon-name}.svg');
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      mask-position: center;
+      -webkit-mask-size: contain;
+      mask-size: contain;
+    }
+  }
+
+  //radius
+  &[data-radius='rounded'] {
+    border-radius: 8px;
+  }
+  &[data-radius='pill'] {
+    border-radius: 9999px;
+  }
+
+  //size
+  &[data-size='xl'] {
+    height: 70px;
+    padding: 23px 36px;
+    @include device(sp) {
+      height: 44px;
+      padding: 12px 24px;
+    }
+    #{$root}__content {
+      font-size: $font-size-semi-small;
+      font-weight: $font-weight-bold;
+      line-height: 18px;
+      @include device(sp) {
+        font-size: $font-size-semi-tiny;
+        font-weight: $font-weight-semi-bold;
+        line-height: 20px;
+      }
+    }
+  }
+  &[data-size='large'] {
+    height: 52px;
+    padding: 16px 32px;
+    #{$root}__content {
+      font-size: $font-size-tiny;
+      @include device(sp) {
+        font-size: $font-size-semi-tiny;
+      }
+    }
+  }
+  &[data-size='medium'] {
+    height: 44px;
+    padding: 12px 24px;
+  }
+  &[data-size='small'] {
+    height: 36px;
+    padding: 8px 16px;
+
+    #{$root}__content {
+      gap: 8px;
+    }
+  }
+  &--isFullWidth {
+    width: 100%;
+  }
+
+  //type
+  &[data-type='primary'] {
+    background-color:#0092E3;
+    border: 1px solid transparent;
+    transition: all 0.125s 0s ease;
+    &:hover {
+      background-color: $white;
+      border-color: #0092E3;
+      #{$root}__content {
+        color: #0092E3; 
+        
+      }
+      #{$root}--icon-color {
+        background-color: #0092E3; // icon color
+      }
+      @include device(sp) {
+        background-color: $primary-500;
+        border-color: transparent;
+        #{$root}__content {
+          color: $white;
+        }
+        #{$root}--icon-color {
+          background-color: $white;
+        }
+      }
+    }
+    &:disabled {
+      cursor: not-allowed;
+      background-color: $primary-200;
+      border-color: transparent;
+    }
+    #{$root}--icon-color {
+      background-color: $white;
+    }
+    #{$root}__content {
+      color: $white;
+    }
+  }
+  &[data-type='secondary'] {
+    background-color: $neutral-50;
+    border: 1px solid #0092E3;
+    transition: all 0.125s 0s ease;
+    &:hover {
+      background-color: #0092E3 ;
+      #{$root}__content {
+        color: $white;
+      }
+      #{$root}--icon-color {
+        background-color: $white;
+      }
+      @include device(sp) {
+        background-color: $neutral-50;
+        #{$root}__content {
+          color: $primary-850;
+        }
+        #{$root}--icon-color {
+          background-color: $primary-850;
+        }
+      }
+    }
+    &:disabled {
+      cursor: not-allowed;
+      background-color: $neutral-100;
+      #{$root}__content {
+        color: $neutral-500;
+      }
+      #{$root}--icon-color {
+        background-color: $neutral-500;
+      }
+    }
+    #{$root}__content {
+      color: #0092E3;
+    }
+    #{$root}--icon-color {
+      background-color: #0092E3;
+    }
+  }
+  &[data-type='black'] {
+    background-color: $neutral-900;
+    transition: all 0.125s 0s ease;
+    &:hover {
+      background-color: $white;
+      @include device(sp) {
+        background-color: $neutral-900;
+        #{$root}__content {
+          color: $primary-600;
+        }
+        #{$root}--icon-color {
+          background-color: $primary-600;
+        }
+      }
+      #{$root}__content {
+        color: $primary-600;
+      }
+      #{$root}--icon-color {
+        background-color: $primary-600;
+      }
+    }
+    &:disabled {
+      cursor: not-allowed;
+      background-color: $neutral-400;
+      #{$root}__content {
+        color: $neutral-600;
+      }
+      #{$root}--icon-color {
+        background-color: $neutral-600;
+      }
+    }
+    #{$root}__content {
+      color: $white;
+    }
+    #{$root}--icon-color {
+      background-color: $white;
+    }
+  }
+  &[data-type='border-primary'] {
+    background-color: $neutral-50;
+    border: 1px solid $primary-500;
+    transition: all 0.125s 0s ease;
+    &:hover {
+      background-color: $primary-25;
+      border-color: $primary-600;
+      @include device(sp) {
+        background-color: $neutral-50;
+        border: 1px solid $primary-500;
+        #{$root}__content {
+          color: $primary-600;
+        }
+        #{$root}--icon-color {
+          background-color: $primary-600;
+        }
+      }
+      #{$root}__content {
+        color: $primary-600;
+      }
+      #{$root}--icon-color {
+        background-color: $primary-600;
+      }
+    }
+    &:disabled {
+      cursor: not-allowed;
+      background-color: $neutral-50;
+      border-color: $primary-100;
+      #{$root}__content {
+        color: $primary-200;
+      }
+      #{$root}--icon-color {
+        background-color: $primary-200;
+      }
+    }
+    #{$root}__content {
+      color: $primary-500;
+    }
+    #{$root}--icon-color {
+      background-color: $primary-500;
+    }
+  }
+  &[data-type='link'] {
+    height: unset;
+    padding: unset;
+    transition: all 0.125s 0s ease;
+    &:hover {
+      #{$root}__content {
+        color: $primary-600;
+      }
+      #{$root}--icon-color {
+        background-color: $primary-600;
+      }
+    }
+    #{$root}__content {
+      width: fit-content;
+      color: $primary-500;
+    }
+    #{$root}--icon-color {
+      background-color: $primary-500;
+    }
+  }
+
+  @keyframes moveIconLeftToRight {
+    0% {
+      left: 0px;
+    }
+    50% {
+      left: 20px;
+    }
+    51% {
+      top: 20px;
+    }
+    52% {
+      top: 0px;
+      left: -20px;
+    }
+    100% {
+      left: 0px;
+    }
+  }
+}

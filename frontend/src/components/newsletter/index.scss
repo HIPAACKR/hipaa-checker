@@ -1,0 +1,141 @@
+@use '@/design/styles/' as *;
+.newsletter {
+  $root: &;
+  position: relative;
+  @include align($direction: column, $position: flex-start, $start: flex-start, $rowGap: 24px);
+  @include device(sp) {
+    width: 100%;
+    @include align($direction: column, $position: flex-start, $start: flex-start, $rowGap: 10px);
+  }
+
+  &__title {
+    font-size: $font-size-semi-small;
+    font-style: normal;
+    font-weight: $font-weight-semi-bold;
+    line-height: 28px;
+    color: white;
+  }
+  &__form-caption {
+    @include align($direction: column, $start: flex-start, $rowGap: 21px);
+    @include device(sp) {
+      width: 100%;
+    }
+  }
+  &__form {
+    @include align($direction: column, $position: flex-start, $rowGap: 16px);
+    width: 278px;
+    @include device(sp) {
+      flex-wrap: wrap;
+      width: 100%;
+      @include align($direction: column, $position: flex-start, $start: flex-start, $rowGap: 16px);
+    }
+  }
+  &__input {
+    padding: 13px;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-regular;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+    border: none;
+    outline: none;
+    &::placeholder {
+      color: $neutral-500;
+    }
+
+    @include device(sp) {
+      width: 50%;
+      min-width: 110px;
+    }
+  }
+  &--email-invalid {
+    outline: 2px solid red;
+    outline-offset: -2px;
+  }
+  &__toast-message {
+    position: absolute;
+    top: -100px;
+    right: 0;
+    width: 309px;
+    min-height: 84px;
+    padding: 20px 16px;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-medium;
+    line-height: 19px;
+    color: $white;
+    border-radius: 6px;
+
+    @include device(sp) {
+      top: -90px;
+      width: 100%;
+      max-width: 309px;
+    }
+  }
+  &--failed {
+    background-color: red;
+  }
+  &--success {
+    background-color: green;
+  }
+  &__progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-color: white;
+    border-bottom-left-radius: 6px;
+    animation: toast 5s linear;
+  }
+  @keyframes toast {
+    0% {
+      width: 100%;
+    }
+    100% {
+      width: 0%;
+    }
+  }
+  &__close-bar {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    cursor: pointer;
+  }
+  &__button {
+    width: 149px;
+    height: 52px;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-regular;
+    line-height: 26px;
+    color: white;
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    background-color: $neutral-800;
+    border: none;
+    border-radius: 0px 6px 6px 0px;
+    transition: background-color 0.3s ease-in;
+    &:hover {
+      //   background-color: $autumn-75;
+    }
+
+    @include device(sp) {
+      width: 30%;
+      min-width: 75px;
+    }
+  }
+  &__caption {
+    max-width: 329px;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-regular;
+    line-height: 26px;
+    color: $neutral-500;
+    text-align: left;
+    letter-spacing: -0.02em;
+    &::before {
+      content: '* ';
+    }
+  }
+
+  .button[data-size='large'] {
+    width: 100%;
+  }
+}

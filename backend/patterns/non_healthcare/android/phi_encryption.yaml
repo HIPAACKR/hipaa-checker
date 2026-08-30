@@ -1,0 +1,59 @@
+- id: database_encryption
+  description: This App ensures encryption and secure implementation for database storage.
+  pattern:
+    - io\.realm\.Realm
+    - encryptionKey
+    - net\.sqlcipher
+    - AS encrypted KEY
+    - EncryptedSharedPreferences
+    - setBackupEnabled\(false
+    - SQLCipher
+    - SQLiteDatabase\.openOrCreateDatabase\(
+    #- Room\.databaseBuilder\(.*\)\.openHelperFactory\(
+    - openHelperFactory\(
+    - SupportSQLiteDatabase\.execSQL\(\"PRAGMA key
+    - DatabaseHelper\.setWriteAheadLoggingEnabled\(true\)
+    - Cipher\.getInstance\("AES/CBC/PKCS5Padding"\)
+    - SecretKeySpec\s+\w+\s*=\s*new\s+SecretKeySpec\(
+    - IvParameterSpec\s+\w+\s*=\s*new\s+IvParameterSpec\(
+
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts:
+         - subrule_id: secure_data_storage
+           factor: "negligible"
+
+  severity: 0
+  weight: 1
+  score: 5
+- id: api_base64_encode
+  description: This App Uses Base64 or Other Encoding
+  type: RegexAndOr
+  pattern:
+    - android\.util\.Base64
+    - encodeToString
+    - encode
+  input_case: exact
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "minor"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 2.5
+- id: api_base64_decode
+  description: This App Uses Base64 or Other Decoding
+  type: RegexAndOr
+  pattern:
+    - android\.util\.Base64
+    - decodeToString
+    - decode
+  input_case: exact
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "minor"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 2.5

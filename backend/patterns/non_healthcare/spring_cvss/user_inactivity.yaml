@@ -1,0 +1,19 @@
+- id: user_inactivity
+  description: >-
+    User inactivity is detected and handled properly.
+  type: RegexAnd
+  pattern:
+    - .sessionManagement\(
+    - .sessionFixation\(
+    - .maximumSessions\(
+    - .invalidSessionUrl\(
+    - \.session\.timeout
+    - session\.getAttribute\(\"LAST_ACCESS_TIME\"\)
+    - HttpSessionListener
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "optimal"
+      relative_impacts: []
+  severity: 0
+  weight: 1
+  score: 5

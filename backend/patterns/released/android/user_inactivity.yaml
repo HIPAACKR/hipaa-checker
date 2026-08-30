@@ -1,0 +1,32 @@
+  - id: user_inactivity
+    description: >-
+      User Inactivity is detected and handled properly
+    type: RegexAnd
+    pattern:
+      - onUserInteraction\(\)\s*\{.*(reset|clear|session|logout|signout|close).*
+      - reset\(\)\s*\{.*(session|timeout|logout|signout|close).*
+      - clear\(\)\s*\{.*(session|timeout|logout|signout|close).*
+      - commit\(\)\s*\{.*(session|timeout|logout|signout|close).*
+      - new ScheduledExecutorService\(\).*schedule.*(session|timeout|clearSession|logout|signout|close)
+      - onPause\(\)\s*\{.*(session|timeout|clearSession|logout|signout|close).*
+      - onResume\(\)\s*\{.*(session|timeout|clearSession|logout|signout|close).*
+      - if\(.*token.*(expired|timeout|clearSession|logout|signout|close)\)
+      - android\.intent\.action\.SCREEN_OFF
+      - android\.intent\.action\.USER_PRESENT
+      - (IntentFilter\s*\(\s*Intent\.ACTION_SCREEN_OFF|Intent\.ACTION_USER_PRESENT\s*\))
+      - setTimeout\(
+      - SessionManager\.invalidateSession\(
+    #- onUserInteraction
+      - startSession
+      - stopSession
+      - resetSession
+      - (\b(lastActivityTime|lastInteractionTime|sessionExpiryTime|timeoutMillis)\b)
+      - (Intent\s*\(\s*.*(LoginActivity|BiometricPrompt|AuthActivity)\s*\)|startActivityForResult\(.*REAUTH_REQUEST_CODE)
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "moderate"
+        relative_impacts: []
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5

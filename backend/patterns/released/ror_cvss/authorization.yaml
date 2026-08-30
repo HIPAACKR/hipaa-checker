@@ -1,0 +1,34 @@
+  - id: authorization
+    description: >-
+      This Application implements authorization to access sensitive resources.
+    type: RegexAnd
+    pattern:
+      - CanCan::Ability
+      - authorize!
+      - authorize
+      - load_and_authorize_resource
+      - \.accessible_by\(
+      - Pundit::Authorization
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: authorization_role_based
+            factor: "minor"
+
+    manual_check: false
+    severity: warning
+
+  - id: authorization_role_based
+    description: >-
+      This Application implements role based authorization for sensitive data
+    type: RegexAnd
+    pattern:
+      - \.has_role?
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "moderate"
+        relative_impacts: []
+    manual_check: true
+    severity: warning
+

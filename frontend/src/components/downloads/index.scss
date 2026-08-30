@@ -1,0 +1,11 @@
+@use '@/design/styles/' as *;
+
+.downloadsCards {
+  @include align(row, flex-start, flex-start, 30px, 30px);
+  flex-grow: 1;
+  flex-wrap: wrap;
+  align-self: stretch;
+  @include device(sp) {
+    @include align(row, center, center, 24px, 24px);
+  }
+}

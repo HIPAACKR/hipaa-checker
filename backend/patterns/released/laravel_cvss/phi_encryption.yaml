@@ -1,0 +1,25 @@
+  - id: data_encryption
+    description: >-
+      Encryption via the OpenSSL and the AES-256-CBC cipher is present
+    pattern:
+      - Crypt::encryptString\(
+      - encrypt\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "strong"
+        relative_impacts: []
+    manual_check: true
+    severity: warning
+
+  - id: data_dycription
+    description: >-
+      Data decryption is used properly using the Cryptography
+    pattern:
+      - Crypt::decryptString\(
+      - decrypt\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "strong"
+        relative_impacts: []
+    manual_check: true
+    severity: warning

@@ -1,0 +1,28 @@
+- id: unique_id
+  description: >-
+    Creating a unique primary key in the database for storing PHI
+  pattern:
+    - PRIMARY KEY
+    - UNIQUE
+    - FOREIGN KEY
+    - response\.getString\("(user_id|userId|user_ID|uuid)"\)|response\.optString\("(user_id|userId|user_ID|uuid)"\)
+    - SharedPreferences\.Editor\.putString\(.*"(user_id|userId|user_ID|uuid)".*
+    - ContentValues\.put\(.*"(user_id|userId|user_ID|uuid)".*
+    - url\.append\("(user_id|userId|user_ID|uuid)".*
+    - (user_id|userId|user_ID|uuid) = .*
+    - AdvertisingIdClient\.getAdvertisingIdInfo\(
+    - FirebaseAuth\.getInstance\(\)\.createUserWithEmailAndPassword\(
+    - FirebaseAuth\.getInstance\(\)\.getCurrentUser\(
+    - GoogleSignInAccount
+
+  vulnerability_impacts:
+    - vulnerability_id: insufficient_authorization
+      severity: "strong"
+      relative_impacts: []
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts: []
+
+  severity: 0
+  weight: 0
+  score: 0

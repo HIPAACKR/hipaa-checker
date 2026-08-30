@@ -1,0 +1,22 @@
+@use '@/design/styles/' as *;
+
+.section {
+  &__container {
+    position: relative;
+    width: 100%;
+    max-width: $width-main-container;
+    padding-top: 80px;
+    padding-bottom: 0px;
+    margin: 0 auto;
+    @include device(sp) {
+      padding-top: 30px;
+      padding-bottom: 0px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    &[data-full-width='true'] {
+      width: 100%;
+      max-width: unset;
+    }
+  }
+}

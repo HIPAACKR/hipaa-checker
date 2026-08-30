@@ -1,0 +1,144 @@
+@use '@/design/styles/' as *;
+// .subscription__plan-btn--disabled {
+//   opacity: 0.6;
+//   cursor: not-allowed;
+//   background-color: #cccccc;
+// }
+
+.subscription__plan-admin-note {
+  color: #e67e22;
+  font-size: 12px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.subscription__plan-error-note {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Base button style */
+.subscription__plan-btn {
+  /* Your existing button styles */
+  transition: background-color 0.2s ease;
+}
+
+/* Style for disabled buttons - will override hover effects */
+.subscription__plan-btn--disabled,
+.subscription__plan-btn--disabled:hover,
+.subscription__plan-btn--disabled:active,
+.subscription__plan-btn--disabled:focus {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #cccccc !important; /* The !important ensures this overrides any hover styles */
+  color: #666666 !important;
+  box-shadow: none !important;
+  border-color: #cccccc !important;
+}
+
+/* Current plan button styles */
+.subscription__plan-btn--current,
+.subscription__plan-btn--current:hover,
+.subscription__plan-btn--current:active,
+.subscription__plan-btn--current:focus {
+  /* Your current plan button styles */
+  cursor: default;
+}
+
+.subscription {
+  &__plan {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+    max-width: 500px;
+    min-width: 250px;
+
+    &:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  &__plan-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: $neutral-800;
+  }
+
+  &__plan-price {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: $primary-600;
+  }
+
+  &__plan-period {
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  &__plan-features {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+  }
+
+  &__plan-feature {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+
+    &::before {
+      content: '✓';
+      color: $color-green;
+      margin-right: 0.5rem;
+    }
+
+    &--cross {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: #333;
+      &::before {
+        content: 'Χ';
+        color: $radical-red;
+        margin-right: 0.5rem;
+      }
+    }
+  }
+
+  &__plan-btn {
+    background-color: $primary-50;
+    color: $primary-500;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: $primary-500;
+      color: $white;
+    }
+
+    &--current {
+      background-color: $primary-25;
+      color: $primary-300;
+      cursor: default;
+
+      &:hover {
+        background-color: $primary-25;
+        color: $primary-300;
+      }
+    }
+  }
+}

@@ -1,0 +1,89 @@
+- id: strong_security_encrypt_decrypt
+  description: >-
+    "This application uses .NET cryptography. or Secure string library"
+  type: RegexAnd
+  pattern:
+    - Aes\.Create\(
+    - new AesManaged\(
+    - new AesCryptoServiceProvide\(
+    - RSA.Create\(
+    - SHA256.Create\(
+    - new RijndaelManaged\(
+    - new DESCryptoServiceProvider\(
+    - new TripleDESCryptoServiceProvider\(
+    - new SecureString\(
+    - \.SecureStringToGlobalAllocUnicode\(
+    - \.PtrToStringUni\(
+  severity: 1
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts:
+        - subrule_id: bounty_castle_crypto_for_security
+          factor: "negligible"
+        - subrule_id: optimal_cryptographic_lib
+          factor: "minor"
+        - subrule_id: plc_crypto_for_security
+          factor: "negligible"
+
+- id: bounty_castle_crypto_for_security
+  description: >-
+    "This application uses Bouncy Castle cryptographic library."
+  type: RegexAnd
+  pattern:
+    - new PaddedBufferedBlockCipher\(
+  severity: 1
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts:
+        - subrule_id: strong_security_encrypt_decrypt
+          factor: "minor"
+        - subrule_id: optimal_cryptographic_lib
+          factor: "moderate"
+        - subrule_id: plc_crypto_for_security
+          factor: "negligible"
+
+- id: optimal_cryptographic_lib
+  description: >-
+    "This application uses the libsodium or asp net core data protection cryptographic library."
+  type: RegexAnd
+  pattern:
+    - SecretBox\.Create\(
+    - SecretBox\.Open\(
+    - DataProtectionProvider\.Create\(
+    - \.CreateProtector\(
+    - \.Protect\(
+  severity: 0
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: strong_security_encrypt_decrypt
+          factor: "negligible"
+        - subrule_id: bounty_castle_crypto_for_security
+          factor: "negligible"
+        - subrule_id: plc_crypto_for_security
+          factor: "negligible"
+
+- id: plc_crypto_for_security
+  description: >-
+    "This application uses WinRTCrypto for encryption and decryption, which may have security risks if misconfigured."
+  type: RegexAnd
+  pattern:
+    - WinRTCrypto\.CryptographicEngine\.Encrypt\(
+    - \.CryptographicEngine
+    - CryptographicEngine\.Encrypt\(
+    - WinRTCrypto\.CryptographicEngine\.Decrypt\(
+    - CryptographicEngine\.Decrypt\(
+  severity: 2
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "minor"
+      relative_impacts:
+        - subrule_id: strong_security_encrypt_decrypt
+          factor: "moderate"
+        - subrule_id: bounty_castle_crypto_for_security
+          factor: "negligible"
+        - subrule_id: optimal_cryptographic_lib
+          factor: "strong"

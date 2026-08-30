@@ -1,0 +1,43 @@
+@use '@/design/styles/' as *;
+
+.cardPlugin {
+  $root: &;
+
+  @include align(column, flex-start, flex-start, 0, 24px);
+  align-self: stretch;
+  max-width: 367px;
+  padding: 20px 20px;
+  cursor: pointer;
+  background-color: $white;
+  border: 1px solid $neutral-200;
+  border-radius: 12px;
+  transition: all 0.2s 0s ease;
+  &:hover {
+    box-shadow: $card-box-shadow-11;
+  }
+  @include device(sp) {
+    max-width: 335px;
+    padding: 20px;
+  }
+  &__content {
+    @include align(column, flex-start, flex-start, 0, 20px);
+    width: 100%;
+    &__text {
+      @include align(column, flex-start, flex-start, 0, 16px);
+      .heading[data-type='h6'] {
+        min-height: 56px;
+      }
+      .text[data-size='fs-16'] {
+        min-height: 78px;
+      }
+      @include device(sp) {
+        .text[data-size='fs-16'] {
+          line-height: 28px;
+        }
+      }
+    }
+  }
+  &__button {
+    width: 194px;
+  }
+}

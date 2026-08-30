@@ -1,0 +1,19 @@
+  - id: unique_id
+    description: >-
+      This Application implements db related constraints.
+    type: RegexAnd
+    pattern:
+      - \.HasKey\(
+      - \.HasIndex\(
+      - \.IsUnique\(
+      - \[Key\]
+      - Guid\.NewGuid\(
+    severity: 0
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts: []
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts: []
+    manual_check: false

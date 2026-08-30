@@ -1,0 +1,95 @@
+  - id: api_abuse_prevention
+    description: >-
+      Ensures API abuse prevention techniques are implemented.
+    type: RegexAnd
+    pattern:
+      - import\s+org\.springframework\.rate\.limiting
+      - .bucket4j\(
+      - .rateLimiter\(
+      - .throttle\(
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts: []
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: unsafe_header_access
+    description: >-
+      Detects direct access to HTTP headers without validation.
+    type: RegexAnd
+    pattern:
+      - (request\.getHeader\()
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "moderate"
+        relative_impacts: []
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: certificate_trust_management
+    description: >-
+      Ensures secure SSL/TLS certificate validation.
+    type: RegexAnd
+    pattern:
+      - import\s+java\.security\.cert
+      - (trustAllCertificates\(|setHostnameVerifier\()
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts: []
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: insecure_certificate_validation
+    description: >-
+      Detects disabling of SSL certificate validation.
+    type: RegexAnd
+    pattern:
+      - (trustAllCertificates\()
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts: []
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: api_web_security
+    description: >-
+      Ensures secure API configurations.
+    type: RegexAnd
+    pattern:
+      - (public\s+\*\s+.*\s+\*API\s+without\s+authentication)
+      - (CORS\s+configuration\s+allowing\s+\*)
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "strong"
+        relative_impacts: []
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: webview_security
+    description: >-
+      Ensures secure WebView configuration.
+    type: RegexAnd
+    pattern:
+      - WebView\.getSettings\(
+      - setJavaScriptEnabled\(true\)
+    vulnerability_impacts:
+      - vulnerability_id: insecure_network_communication
+        severity: "moderate"
+        relative_impacts: []
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5

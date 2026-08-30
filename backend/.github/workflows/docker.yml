@@ -1,0 +1,131 @@
+name: Deploy HIPAA Checker Backend
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choose deployment target"
+        required: true
+        default: staging
+        type: choice
+        options:
+          - staging
+          - live
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build & Push to ECR (with verbose output)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest
+          platforms: linux/amd64
+          build-args: |
+            RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }}
+            SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }}
+        env:
+          BUILDKIT_PROGRESS: plain
+      - name: SSH into EC2 and Deploy
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          if [[ "${{ github.event.inputs.environment }}" == "live" ]]; then
+            HOST=${{ secrets.EC2_HOST_LIVE }}
+            ENV_FILE="${{ secrets.ENV_FILE_CONTENTS_LIVE }}"
+          else
+            HOST=${{ secrets.EC2_HOST }}
+            ENV_FILE="${{ secrets.ENV_FILE_CONTENTS }}"
+          fi
+          ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
+
+          echo "
+            mkdir -p ~/hipaachecker/backend-deploy
+
+            echo '$ENV_FILE' > ~/hipaachecker/backend-deploy/.env
+
+            echo 'version: \"3.8\"' > ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo 'services:' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '  web:' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    image: 578759596248.dkr.ecr.us-east-1.amazonaws.com/hipaachecker-backend:latest' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    command: bash -c \"mkdir -p tmp/pids && bundle exec rake db:migrate && bundle exec puma -C config/puma.rb\"' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    env_file: .env' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    ports:' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - \"3000:3000\"' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    volumes:' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - storage_volume:/app/storage' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - extracted_volume:/app/extracted' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - github_uploads_volume:/app/github_uploads' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - /home/ubuntu/hipaachecker/backend-deploy/shared/config/root-emissary-442213-k5-8cf2b28357cc.json:/app/config/root-emissary-442213-k5-8cf2b28357cc.json:ro' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+
+            echo '  sidekiq_1:' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    image: 578759596248.dkr.ecr.us-east-1.amazonaws.com/hipaachecker-backend:latest' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    command: bundle exec sidekiq -C config/extraction_sidekiq.yml' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    env_file: .env' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    volumes:' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - storage_volume:/app/storage' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - extracted_volume:/app/extracted' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - github_uploads_volume:/app/github_uploads' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - /home/ubuntu/hipaachecker/backend-deploy/shared/config/root-emissary-442213-k5-8cf2b28357cc.json:/app/config/root-emissary-442213-k5-8cf2b28357cc.json:ro' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+
+            echo '  sidekiq_2:' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    image: 578759596248.dkr.ecr.us-east-1.amazonaws.com/hipaachecker-backend:latest' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    command: bundle exec sidekiq -C config/report_generation_sidekiq.yml' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    env_file: .env' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    volumes:' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - storage_volume:/app/storage' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - extracted_volume:/app/extracted' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - github_uploads_volume:/app/github_uploads' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - /home/ubuntu/hipaachecker/backend-deploy/shared/config/root-emissary-442213-k5-8cf2b28357cc.json:/app/config/root-emissary-442213-k5-8cf2b28357cc.json:ro' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+
+            echo '  sidekiq_3:' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    image: 578759596248.dkr.ecr.us-east-1.amazonaws.com/hipaachecker-backend:latest' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    command: bundle exec sidekiq -C config/general_sidekiq.yml' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    env_file: .env' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '    volumes:' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - storage_volume:/app/storage' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - extracted_volume:/app/extracted' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - github_uploads_volume:/app/github_uploads' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '      - /home/ubuntu/hipaachecker/backend-deploy/shared/config/root-emissary-442213-k5-8cf2b28357cc.json:/app/config/root-emissary-442213-k5-8cf2b28357cc.json:ro' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+
+
+
+            echo 'volumes:' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '  storage_volume:' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '  extracted_volume:' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+            echo '  github_uploads_volume:' >> ~/hipaachecker/backend-deploy/docker-compose.yml
+
+            cd ~/hipaachecker/backend-deploy
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 578759596248.dkr.ecr.us-east-1.amazonaws.com
+            docker-compose pull
+            docker-compose down --remove-orphans || true
+            docker-compose rm -f web sidekiq
+            docker image prune -f
+            docker-compose up -d
+          " | ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@$HOST

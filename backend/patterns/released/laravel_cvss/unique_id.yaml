@@ -1,0 +1,19 @@
+  - id: unique_id
+    description: >-
+      Creating a unique primary key in the database for storing PHI
+    pattern:
+      - ->id\(
+      - bigIncrements\(\'id
+      - increments\(\'id
+      - primary\(
+      - foreign\(
+      - foreignId\(]
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts: []
+      - vulnerability_id: inadequate_data_security
+        severity: "strong"
+        relative_impacts: []
+    manual_check: true
+    severity: warning

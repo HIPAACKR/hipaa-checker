@@ -1,0 +1,115 @@
+@use '@/design/styles/' as *;
+
+.EnterpriseItems {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px 30px;
+  justify-content: center;
+  padding-top: 0px;
+  padding-bottom: 80px;
+
+  @include device(sp) {
+    grid-template-columns: 1fr;
+    gap: 20px 0px;
+    padding-top: 0px;
+    padding-bottom: 30px;
+  }
+
+ &__card {
+  padding: 24px;  
+  overflow: hidden;
+  position: relative;
+  border-radius: 20px;
+  @include align(column, flex-start, flex-start, 0, 20px);
+  transition: background-color 0.3s ease; 
+
+  @include device(sp) {
+    width: 100%; 
+    padding: 20px;       
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      0deg, rgba(149, 92, 244, 0.08), #0A8FE4
+    ) border-box;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+  }
+  &:nth-child(even)::before {
+    background: linear-gradient(
+      180deg, rgba(149, 92, 244, 0.08), #0A8FE4
+    ) border-box;
+  }
+    &__header {
+      display: flex;
+      align-items: center;
+      gap: 16px; 
+      width: 100%;  
+      margin-left: -5px;
+      white-space: nowrap;   
+      .heading[data-type='h5'] {
+        margin: 0;
+
+        
+      }
+      @include device(sp) {
+        .heading[data-type='h5'] {
+          font-size: 20px;
+          white-space: nowrap;
+          margin-left: -6px;
+        
+        }
+      }
+      
+    }
+
+    &__icon {
+      border-radius: 8px;
+      flex-shrink: 0;
+      @include device(sp) {
+        width: 45px;
+        height: 45px;
+      }
+    }
+
+    &__textWrapper {
+
+      .text[data-size='fs-18'] {
+        font-size: 18px;
+        line-height: 26px;
+        letter-spacing: -0.2px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        text-align: left;
+      }
+
+
+      @include align(column, flex-start, flex-start, 0, 16px);
+
+      .heading {
+        transition: all 0.125s 0s ease;
+      }
+
+      @include device(sp) {
+        .text[data-size='fs-18'] {
+          font-size: 16px;
+          line-height: 26px;
+          letter-spacing: -0.2px;
+          margin-top: 0px;
+          margin-bottom: 0px;
+          text-align: left;
+        }
+      }
+    }
+  }
+}
+

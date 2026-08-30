@@ -1,0 +1,50 @@
+- id: database_encryption
+  description: Ensures encryption and secure implementation for database/storage.
+  pattern:
+    - Realm\.Configuration\(encryptionKey
+    - sqlite3_key\(
+    - kSecAttrAccessibleWhenUnlocked
+    - kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+    - FileProtectionType\.complete
+    - CCCrypt\(
+    - SecKeyCreateEncryptedData\(
+    - PRAGMA\s+key
+    - FMDB.*encrypt
+    - SecItemAdd\(
+    - NSFileProtectionComplete
+    - encryptedDataUsingAlgorithm:\s*\.aes
+    - kSecAttrKeyTypeAES
+    - KeychainServices\.set\(
+    - Cipher\(algorithm:\s*\.aes
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "strong"
+      relative_impacts:
+         - subrule_id: secure_data_storage
+           factor: "negligible"
+
+- id: api_base64_encode
+  description: Detects insecure use of Base64 encoding for sensitive data.
+  pattern:
+    - \.base64EncodedString\(
+    - NSDataBase64EncodingOptions
+    - base64EncodedStringWithOptions
+    - "Encoding: .base64"
+    - NSData\.dataWithBase64EncodedString
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts: []
+
+- id: api_base64_decode
+  description: Detects insecure use of Base64 decoding for sensitive data.
+  pattern:
+    - Data\(base64Encoded
+    - initWithBase64EncodedData
+    - NSDataBase64DecodingIgnoreUnknownCharacters
+    - dataFromBase64String
+    - decodedStringWithBase64Data
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "moderate"
+      relative_impacts: []

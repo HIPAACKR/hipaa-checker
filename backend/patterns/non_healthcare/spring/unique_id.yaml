@@ -1,0 +1,77 @@
+- id: unique_id
+  description: >-
+    Ensures a unique primary key is generated and configured in the database for storing PHI.
+  type: RegexAnd
+  pattern:
+    - \@Entity
+    - \@Id
+    - \@GeneratedValue
+    - \@Column\(unique\s=\strue\)
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: validate_id_generation_strategy
+          factor: "negligible"
+        - subrule_id: enforce_unique_constraint
+          factor: "negligible"
+    - vulnerability_id: insufficient_authorization
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: validate_id_generation_strategy
+          factor: "negligible"
+        - subrule_id: enforce_unique_constraint
+          factor: "negligible"
+
+- id: validate_id_generation_strategy
+  description: >-
+    Verifies that a secure ID generation strategy (e.g., UUID, AUTO) is used to ensure uniqueness and prevent predictability.
+  pattern:
+    - GenerationType\.AUTO
+    - GenerationType\.IDENTITY
+    - GenerationType\.UUID
+    - UUID\.randomUUID
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: unique_id
+          factor: "negligible"
+        - subrule_id: enforce_unique_constraint
+          factor: "moderate"
+    - vulnerability_id: insufficient_authorization
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: unique_id
+          factor: "negligible"
+        - subrule_id: enforce_unique_constraint
+          factor: "moderate"
+  severity: 0
+  weight: 1
+  score: 5
+
+- id: enforce_unique_constraint
+  description: >-
+    Adds unique constraints at the database level to prevent duplicate primary keys, ensuring data integrity.
+  type: RegexAnd
+  pattern:
+    - \@Table\(uniqueConstraints
+    - \@Column\(unique\s=\strue\)
+  vulnerability_impacts:
+    - vulnerability_id: inadequate_data_security
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: unique_id
+          factor: "moderte"
+        - subrule_id: validate_id_generation_strategy
+          factor: "negligible"
+    - vulnerability_id: insufficient_authorization
+      severity: "optimal"
+      relative_impacts:
+        - subrule_id: unique_id
+          factor: "moderte"
+        - subrule_id: validate_id_generation_strategy
+          factor: "negligible"
+  severity: 0
+  weight: 1
+  score: 5

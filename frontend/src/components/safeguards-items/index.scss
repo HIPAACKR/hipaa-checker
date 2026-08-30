@@ -1,0 +1,78 @@
+@use '@/design/styles/' as *;
+
+.safeguardsItems {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px 20px;
+  justify-content: center;
+  padding-bottom: 80px;
+
+  @include device(sp) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-bottom:30px ;
+
+  }
+
+ &__card {
+    width: 373px;
+    padding: 20px 20px; 
+    border-radius: 8px; 
+    @include align(column, flex-start, flex-start, 0, 24px);
+    transition: background-color 0.3s ease; 
+    @include device(sp) {
+      padding: 0px 20px;
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: #0092E305; 
+      box-shadow: $card-box-shadow-11; 
+  
+
+      .heading[data-type='h5'] {
+        color: $primary-700;
+      }
+    }
+
+    &__header {
+      display: flex;
+      align-items: center;
+      gap: 16px; 
+      width: 100%;
+      margin-top: 0px;
+
+      .heading[data-type='h5'] {
+        margin: 0;
+      }
+    }
+
+    &__icon {
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    &__textWrapper {
+      @include align(column, flex-start, flex-start, 0, 16px);
+
+      .heading {
+        transition: all 0.125s 0s ease;
+      }
+
+      @include device(sp) {
+        .text[data-size='fs-18'] {
+          font-size: $font-size-tiny;
+          line-height: 26px;
+          letter-spacing: -0.2px;
+          ;
+        }
+      }
+    }
+
+    .button {
+      margin-top: auto;
+      color: #0092E3;
+      
+    }
+  }
+}

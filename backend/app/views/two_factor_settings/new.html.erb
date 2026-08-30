@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Two Factor Authentication</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card-deck">
+        <div class="card">
+          <div class="card-header">
+            1. Scan QR Code
+          </div>
+          <div class="card-body">
+            <p>Please scan the below QR code using an OTP compatible app (such as Google Authenticator or Duo Mobile or Authy).</p>
+            <hr />
+            <p class="text-center">
+              <%= qr_code_as_svg(current_user.two_factor_qr_code_uri)%>
+            </p>
+            <hr />
+            <p class="text-center">
+              If you cannot scan, please enter the following code manually: <code><%= current_user.otp_secret%></code>
+            </p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            2. Confirm OTP Code
+          </div>
+          <div class="card-body">
+            <p>Please confirm that your authentication application is working by entering a generated code below.</p>
+            <%= form_for(:two_fa, url: two_factor_settings_path, method: :post, html: {autocomplete: "off"}) do |f| %>
+
+              <div class="field">
+                <b><%= f.label :code, 'Code From Your Authenticator App' %></b>
+                <%= f.text_field :code, autofocus: true, autocomplete: "new-password", class: 'form-control' %>
+              </div>
+
+              <div class="field">
+                <b><%= f.label :password, 'Enter your current password' %></b>
+                <%= f.password_field :password, autocomplete: "new-password", class: 'form-control' %>
+              </div>
+
+              <div class="actions" style="margin: 5px 0px">
+                <%= f.submit 'Confirm and Enable Two Factor', class: 'btn btn-primary form-control' %>
+              </div>
+
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

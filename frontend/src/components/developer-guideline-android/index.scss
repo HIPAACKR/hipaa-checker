@@ -1,0 +1,317 @@
+@use '@/design/styles/' as *;
+.developerGuidelineAndroid {
+  &__layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    @include device(sp) {
+      flex-direction: column;
+      gap: 24px;
+    }
+  }
+
+  &__sidebar {
+    position: sticky;
+    top: 100px; 
+    flex: 0 0 250px;
+    padding: 20px;
+    border-radius: 8px;
+    
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      > .developerGuidelineAndroid__sidebar__title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #040202;
+        margin-bottom: 16px;
+        &:hover {
+          color: #040202; 
+        }
+       
+      }
+
+      li {
+        font-size: $font-size-tiny;
+        color: $neutral-600;
+        margin-bottom: 12px;
+        cursor: pointer;
+        transition: color 0.2s;
+
+        &:hover {
+          color: #0092E3;
+        }
+
+        &.active {
+          color: #0092E3;
+          font-weight: $font-weight-semi-bold;
+        }
+      }
+    }
+
+    @include device(sp) {
+      position: relative;
+      flex: unset;
+      width: 100%;
+      box-shadow: none;
+      background-color: transparent;
+      padding: 0;
+      ul li {
+        margin-bottom: 8px;
+      }
+    }
+  }
+
+  .developerGuidelineAndroid__container {
+    width: 800px;
+    margin: 56px auto;
+    @include device(sp) {
+      width: 100%;
+      padding: 0px 20px;
+      margin: 40px auto;
+    }
+  }
+
+  .heading[data-type='h3'] {
+    font-size: $font-size-medium;
+    line-height: 48px;
+    text-align: center;
+  }
+
+  &__video-image {
+    position: relative;
+    width: 100%;
+    margin-top: 42px;
+    @include device(sp) {
+      max-width: 335px;
+      margin: 0 auto;
+      margin-top: 32px;
+    }
+  }
+
+  &__play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    @include device(sp) {
+      width: 40px;
+      height: 40px;
+    }
+    &:hover {
+      width: 86px;
+      height: 86px;
+      @include device(sp) {
+        width: 45px;
+        height: 45px;
+      }
+      cursor: pointer;
+      transition:
+        width 0.5s,
+        height 0.5s;
+    }
+  }
+
+  &__video-description {
+    margin-top: 16px;
+    margin-bottom: 28px;
+    font-size: $font-size-semi-small;
+    font-weight: $font-weight-regular;
+    color: $neutral-500;
+    text-align: center;
+    letter-spacing: -0.2px;
+    @include device(sp) {
+      margin-bottom: 40px;
+      font-size: $font-size-tiny;
+      line-height: 26px;
+      text-align: center;
+    }
+  }
+
+  &__line {
+    width: 100%;
+    height: 2px;
+    margin-bottom: 28px;
+    @include device(sp) {
+      margin-bottom: 40px;
+    }
+    background-color: $neutral-100;
+  }
+
+  &__install-process {
+    @include align($direction: column, $position: flex-start, $start: flex-start, $rowGap: 40px);
+  }
+
+  &__install-step {
+    @include device(sp) {
+      width: 100%;
+    }
+    &__title {
+      font-size: 24px;
+      color: #101828;
+      padding-bottom: 20px;
+      @include device(sp) {
+        width: 100%;
+        font-size: $font-size-semi-small;
+      }
+      font-weight: $font-weight-semi-bold;
+      line-height: 28px;
+      color: #101828;
+    }
+
+    &__description {
+      font-size: $font-size-tiny;
+      margin-top: 0px;
+      // margin-bottom:20px;
+      @include device(sp) {
+        font-size: $font-size-semi-tiny;
+        // white-space: pre-line;
+      }
+      font-weight: 400;
+      line-height: 30px;
+      color: $neutral-500;
+    }
+
+    &__bold-text {
+      font-weight: $font-weight-semi-bold;
+      &--regular {
+        font-weight: 400;
+        color: $neutral-800;
+      }
+      &--medium {
+        font-weight: 500;
+        color: $neutral-600;
+      }
+    }
+
+    &__link {
+      font-size: $font-size-tiny;
+      @include device(sp) {
+        font-size: $font-size-semi-tiny;
+      }
+      font-weight: $font-weight-semi-bold;
+      line-height: 20px;
+      color: $primary-500;
+
+      transition: all 0.125s 0s ease;
+
+      &:hover {
+        color: $primary-800;
+      }
+    }
+
+    &__tag {
+      padding: 4px 8px;
+      font-family: IBM Plex Mono;
+      font-size: $font-size-tiny;
+      @include device(sp) {
+        font-size: $font-size-semi-tiny;
+      }
+      font-weight: 400;
+      border-radius: 3px;
+      &--red {
+        color: $radical-red;
+        background-color: $pinkish-red;
+      }
+
+      &--grey {
+        color: $neutral-800;
+        background-color: $neutral-200;
+      }
+    }
+
+    &__instruction-image {
+      @include device(sp) {
+        display: block;
+        width: 100%;
+        max-width: 315px;
+        height: 256px;
+        margin: 8px auto;
+        &--copy-paste {
+          height: 174px;
+        }
+
+        &--placement {
+          height: 94px;
+        }
+
+        &--uninstall-process {
+          height: 237px;
+        }
+      }
+    }
+  }
+
+  &__ide-demo {
+    padding: 24px 0px;
+    background-color: $neutral-50;
+    &__container {
+      width: 800px;
+      margin: 0px auto;
+      @include device(sp) {
+        width: 343px;
+      }
+    }
+
+    &__title {
+      font-size: $font-size-tiny;
+      @include device(sp) {
+        font-size: $font-size-semi-tiny;
+      }
+      font-weight: $font-weight-semi-bold;
+      line-height: 30px;
+      color: $neutral-700;
+    }
+
+    &__code {
+      display: -webkit-box;
+      margin-top: 8px;
+      font-family: IBM Plex Mono;
+      font-size: $font-size-semi-tiny;
+      font-weight: 400;
+      line-height: 20px;
+      color: $primary-700;
+      white-space: pre-wrap;
+
+      @include device(sp) {
+        display: -webkit-box;
+        font-size: $font-size-micro;
+        overflow-wrap: anywhere;
+      }
+    }
+  }
+
+  &__youtube {
+    &__heading {
+      margin-top: 72px;
+      margin-bottom: 64px;
+      @include device(sp) {
+        padding: 0px 16px;
+        margin-top: 40px;
+      }
+    }
+
+    &__player {
+      display: block;
+      margin: 0px auto;
+      @include device(sp) {
+        display: none;
+      }
+    }
+
+    &__player-sp {
+      display: none;
+      margin: 0px auto;
+      @include device(sp) {
+        display: block;
+        width: 100%;
+      }
+    }
+  }
+}

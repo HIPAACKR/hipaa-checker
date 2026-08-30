@@ -1,0 +1,21 @@
+  - id: unique_id
+    description: >-
+      Creating a unique primary key in the database for storing PHI
+    pattern:
+      - AUTO_INCREMENT
+      - IDENTITY
+      - CONSTRAINT
+      - PRIMARY KEY\(
+      - FOREIGN KEY\(
+      - CHECK\(
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts: []
+      - vulnerability_id: inadequate_data_security
+        severity: "strong"
+        relative_impacts: []
+    manual_check: true
+    severity: 0
+    weight: 0
+    score: 0

@@ -1,0 +1,64 @@
+  - id: user_authentication
+    description: >-
+      Checks whether authentication is implemented or not
+    type: RegexAnd
+    pattern:
+      - \@login_required\(
+      - django\.contrib\.auth
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: user_authentication_oauth_social
+            factor: "minor"
+          - subrule_id: user_authentication_oauth2
+            factor: "minor"
+    manual_check: false
+    severity: warning
+
+
+
+
+  - id: user_authentication_oauth_social
+    description: >-
+      Checks whether authentication is implemented via social login
+    type: RegexOr
+    pattern:
+      - allauth\.account
+      - SOCIALACCOUNT_PROVIDERS\s*=\s*{[^}]*'google'\s*
+      - AUTHENTICATION_BACKENDS\s*=\s*\[\s*['"][social_core\.backends\.[\w]+\.FacebookOAuth2]['"][\s,]*['"][\w\.]+['"][\s]*\]
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts:
+          relative_impacts:
+            - subrule_id: user_authentication
+              factor: "minor"
+            - subrule_id: user_authentication_oauth2
+              factor: "minor"
+    manual_check: true
+    severity: warning
+
+
+
+  - id: user_authentication_oauth2
+    description: >-
+      Checks whether authentication is implemented via oauth2
+    type: RegexOr
+    pattern:
+      - oauth2_provider
+      - SOCIAL_AUTH_(\w+)_OAUTH2_KEY\s*=\s*['"][A-Za-z0-9]{20,}['"]
+      - SOCIAL_AUTH_(\w+)_OAUTH2_SECRET\s*=\s*['"][A-Za-z0-9]{20,}['"]
+      - INSTALLED_APPS\s*=\s*\[[^]]*['"]drf_social_oauth2['"][^]]*\]
+      - pyrebase\.initialize_app\(
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts: []
+    manual_check: true
+    severity: warning
+
+
+
+
+

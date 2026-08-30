@@ -1,0 +1,82 @@
+  - id: robust_encryption
+    description: >-
+      The applications checks robust encryption to enhance security. 
+    pattern:
+      - require\(['"]crypto['"]\)
+      - \.createCipher\(
+      - \.createCipheriv\(
+      - \.setPrivateKey\(
+      - \.generateKeys\(\)
+      - \.computeSecret\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts:
+          - subrule_id: hashing_algorithm_security
+            factor: "moderate"
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 2.5
+
+  - id: robust_decryption
+    description: >-
+      The applications checks robust decryption to enhance security. 
+    pattern:
+      - createDecipher\(
+      - decrypt\(
+      - \.createDecipher\(
+      - \.createDecipheriv\(
+      - \.scryptSync\(
+      - \.setAuthTag\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts:
+          - subrule_id: buffer_encoding_decoding
+            factor: "minor"
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 2.5
+
+  - id: hashing_algorithm_security
+    description: >-
+      Detects missing salting in password hashing.
+    type: RegexAnd
+    pattern:
+      - crypto\.createHash\(
+      - (password\.hash\(|password\.encode\(
+      - (DES|RC4|MD5|SHA1)
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: robust_encryption
+            factor: "strong"
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 2.5
+
+  - id: buffer_encoding_decoding
+    description: >-
+      Detecting Buffer Encoding and Decoding Operations for Data Handling Security
+    type: RegexAnd
+    pattern:
+      - Buffer\.from\(
+      - Buffer\.toString\(
+      - (base64|utf8)
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "negligible"
+        relative_impacts: []
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 2.5
+
+
+
+
+

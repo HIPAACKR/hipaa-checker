@@ -1,0 +1,86 @@
+  - id: optimal_spring_jpa
+    description: >-
+      Implemented Spring JPA Auditing
+    type: RegexAnd
+    pattern:
+      - \@EnableJpaAuditing
+    vulnerability_impacts:
+      - vulnerability_id: inconsistent_audit_trail
+        severity: "optimal"
+        relative_impacts:
+          - subrule_id: strong_hibernate_envers
+            factor: "negligible"
+          - subrule_id: moderate_callback
+            factor: "moderate"
+          - subrule_id: negligible_SLF4J
+            factor: "negligible"
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: strong_hibernate_envers
+    description: >-
+      Hibernate Envers allows versioning and auditing of entities, storing change history in audit tables
+    type: RegexAnd
+    pattern:
+      - \.envers\.Audited
+      - \@Audited
+    vulnerability_impacts:
+      - vulnerability_id: inconsistent_audit_trail
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: optimal_spring_jpa
+            factor: "moderate"
+          - subrule_id: moderate_callback
+            factor: "negligible"
+          - subrule_id: negligible_SLF4J
+            factor: "negligible"
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: moderate_callback
+    description: >-
+      Using JPA lifecycle callbacks
+    type: RegexAnd
+    pattern:
+      - \@PrePersist
+      - \@PreUpdate
+    vulnerability_impacts:
+      - vulnerability_id: inconsistent_audit_trail
+        severity: "optimal"
+        relative_impacts:
+          - subrule_id: optimal_spring_jpa
+            factor: "moderate"
+          - subrule_id: strong_hibernate_envers
+            factor: "moderate"
+          - subrule_id: negligible_SLF4J
+            factor: "negligible"
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5
+
+  - id: negligible_SLF4J
+    description: >-
+      Using JPA lifecycle callbacks
+    type: RegexAnd
+    pattern:
+      - LoggerFactory\.getLogger\(
+      - \.logAction\(
+    vulnerability_impacts:
+      - vulnerability_id: inconsistent_audit_trail
+        severity: "optimal"
+        relative_impacts:
+          - subrule_id: optimal_spring_jpa
+            factor: "negligible"
+          - subrule_id: strong_hibernate_envers
+            factor: "moderate"
+          - subrule_id: moderate_callback
+            factor: "negligible"
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5

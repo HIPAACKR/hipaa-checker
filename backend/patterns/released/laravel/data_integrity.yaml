@@ -1,0 +1,111 @@
+  - id: illegal_access
+    description: >-
+      This Application implements authorization to access sensitive resources to prevent improper alteration or destruction.
+    type: RegexAnd
+    pattern:
+      - Gate::define\(
+      - Gate::allows\(
+      - Gate::denies\(
+      - Gate::any\(
+      - Gate::none\(
+      - Gate::authorize\(
+      - Gate::check\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "optimal"
+        relative_impacts: []
+    manual_check: false
+    severity: warning
+
+  - id: authorization_exception
+    description: >-
+      This Application restricts illegal access to sensitive resources to prevent improper alteration or destruction.
+    type: RegexAnd
+    pattern:
+      - AuthorizationException
+      - abort\(403
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "strong"
+        relative_impacts: []
+    manual_check: false
+    severity: warning
+
+  - id: database_migration
+    description: >-
+      This Application uses database migration to define schema and uses primary keys to enforce data integrity.
+    type: RegexAnd
+    pattern:
+      - Schema::create\(
+      - Schema::drop\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts: []
+    manual_check: true
+    severity: warning
+
+  - id: data_validation
+    description: >-
+      This Application implements data validation rules in order to ensure valid data.
+    type: RegexAnd
+    pattern:
+      - ->validate\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "minor"
+        relative_impacts: []
+    manual_check: true
+    severity: warning
+
+  - id: database_transaction
+    description: >-
+      This Application uses database transactions in order to prevent data from partial updates that could compromise data integrity.
+    type: RegexAnd
+    pattern:
+      - DB::transaction\(
+      - DB::rollBack\(
+      - DB::commit\(
+      - beginTransaction\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts: []
+    manual_check: false
+    severity: warning
+
+  - id: eloquent_orm
+    description: >-
+      This Application uses Object Relational Mapper to interact with the database eloquently which  provides fluent syntax for database queries and handles many data integrity issues automatically.
+    type: RegexAnd
+    pattern:
+      - extends Model
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: database_transaction
+            factor: "minor"
+    manual_check: true
+    severity: warning
+
+  - id: error_handling
+    description: >-
+      This Application handles errors to identify and address faulty or invalid data.
+    type: RegexAnd
+    pattern:
+      - Log::info\(
+      - Log::warning\(
+      - Log::error\(
+      - App::fatal\(
+      - App::abort\(
+      - Validator::make
+      - QueryException
+      - Exception
+      - $errors
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "negligible"
+        relative_impacts: []
+    manual_check: true
+    severity: warning

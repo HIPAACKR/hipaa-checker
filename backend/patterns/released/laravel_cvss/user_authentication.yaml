@@ -1,0 +1,48 @@
+  - id: user_authentication
+    description: >-
+      Checks whether authentication is implemented or not
+    type: RegexOr
+    pattern:
+      - Auth::attempt\(
+      - Auth::logout\(
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: user_authentication_via_social_media
+            factor: "negligible"
+          - subrule_id: user_authentication_via_2FA
+            factor: "minor"
+    manual_check: false
+    severity: warning
+
+  - id: user_authentication_via_social_media
+    description: >-
+      Checks whether authentication is implemented via social media or not
+    type: RegexOr
+    pattern:
+      - Socialite::driver
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: user_authentication
+            factor: "negligible"
+          - subrule_id: user_authentication_via_2FA
+            factor: "minor"
+    manual_check: false
+  - id: user_authentication_via_2FA
+    description: >-
+      This application implements two factor authentication
+    type: RegexOr
+    pattern:
+      - (enableTwoFactorAuthentication|two_factor_secret|two_factor_recovery_codes)
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "optimal"
+        relative_impacts:
+          - subrule_id: user_authentication
+            factor: "negligible"
+          - subrule_id: user_authentication_via_social_media
+            factor: "negligible"
+    manual_check: true

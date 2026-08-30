@@ -1,0 +1,23 @@
+  - id: insufficient_authorization
+    description: >-
+      Identifies insufficient authorization checks before accessing sensitive resources.
+    type: RegexAnd
+    pattern:
+      - (request\.getParameter|request\.getHeader|request\.getQueryString)
+      - (@PreAuthorize|@Secured|hasAuthority|hasRole)
+      - .authorizeRequests\(
+      - .antMatchers\(
+      - .hasRole\(
+      - .hasAuthority\(
+      - \@EnableWebSecurity
+      - \.authorizeHttpRequests\(
+      - \@Secured\(
+      - \@PostAuthorize(
+    vulnerability_impacts:
+      - vulnerability_id: insufficient_authorization
+        severity: "optimal"
+        relative_impacts: []
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 5

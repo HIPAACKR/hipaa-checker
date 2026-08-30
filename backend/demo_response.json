@@ -1,0 +1,382 @@
+{
+  "analyzed_results": [
+    {
+      "rule_id": "transmition_secuirity",
+      "sub_rules": [
+        {
+          "subrule_id": "transmition_secuirity_1",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "insecure_network_communication",
+              "severity": "moderate",
+              "relative_impacts": [
+                {
+                  "subrule_id": "transmition_secuirity_2",
+                  "factor": "strong"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "subrule_id": "transmition_secuirity_2",
+          "count": 0,
+          "vulnerability_impacts": [       
+            {
+              "vulnerability_id": "insecure_network_communication",
+              "severity": "strong",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "transmition_secuirity_3",
+          "count": 0,
+          "vulnerability_impacts": [       
+            {
+              "vulnerability_id": "insecure_network_communication",
+              "severity": "strong",
+              "relative_impacts": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rule_id": "guard_against_com_network",
+      "sub_rules": [
+        {
+          "subrule_id": "guard_against_com_network",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "insecure_network_communication",
+              "severity": "strong",
+              "relative_impacts": [
+                {
+                  "subrule_id": "transmition_secuirity_1",
+                  "factor": "strong"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rule_id": "audit",
+      "sub_rules": [
+        {
+          "subrule_id": "audit_via_android_api",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inconsistent_audit_trail",
+              "severity": "moderate",
+              "relative_impacts": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rule_id": "authorization",
+      "sub_rules": [
+        {
+          "subrule_id": "authorization_exception",
+          "count": 2,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "insufficient_authorization",
+              "severity": "minor",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "illegal_access",
+          "count": 2,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "insufficient_authorization",
+              "severity": "moderate",
+              "relative_impacts": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rule_id": "user_authentication",
+      "sub_rules": [
+        {
+          "subrule_id": "user_authentication_oauth",
+          "count": 2,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "insufficient_authorization",
+              "severity": "strong",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "user_authentication_firebase",
+          "count": 2,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "insufficient_authorization",
+              "severity": "strong",
+              "relative_impacts": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rule_id": "authorization_for_destruction",
+      "sub_rules": [
+        {
+          "subrule_id": "authorization_exception_on_destroy",
+          "count": 2,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "moderate",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "illegal_destruction_restriction",
+          "count": 2,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "moderate",
+              "relative_impacts": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rule_id": "encryption_decryption",
+      "sub_rules": [
+        {
+          "subrule_id": "android_aes_ecb",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "negligible",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "android_aws_ecb_default",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "negligible",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "android_rsa_no_oaep",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "negligible",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "android_weak_ciphers",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "minor",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "android_md5",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "minor",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "android_sha1",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "strong",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "api_message_digest",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "strong",
+              "relative_impacts": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rule_id": "data_integrity",
+      "sub_rules": [
+        {
+          "subrule_id": "authorization_exception",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "minor",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "illegal_access",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "moderate",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "user_authentication_oauth",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "strong",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "user_authentication_firebase",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "strong",
+              "relative_impacts": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rule_id": "phi_encryption",
+      "sub_rules": [
+        {
+          "subrule_id": "android_sql_cipher_aes256",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "strong",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "android_db_encryption",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "strong",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "api_base64_encode",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "moderate",
+              "relative_impacts": []
+            }
+          ]
+        },
+        {
+          "subrule_id": "api_base64_decode",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "moderate",
+              "relative_impacts": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rule_id": "unique_id",
+      "sub_rules": [
+        {
+          "subrule_id": "unique_id",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "insufficient_authorization",
+              "severity": "moderate",
+              "relative_impacts": []
+            },
+            {
+              "vulnerability_id": "inadequate_data_security",
+              "severity": "moderate",
+              "relative_impacts": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rule_id": "user_inactivity",
+      "sub_rules": [
+        {
+          "subrule_id": "user_inactivity",
+          "count": 1,
+          "vulnerability_impacts": [
+            {
+              "vulnerability_id": "insufficient_authorization",
+              "severity": "strong",
+              "relative_impacts": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

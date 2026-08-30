@@ -1,0 +1,93 @@
+@use '@/design/styles/' as *;
+
+.menuItem {
+  $root: &;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &__title {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+    padding: 12px 16px 12px 12px;
+    font-size: $font-size-tiny;
+    line-height: 26px;
+    color: $neutral-600;
+  }
+
+  &__subNav {
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s ease;
+  }
+
+  &:hover {
+    background-color: $neutral-50;
+    #{$root}__subNav {
+      display: flex;
+      flex-direction: column;
+      background-color: $white;
+    }
+  }
+
+  &.active {
+    background-color: $primary-50;
+    border-radius: 8px;
+    #{$root}__title {
+      font-weight: $font-weight-semi-bold;
+      color: $primary-600;
+    }
+    #{$root}__subNav {
+      background-color: $white;
+    }
+    .active {
+      color: $primary-600;
+    }
+    .active:before {
+      background-color: $primary-200;
+    }
+    .icon {
+      background-color: $primary-600;
+    }
+  }
+
+  .arrow {
+    display: flex;
+    padding-left: 20px;
+    margin-top: 2px;
+  }
+
+  .menuItemSubNav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-right: 16px;
+  }
+
+  &__subNavItem {
+    position: relative;
+    padding: 8px 8px 8px 64px;
+    font-size: $font-size-micro;
+    color: $neutral-600;
+  }
+
+  &__subNavItem:before {
+    position: absolute;
+    top: 50%;
+    left: 50px;
+    display: block;
+    width: 4px;
+    height: 4px;
+    content: '';
+    background-color: $neutral-400;
+    border-radius: 50%;
+    transform: translateY(-50%);
+  }
+}

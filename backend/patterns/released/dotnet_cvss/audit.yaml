@@ -1,0 +1,53 @@
+  - id: ilogger_microsoft
+    description: >-
+      This application implements Microsoft standard logging framework.
+    type: RegexAnd
+    pattern:
+      - AddLogging\(
+    severity: 0
+    vulnerability_impacts:
+      - vulnerability_id: inconsistent_audit_trail
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: nlog
+            factor: "negligible"
+          - subrule_id: serilog
+            factor: "negligible"
+
+    manual_check: false
+  - id: nlog
+    description: >-
+      This application implements the logging library NLog.
+    type: RegexAnd
+    pattern:
+      - LogManager\.GetCurrentClassLogger\(
+      - NLog\.LogManager\.LoadConfiguration\(
+    severity: 0
+    vulnerability_impacts:
+      - vulnerability_id: inconsistent_audit_trail
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: ilogger_microsoft
+            factor: "negligible"
+          - subrule_id: serilog
+            factor: "negligible"
+
+    manual_check: false
+  - id: serilog
+    description: >-
+      This application implements the logging library Serilog.
+    type: RegexAnd
+    pattern:
+      - UseSerilog(RequestLogging)?\(
+      - AddSerilog\(
+      - Log\.ForContext\(
+    severity: 0
+    vulnerability_impacts:
+      - vulnerability_id: inconsistent_audit_trail
+        severity: "strong"
+        relative_impacts:
+          - subrule_id: ilogger_microsoft
+            factor: "negligible"
+          - subrule_id: nlog
+            factor: "negligible"
+    manual_check: false

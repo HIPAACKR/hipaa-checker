@@ -1,0 +1,57 @@
+  - id: authorization_destroy_sensitive_data
+    description: >-
+      This Application securely destroying sensitive data when no longer needed. 
+    type: RegexAnd
+    pattern:
+      - \.isBuffer\(
+      - \.fill\(
+      - \.randomBytes\(
+      - \.createCipheriv\(
+      - TypeError\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "moderate"
+        relative_impacts:
+          - subrule_id: exception_on_destroy-password
+            factor: "negligible"
+    manual_check: false
+    severity: 0
+    weight: 1
+    score: 2.5
+
+  - id: exception_on_destroy-password
+    description: >-
+      This Application securely destroy the password. 
+    type: RegexAnd
+    pattern:
+      - require\(['"]passport['"]\)
+      - require\(['"]winston['"]\)
+      - \.password\s*=\s*null\s*
+      - \.password
+      - \.from\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "minor"
+        relative_impacts:
+          - subrule_id: authorization_destroy_sensitive_data
+            factor: "minor"
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 2.5
+
+  - id: access_control_middleware_for_destruction
+    description: >-
+      Ensures access control middleware is enforced.
+    type: RegexAnd
+    pattern:
+      - require\(['"](express-jwt|acl|express-jwt-permissions)['"]\)
+      - app\.use\(
+    vulnerability_impacts:
+      - vulnerability_id: inadequate_data_security
+        severity: "negligible"
+        relative_impacts: []
+    manual_check: true
+    severity: 0
+    weight: 1
+    score: 2.5

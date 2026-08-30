@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /user-account/
+Sitemap: https://hipaachecker.com/sitemap.xml
