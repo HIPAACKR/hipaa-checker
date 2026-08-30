@@ -200,21 +200,6 @@ const SignIn = () => {
           </Button>
         </form>
         <div>
-          <div className='signIn--flex-row signIn--mb-20'>
-            <Text
-              color='neutral-500'
-              size='fs-14'
-            >
-              Don’t have an account?
-            </Text>
-            <Button
-              type='link'
-              size='medium'
-              href={'/sign-up'}
-            >
-              Sign Up
-            </Button>
-          </div>
           {/* <Button
             type='link'
             size='large'

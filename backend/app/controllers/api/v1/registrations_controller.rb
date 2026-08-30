@@ -6,29 +6,7 @@ class Api::V1::RegistrationsController < ActionController::Base
   respond_to :json
 
   def create
-    if params[:invitation_token].present?
-      user = User.find_by_invitation_token(params[:invitation_token], true)
-      original_email = user&.email
-      original_organization_id = user&.organization_id
-      if user.present?
-        user.assign_attributes(user_params)
-        user.email = original_email
-        user.organization_id = original_organization_id
-        user.organization_name = nil
-        user.skip_invitation = true
-        user.invitation_accepted_at = Time.now
-        user.invitation_token = nil
-        user.confirmed_at = Time.now
-        user.email = user.email.downcase.strip
-        if user.save
-          render json: { message: 'User Registration successfull' }, status: :ok and return
-        else
-          render json: { errors: user.errors.full_messages }, status: :unprocessable_entity and return
-        end
-      else
-        render json: { errors: ["Invalid or expired token"] }, status: :unprocessable_entity and return
-      end
-    elsif user_params[:organization_name].blank?
+    if user_params[:organization_name].blank?
       organization = Organization.create!(
         name: "individual",
         is_individual: true,
