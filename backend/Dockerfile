@@ -1,14 +1,17 @@
 FROM ruby:3.1
 
-ARG RAILS_MASTER_KEY
 ARG SECRET_KEY_BASE
 
 ENV RAILS_ENV=production
 ENV NODE_ENV=production
 ENV SECRET_KEY_BASE=$SECRET_KEY_BASE
-ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
 ENV DATABASE_URL=postgres://fake:fake@localhost:5432/fake
 ENV REDIS_URL=redis://localhost:6379/1
+# RAILS_MASTER_KEY is intentionally not baked in here: nothing in this app
+# reads Rails.application.credentials, and Devise's secret-key lookup treats
+# an *empty* RAILS_MASTER_KEY (as opposed to a genuinely unset one) as a
+# fatal error, not a fallback. If you ever need it, pass it as a runtime
+# `environment:`/`env_file` value instead of baking it into the image.
 
 # Install system dependencies
 RUN apt-get update -qq && apt-get install -y \

@@ -1,0 +1,119 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: hipaachecker_production
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  backend:
+    build:
+      context: ./backend
+      args:
+        SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+    image: hipaa-checker-backend:latest
+    command: bash -c "mkdir -p tmp/pids && rm -f tmp/pids/server.pid && bundle exec rails db:prepare && bundle exec puma -C config/puma.rb"
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@db:5432/hipaachecker_production
+      REDIS_URL: redis://redis:6379/1
+    env_file:
+      - .env
+    volumes:
+      - backend_storage:/app/storage
+      - backend_extracted:/app/extracted
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  sidekiq_extraction:
+    image: hipaa-checker-backend:latest
+    command: bundle exec sidekiq -C config/extraction_sidekiq.yml
+    environment:
+      DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@db:5432/hipaachecker_production
+      REDIS_URL: redis://redis:6379/1
+    env_file:
+      - .env
+    volumes:
+      - backend_storage:/app/storage
+      - backend_extracted:/app/extracted
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  sidekiq_report_generation:
+    image: hipaa-checker-backend:latest
+    command: bundle exec sidekiq -C config/report_generation_sidekiq.yml
+    environment:
+      DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@db:5432/hipaachecker_production
+      REDIS_URL: redis://redis:6379/1
+    env_file:
+      - .env
+    volumes:
+      - backend_storage:/app/storage
+      - backend_extracted:/app/extracted
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  sidekiq_general:
+    image: hipaa-checker-backend:latest
+    command: bundle exec sidekiq -C config/general_sidekiq.yml
+    environment:
+      DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@db:5432/hipaachecker_production
+      REDIS_URL: redis://redis:6379/1
+    env_file:
+      - .env
+    volumes:
+      - backend_storage:/app/storage
+      - backend_extracted:/app/extracted
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
+        NEXT_PUBLIC_API_BASE_URL_V2: ${NEXT_PUBLIC_API_BASE_URL_V2}
+        NEXT_PUBLIC_LLM_API_BASE_URL: ${NEXT_PUBLIC_LLM_API_BASE_URL}
+        NEXT_PUBLIC_ENABLE_LLM_FEATURES: ${NEXT_PUBLIC_ENABLE_LLM_FEATURES}
+        NEXT_PUBLIC_STRIPE_PUBLIC_KEY: ${NEXT_PUBLIC_STRIPE_PUBLIC_KEY}
+    image: hipaa-checker-frontend:latest
+    ports:
+      - "5002:5002"
+    env_file:
+      - .env
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  backend_storage:
+  backend_extracted:
