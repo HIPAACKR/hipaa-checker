@@ -104,34 +104,17 @@ If you change any `NEXT_PUBLIC_*` value, rebuild the frontend image:
 
 ## Logging in
 
-There's no self-serve admin account by default. Create one with:
+`docker compose up` seeds a super-admin account automatically on every
+backend start (`db/seeds.rb` runs after migrations, and is idempotent — it
+won't duplicate anything on restarts):
 
-```bash
-docker compose exec backend bundle exec rails runner '
-plan = Plan.find_or_create_by!(name: "Free", organization_id: nil) do |p|
-  p.price = 0; p.interval = "month"; p.user_count = 1; p.is_active = true
-  p.max_upload_quota = 2; p.limit_per_day = 2
-  p.can_use_doc_scan = true; p.can_use_sast = true; p.can_use_dast = true
-end
+- **Email:** `admin@example.com`
+- **Password:** `SecurePassword123`
 
-email = "admin@example.com"
-password = "SecurePassword123"
-user = User.find_or_initialize_by(email: email)
-user.assign_attributes(first_name: "Admin", last_name: "User", password: password,
-  password_confirmation: password, is_accept_terms: true, is_admin: true, approved: true)
-if user.save
-  user.add_role(:super_admin)
-  org = Organization.create!(name: "individual", is_individual: true,
-    subscription_expires_on: 10.years.from_now, plan_id: plan.id)
-  user.update!(organization: org)
-  puts "Created: #{email} / #{password}"
-end
-'
-```
-
-(`db/seeds.rb` has an equivalent seed, but it unconditionally calls the real
-Stripe API to create a product/plan — it'll fail unless `STRIPE_SECRET_KEY`
-is a real key. The snippet above sidesteps that for local use.)
+Change these in `db/seeds.rb` if you want different defaults. The seed skips
+the real Stripe API call for the Free plan unless `STRIPE_SECRET_KEY` in
+`.env` is a real key (the placeholder value is detected and skipped
+automatically), so it works out of the box with no Stripe account.
 
 ## Useful commands
 
