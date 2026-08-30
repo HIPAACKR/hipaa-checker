@@ -30,6 +30,7 @@ class GithubUpload < ApplicationRecord
   def private_repo?
     self.repo_type == 'private'
   end
+
   private
   def make_zip_from_github_url
     if self.private_repo?
