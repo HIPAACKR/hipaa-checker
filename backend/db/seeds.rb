@@ -52,3 +52,33 @@ if user.save
 else
   puts "Super admin FAILED: #{user.errors.full_messages}"
 end
+
+# Suggestions data pulled from the live server. Generate this file with
+# script/export_suggestions.rb - see that file for instructions. Safe to
+# skip when absent (e.g. a contributor without access to the export).
+suggestions_path = Rails.root.join('db', 'seed_data', 'suggestions.json')
+if File.exist?(suggestions_path)
+  suggestions = JSON.parse(File.read(suggestions_path))
+  imported = 0
+
+  suggestions.each do |attrs|
+    suggestion = Suggestion.find_or_initialize_by(
+      platform: attrs['platform'],
+      rule_id: attrs['rule_id'],
+      subrule_id: attrs['subrule_id']
+    )
+    suggestion.assign_attributes(
+      severity: attrs['severity'],
+      vulnerability_category: attrs['vulnerability_category'],
+      dependent_subrule: attrs['dependent_subrule'],
+      patterns: attrs['patterns']
+    )
+    suggestion.comment = attrs['comment'] if attrs['comment'].present?
+    suggestion.code_snippet = attrs['code_snippet'] if attrs['code_snippet'].present?
+    suggestion.expectations_from_hipaa = attrs['expectations_from_hipaa'] if attrs['expectations_from_hipaa'].present?
+
+    imported += 1 if suggestion.save
+  end
+
+  puts "Suggestions seeded: #{imported}/#{suggestions.size}"
+end
