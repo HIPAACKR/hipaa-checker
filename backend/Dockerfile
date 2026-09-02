@@ -71,12 +71,16 @@ RUN gem install bundler:2.3.26 && bundle install --without development test
 COPY . .
 
 # Set up binstubs and install JS packages
-RUN chmod +x ./bin/* && yarn install && bin/webpack
+# Strip any CRLF line endings first: on Windows, git commonly checks files
+# out with CRLF (core.autocrlf=true), which corrupts the "#!/usr/bin/env
+# ruby" shebang line and makes these scripts fail to exec (exit code 127)
+# regardless of the chmod below.
+RUN sed -i 's/\r$//' bin/* && chmod +x ./bin/* && yarn install && bin/webpack
 RUN bundle exec rake assets:precompile --trace
 
-# Make JADX and APKTOOL is executable
-RUN chmod +x utils/jadx/bin/jadx
-RUN chmod +x utils/apktool
+# Make JADX and APKTOOL executable (same CRLF normalization as above)
+RUN sed -i 's/\r$//' utils/jadx/bin/jadx && chmod +x utils/jadx/bin/jadx
+RUN sed -i 's/\r$//' utils/apktool && chmod +x utils/apktool
 
 # Default command to run the Rails server
 #CMD ["rails", "server", "-e", "production", "-b", "0.0.0.0"]
