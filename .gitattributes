@@ -1,0 +1,21 @@
+# Normalize line endings to LF on checkout, regardless of the OS or the
+# cloning machine's core.autocrlf setting. Without this, Windows checkouts
+# can convert shell script shebangs (bin/*, utils/apktool, utils/jadx/...)
+# to CRLF, which breaks them inside Linux Docker containers (exit code 127).
+* text=auto eol=lf
+
+# Explicit binary markers so git never tries to line-ending-normalize these,
+# regardless of git's own text/binary auto-detection.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
+*.jar binary
+*.apk binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
