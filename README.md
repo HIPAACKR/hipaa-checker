@@ -116,6 +116,38 @@ the real Stripe API call for the Free plan unless `STRIPE_SECRET_KEY` in
 `.env` is a real key (the placeholder value is detected and skipped
 automatically), so it works out of the box with no Stripe account.
 
+## Pulling `suggestions` data from the live server
+
+The `suggestions` table (HIPAA remediation guidance shown per rule) is
+normally populated by hand on the live server. To bring that data into local
+Docker seeding:
+
+1. On the **live server**, run the export script:
+   ```bash
+   cd /path/to/app/current
+   RAILS_ENV=production bundle exec rails runner script/export_suggestions.rb
+   ```
+   This writes `db/seed_data/suggestions.json`. It resolves the Action Text
+   fields (`comment`, `code_snippet`, `expectations_from_hipaa` — see
+   `app/models/suggestion.rb`) to plain text, since that content actually
+   lives in `action_text_rich_texts`, not as plain columns on `suggestions`.
+
+2. Copy that one file down to this repo, e.g.:
+   ```bash
+   scp youruser@yourserver:/path/to/app/current/db/seed_data/suggestions.json \
+     backend/db/seed_data/suggestions.json
+   ```
+
+3. Rebuild and restart the backend so the file gets baked into the image and
+   `db/seeds.rb` picks it up automatically:
+   ```bash
+   docker compose up -d --build backend
+   ```
+   Look for `Suggestions seeded: N/N` in `docker compose logs backend`.
+
+Re-running is safe — suggestions are matched on `(platform, rule_id,
+subrule_id)` and updated in place rather than duplicated.
+
 ## Useful commands
 
 ```bash
