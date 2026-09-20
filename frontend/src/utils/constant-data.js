@@ -100,6 +100,7 @@ export const platformsDropdownData = [
         value: 'apk',
         width: 32,
         height: 32,
+        disabled: true,
     },
     {
         id: 2,
@@ -108,6 +109,7 @@ export const platformsDropdownData = [
         value: 'ios',
         width: 30,
         height: 30,
+        disabled: true,
     },
     {
         id: 3,
@@ -116,6 +118,7 @@ export const platformsDropdownData = [
         value: 'laravel',
         width: 52,
         height: 32,
+        disabled: true,
     },
     {
         id: 4,
@@ -132,6 +135,7 @@ export const platformsDropdownData = [
         value: 'express',
         width: 32,
         height: 32,
+        disabled: true,
     },
     {
         id: 6,
@@ -140,6 +144,7 @@ export const platformsDropdownData = [
         value: 'ror',
         width: 88,
         height: 29,
+        disabled: true,
     },
     {
         id: 7,
@@ -148,6 +153,7 @@ export const platformsDropdownData = [
         value: 'spring',
         width: 32,
         height: 32,
+        disabled: true,
     },
     {
         id: 8,
@@ -156,6 +162,7 @@ export const platformsDropdownData = [
         value: 'dotnet',
         width: 32,
         height: 32,
+        disabled: true,
     },
 ];
 export const colors = {

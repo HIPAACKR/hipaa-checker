@@ -26,7 +26,9 @@ const FileUpload = () => {
   const queryClient = useQueryClient();
 
   const [isAllFilled, setAllFilled] = useState(false);
-  const [selectedPlatform, setSelectedPlatform] = useState(platformsDropdownData[0]); // android
+  const [selectedPlatform, setSelectedPlatform] = useState(
+    platformsDropdownData.find((platform) => !platform.disabled) || platformsDropdownData[0]
+  ); // django
   const [environment, setEnvironment] = useState('app');
   const [file, setFile] = useState(null);
   const [typeValue, setTypeValue] = useState('Healthcare');
@@ -390,8 +392,8 @@ const FileUpload = () => {
               {platformsDropdownData?.map((item) => (
                 <div
                   key={item.id}
-                  className={`file-upload__platform ${selectedPlatform?.value === item.value ? 'file-upload__platform-selected' : ''}`}
-                  onClick={() => setSelectedPlatform(item)}
+                  className={`file-upload__platform ${selectedPlatform?.value === item.value ? 'file-upload__platform-selected' : ''} ${item.disabled ? 'file-upload__platform-disabled' : ''}`}
+                  onClick={() => !item.disabled && setSelectedPlatform(item)}
                 >
                   <div className={`file-upload__platform__iconWrapper`}>
                     <Image

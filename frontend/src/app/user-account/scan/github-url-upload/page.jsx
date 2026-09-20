@@ -318,8 +318,8 @@ const GithubUrlUpload = () => {
               {platformsDropdownData?.map((item) => (
                 <div
                   key={item.id}
-                  className={`github-url-upload__platform ${selectedPlatform === item.value ? 'github-url-upload__platform-selected' : ''}`}
-                  onClick={() => setSelectedPlatform(item.value)}
+                  className={`github-url-upload__platform ${selectedPlatform === item.value ? 'github-url-upload__platform-selected' : ''} ${item.disabled ? 'github-url-upload__platform-disabled' : ''}`}
+                  onClick={() => !item.disabled && setSelectedPlatform(item.value)}
                 >
                   <div className={`github-url-upload__platform__iconWrapper`}>
                     <Image

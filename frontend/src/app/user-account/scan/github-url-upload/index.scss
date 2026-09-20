@@ -93,6 +93,14 @@
         border-color: $primary-400;
       }
     }
+    &-disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      &:hover {
+        background-color: $white;
+        border-color: $neutral-200;
+      }
+    }
   }
   .textInput {
     input {

@@ -102,6 +102,14 @@
         border-color: $primary-400;
       }
     }
+    &-disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      &:hover {
+        background-color: $white;
+        border-color: $neutral-200;
+      }
+    }
   }
   &__fileWrapper {
     @include align(column, flex-start, flex-start, 0, 20px);
