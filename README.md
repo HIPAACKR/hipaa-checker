@@ -1,161 +1,338 @@
 # HIPAA Checker
 
-Static analysis tool that scans mobile/web app codebases for HIPAA compliance
-issues. Monorepo with a Ruby on Rails API backend and a Next.js frontend.
+HIPAA Checker is an open-source static analysis tool for scanning mobile and web application codebases for potential HIPAA compliance issues.
 
-## Stack
+The project is a monorepo containing:
 
-| Service | What it is | Port |
-|---|---|---|
-| `frontend` | Next.js app | 5002 |
-| `backend` | Rails API (Puma) | 3000 |
-| `db` | Postgres 16 | internal only |
-| `redis` | Redis 7 (Sidekiq queues) | internal only |
-| `sidekiq_extraction` | Unpacks uploaded APKs/zips | — |
-| `sidekiq_report_generation` | Runs HIPAA rule checks against extracted code | — |
-| `sidekiq_general` | Everything else (cache cleanup, codebase upload) | — |
+- a **Next.js** frontend
+- a **Ruby on Rails** API backend
+- **PostgreSQL** for application data
+- **Redis + Sidekiq** for background jobs
 
-All seven run via a single `docker compose up` from the repo root.
+Everything is started locally with Docker Compose, so you do **not** need to install Ruby, Node.js, PostgreSQL, or Redis separately.
 
-## Prerequisites
+---
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) running
-- That's it — Ruby, Node, Postgres, Redis all run inside containers.
+## 1. Clone the Repository
 
-## Quickstart
+Repository:
+
+https://github.com/HIPAACKR/hipaa-checker
+
+Copy and run:
+
+```bash
+git clone https://github.com/HIPAACKR/hipaa-checker.git
+cd hipaa-checker
+```
+
+---
+
+## 2. Prerequisites
+
+Before starting HIPAA Checker, make sure you have:
+
+- **Git**
+- **Docker Desktop** on Windows/macOS, or Docker Engine with Docker Compose on Linux
+- Docker running before you start the application
+
+### Required local ports
+
+The following ports must be free:
+
+| Port | Service |
+|---:|---|
+| `5002` | Next.js frontend |
+| `3000` | Rails backend/API |
+
+If another application is already using either port, stop that application before starting HIPAA Checker.
+
+### Check the ports on Windows PowerShell
+
+```powershell
+Get-NetTCPConnection -State Listen -LocalPort 3000,5002 -ErrorAction SilentlyContinue
+```
+
+If the command returns nothing, the ports are free.
+
+### Check the ports on macOS/Linux
+
+```bash
+lsof -iTCP:3000 -sTCP:LISTEN
+lsof -iTCP:5002 -sTCP:LISTEN
+```
+
+If the commands return nothing, the ports are free.
+
+---
+
+## 3. Quick Start
+
+Run these commands from the repository root.
+
+### Windows: PowerShell
+
+```powershell
+Copy-Item .env.example .env
+docker compose up --build
+```
+
+### macOS / Linux
 
 ```bash
 cp .env.example .env
-# edit .env — see "Populating the .env file" below
+docker compose up --build
+```
+
+---
+
+## 4. Open HIPAA Checker
+
+After Docker finishes starting the services, open:
+
+**Frontend**
+
+http://localhost:5002
+
+**Sign-in page**
+
+http://localhost:5002/sign-in
+
+**Backend/API**
+
+http://localhost:3000
+
+---
+
+## 5. Default Admin Login
+
+A local super-admin account is created automatically by the database seed process.
+
+| | |
+|---|---|
+| **Email** | `admin@example.com` |
+| **Password** | `SecurePassword123` |
+
+Open the sign-in page and use the credentials above.
+
+> Change the default admin credentials before making an installation publicly accessible.
+
+---
+
+## 6. Services Started by Docker
+
+A single `docker compose up` starts the full application stack:
+
+| Service | Purpose | Port |
+|---|---|---:|
+| `frontend` | Next.js web application | `5002` |
+| `backend` | Rails API served by Puma | `3000` |
+| `db` | PostgreSQL 16 | Internal only |
+| `redis` | Redis 7 | Internal only |
+| `sidekiq_extraction` | Extracts uploaded APK/ZIP files | Internal |
+| `sidekiq_report_generation` | Runs HIPAA rule checks and report-generation jobs | Internal |
+| `sidekiq_general` | General background jobs | Internal |
+
+PostgreSQL and Redis are only exposed inside the Docker network and do not require separate local ports.
+
+---
+
+## 7. Stopping the Application
+
+If Docker Compose is running in the foreground, press:
+
+```text
+Ctrl + C
+```
+
+Then stop the containers with:
+
+```bash
+docker compose down
+```
+
+Your database and uploaded application data remain in Docker volumes unless you explicitly remove those volumes.
+
+---
+
+## 8. Useful Commands
+
+### Check running services
+
+```bash
+docker compose ps
+```
+
+### Start the full application
+
+```bash
 docker compose up
 ```
 
-First boot builds both images (a few minutes — the backend image compiles
-webpacker assets), then:
-
-- runs `rails db:prepare` automatically (creates the DB, runs migrations)
-- starts the backend on http://localhost:3000
-- starts the frontend on http://localhost:5002
-
-Watch logs for a specific service with `docker compose logs -f backend` (or
-`sidekiq_report_generation`, `frontend`, etc.).
-
-Tear down with `docker compose down` (add `-v` to also wipe the Postgres/data
-volumes and start completely fresh next time).
-
-## Populating the `.env` file
-
-Copy `.env.example` to `.env` at the repo root, then work through it
-section by section. Everything below is read by `docker-compose.yml` — some
-values become container environment variables, others get baked into the
-frontend build (`NEXT_PUBLIC_*`) at `docker compose up` time.
-
-### Required — the app won't start correctly without these
-
-| Variable | What it's for | How to set it |
-|---|---|---|
-| `POSTGRES_PASSWORD` | Postgres password, also used to build `DATABASE_URL` | Pick any string, e.g. `openssl rand -hex 16` |
-| `SECRET_KEY_BASE` | Rails session/cookie signing key | Generate: `openssl rand -hex 64` |
-| `OTP_SECRET_KEY` | Encrypts 2FA (devise-two-factor) secrets at rest | Generate: `openssl rand -hex 32` |
-
-Run this to generate all three at once:
+### Start and rebuild images
 
 ```bash
-echo "POSTGRES_PASSWORD=$(openssl rand -hex 16)"
-echo "SECRET_KEY_BASE=$(openssl rand -hex 64)"
-echo "OTP_SECRET_KEY=$(openssl rand -hex 32)"
+docker compose up --build
 ```
 
-Paste the output into `.env`. These are local secrets — never reuse them in
-a real production environment, and never commit `.env` (it's gitignored).
-
-> **Note on `RAILS_MASTER_KEY`:** you won't find it in `.env.example` on
-> purpose. Nothing in this app reads `Rails.application.credentials`, and
-> Rails resolves `secret_key_base` from `SECRET_KEY_BASE` directly without
-> ever touching `config/credentials.yml.enc`. Setting `RAILS_MASTER_KEY` to
-> an *empty* string (rather than leaving it unset) actually crashes boot —
-> see the comment in `backend/Dockerfile` if you're curious why.
-
-### Optional — the app boots fine without these; only specific features need them
-
-| Variable | What it's for | Where to get it |
-|---|---|---|
-| `STRIPE_PUBLIC_KEY` / `STRIPE_SECRET_KEY` | Billing/subscriptions | [Stripe Dashboard → API keys](https://dashboard.stripe.com/test/apikeys) (use test-mode keys) |
-| `STRIPE_WEBHOOK_SIGNING_SECRET` | Verifies incoming Stripe webhooks | Stripe Dashboard → Webhooks, or `stripe listen` CLI output |
-| `NEXT_PUBLIC_STRIPE_PUBLIC_KEY` | Same Stripe key, exposed to the frontend | Same as `STRIPE_PUBLIC_KEY` above |
-| `GOOGLE_CAPTCHA_SITE_KEY` / `GOOGLE_CAPTCHA_SECRET_KEY` | reCAPTCHA on the web sign-up form | Leave the defaults — they're Google's public **always-pass** test keys, fine for local dev. Get real ones at the [reCAPTCHA admin console](https://www.google.com/recaptcha/admin) only if you need to test the captcha actually rejecting bots. |
-| `OTP_2FA_ISSUER_NAME` | Cosmetic — name shown in authenticator apps | Any string, e.g. `HIPAA Checker` |
-| `RAILS_LOG_TO_STDOUT` | Makes Rails logs show up in `docker compose logs` | Leave as `true` |
-
-### Frontend build-time variables
-
-These get compiled into the Next.js bundle, so they must point somewhere
-your **browser** can reach — not a Docker service name like `backend`.
-
-| Variable | Value for local docker-compose use |
-|---|---|
-| `NEXT_PUBLIC_API_BASE_URL` | `http://localhost:3000/api/v1` |
-| `NEXT_PUBLIC_API_BASE_URL_V2` | `http://localhost:3000/api/v2` |
-| `NEXT_PUBLIC_ENABLE_LLM_FEATURES` | `false` unless you have an LLM backend to point at |
-| `NEXT_PUBLIC_LLM_API_BASE_URL` | Leave blank unless the flag above is `true` |
-
-If you change any `NEXT_PUBLIC_*` value, rebuild the frontend image:
-`docker compose up --build frontend`.
-
-## Logging in
-
-`docker compose up` seeds a super-admin account automatically on every
-backend start (`db/seeds.rb` runs after migrations, and is idempotent — it
-won't duplicate anything on restarts):
-
-- **Email:** `admin@example.com`
-- **Password:** `SecurePassword123`
-
-Change these in `db/seeds.rb` if you want different defaults. The seed skips
-the real Stripe API call for the Free plan unless `STRIPE_SECRET_KEY` in
-`.env` is a real key (the placeholder value is detected and skipped
-automatically), so it works out of the box with no Stripe account.
-
-## Pulling `suggestions` data from the live server
-
-The `suggestions` table (HIPAA remediation guidance shown per rule) is
-normally populated by hand on the live server. To bring that data into local
-Docker seeding:
-
-1. On the **live server**, run the export script:
-   ```bash
-   cd /path/to/app/current
-   RAILS_ENV=production bundle exec rails runner script/export_suggestions.rb
-   ```
-   This writes `db/seed_data/suggestions.json`. It resolves the Action Text
-   fields (`comment`, `code_snippet`, `expectations_from_hipaa` — see
-   `app/models/suggestion.rb`) to plain text, since that content actually
-   lives in `action_text_rich_texts`, not as plain columns on `suggestions`.
-
-2. Copy that one file down to this repo, e.g.:
-   ```bash
-   scp youruser@yourserver:/path/to/app/current/db/seed_data/suggestions.json \
-     backend/db/seed_data/suggestions.json
-   ```
-
-3. Rebuild and restart the backend so the file gets baked into the image and
-   `db/seeds.rb` picks it up automatically:
-   ```bash
-   docker compose up -d --build backend
-   ```
-   Look for `Suggestions seeded: N/N` in `docker compose logs backend`.
-
-Re-running is safe — suggestions are matched on `(platform, rule_id,
-subrule_id)` and updated in place rather than duplicated.
-
-## Useful commands
+### Run in the background
 
 ```bash
-docker compose ps                              # what's running
-docker compose logs -f backend                 # tail backend logs
+docker compose up -d
+```
+
+### View backend logs
+
+```bash
+docker compose logs -f backend
+```
+
+### View frontend logs
+
+```bash
+docker compose logs -f frontend
+```
+
+### View report-generation worker logs
+
+```bash
+docker compose logs -f sidekiq_report_generation
+```
+
+### Open the Rails console
+
+```bash
 docker compose exec backend bundle exec rails console
-docker compose exec backend bundle exec rails db:migrate
-docker compose down                            # stop everything
-docker compose down -v                         # stop + wipe all data
-docker compose up -d --build backend           # rebuild just the backend
 ```
+
+### Run database migrations
+
+```bash
+docker compose exec backend bundle exec rails db:migrate
+```
+
+### Rebuild only the backend
+
+```bash
+docker compose up -d --build backend
+```
+
+### Rebuild only the frontend
+
+```bash
+docker compose up -d --build frontend
+```
+
+### Stop all services
+
+```bash
+docker compose down
+```
+
+### Completely reset local Docker data
+
+```bash
+docker compose down -v
+```
+
+> **Warning:** `docker compose down -v` deletes the local PostgreSQL and application-data volumes. Use it only when you intentionally want a fresh local installation.
+
+---
+
+## 9. Troubleshooting
+
+### Docker is not running
+
+Start Docker Desktop or the Docker daemon, then run:
+
+```bash
+docker compose up --build
+```
+
+### Port 3000 or 5002 is already in use
+
+Another application is using a port required by HIPAA Checker. Stop that application and run Docker Compose again.
+
+### A container failed to start
+
+Check the current service status:
+
+```bash
+docker compose ps
+```
+
+Then inspect its logs. For example:
+
+```bash
+docker compose logs -f backend
+```
+
+or:
+
+```bash
+docker compose logs -f frontend
+```
+
+### Frontend environment variables were changed
+
+`NEXT_PUBLIC_*` variables are built into the Next.js image. Rebuild the frontend after changing them:
+
+```bash
+docker compose up -d --build frontend
+```
+
+### Start completely fresh
+
+If you intentionally want to remove the local database and application volumes:
+
+```bash
+docker compose down -v
+docker compose up --build
+```
+
+---
+
+## 10. Project Structure
+
+```text
+hipaa-checker/
+├── backend/             # Ruby on Rails API and background jobs
+├── frontend/            # Next.js frontend
+├── .env.example         # Local environment template
+├── docker-compose.yml   # Full local application stack
+├── LICENSE
+└── README.md
+```
+
+---
+
+## 11. Cite Us
+
+If HIPAA Checker is useful in your research, project, publication, or software, please cite the project.
+
+GitHub users can use the **Cite this repository** option on the repository page to copy a formatted citation directly. The citation information is provided in [`CITATION.cff`](CITATION.cff).
+
+### BibTeX
+
+```bibtex
+@software{hipaackr_hipaa_checker,
+  author = {{HIPAACKR}},
+  title = {HIPAA Checker},
+  url = {https://github.com/HIPAACKR/hipaa-checker},
+  note = {Open-source static analysis tool for HIPAA compliance checking}
+}
+```
+
+### Plain text
+
+```text
+HIPAACKR. HIPAA Checker. GitHub repository: https://github.com/HIPAACKR/hipaa-checker
+```
+
+---
+
+## 12. License
+
+HIPAA Checker is currently distributed under the **GNU General Public License v3.0 (GPL-3.0)**.
+
+See the [`LICENSE`](LICENSE) file for the full license text.
