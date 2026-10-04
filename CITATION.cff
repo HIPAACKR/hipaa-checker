@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use HIPAA Checker in your research, project, or publication, please cite it using these metadata."
+
+title: "HIPAA Checker"
+type: software
+
+authors:
+  - name: "HIPAACKR"
+    website: "https://github.com/HIPAACKR"
+
+abstract: "HIPAA Checker is an open-source static analysis tool for scanning mobile and web application codebases for potential HIPAA compliance issues."
+
+repository-code: "https://github.com/HIPAACKR/hipaa-checker"
+url: "https://github.com/HIPAACKR/hipaa-checker"
+
+license: "GPL-3.0"
+
+keywords:
+  - HIPAA
+  - compliance
+  - static analysis
+  - healthcare
+  - security
+  - web applications
+  - mobile applications
